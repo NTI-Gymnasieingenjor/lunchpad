@@ -131,8 +131,13 @@ int main(int argc, const char **argv)
         curr_time = parse_time(time_buffer);
         struct identifier *curr = ids;
         struct lunch_table *curr_table = table;
-        int buff = -1;
-        fscanf(stdin, "%d", &buff);
+        char buffs[1024];
+        int res = fscanf(stdin, "%s", buffs);
+        int buff = atoi(buffs);
+        if(res != 1) {
+            printf("Invalid MFR number\n");
+            continue;
+        }
         int found = 0;
         while(curr && curr->next) {
             if(buff == curr->mfr) {
