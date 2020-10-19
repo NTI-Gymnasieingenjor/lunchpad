@@ -86,7 +86,7 @@ struct lunch_table *read_table(const char *path)
     struct lunch_table *node = start;
     while(!feof(f)) {
         fscanf(f, "%9[^,],%s\n", id, buffer);
-        strncpy(node->id, id, strlen(id));
+        strncpy(node->id, id, strlen(id)+1);
         char *tok = strtok(buffer, ",");
         int i = 0;
         while(tok != NULL) {
