@@ -135,7 +135,7 @@ int main(int argc, const char **argv)
         int res = fscanf(stdin, "%s", buffs);
         int buff = atoi(buffs);
         if(res != 1) {
-            printf("Invalid MFR number\n");
+            printf("-1\n");
             continue;
         }
         int found = 0;
@@ -146,9 +146,9 @@ int main(int argc, const char **argv)
                     //printf("comparing: %5s %5s\n", curr->id, curr_table->id);
                     if(strncmp(curr_table->id, curr->id, strlen(curr->id)) == 0) {
                         if(curr_time >= curr_table->start_time[week] && curr_time <= curr_table->start_time[week]+GRACE_TIME) {
-                            printf("du äta\n");
+                            printf("1\n");
                         } else {
-                            printf("du ej äta\n");
+                            printf("2\n");
                         }
                         break;
                         printf("%d:%s:%d", curr->mfr, curr->id, curr_table->start_time[0]);
@@ -161,7 +161,7 @@ int main(int argc, const char **argv)
             curr = curr->next;
         }
         if(!found) {
-            printf("MFR not found\n");
+            printf("0\n");
         }
         curr = NULL;
         found = 0;
