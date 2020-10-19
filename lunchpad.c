@@ -5,6 +5,7 @@
 #include <sys/time.h>
 
 #define ID_SIZE 9
+#define GRACE_TIME 20
 
 struct identifier {
     int mfr;
@@ -120,7 +121,7 @@ int main(int argc, const char **argv)
         gettimeofday(&tv, NULL);
         t = tv.tv_sec;
         info = localtime(&t);
-        strftime(time_buffer, sizeof time_buffer, "%I:%M\n", info);
+        strftime(time_buffer, sizeof time_buffer, "%H:%M\n", info);
         strftime(week_buffer, sizeof week_buffer, "%w", info);
         week = atoi(week_buffer) - 1;
         if(week < 0 || week > 4) {
@@ -132,11 +133,14 @@ int main(int argc, const char **argv)
         struct lunch_table *curr_table = table;
         int buff = -1;
         fscanf(stdin, "%d", &buff);
+        int found = 0;
         while(curr && curr->next) {
             if(buff == curr->mfr) {
-                while(curr_table->next) {
+                found = 1;
+                while(curr_table) {
+                    //printf("comparing: %5s %5s\n", curr->id, curr_table->id);
                     if(strncmp(curr_table->id, curr->id, strlen(curr->id)) == 0) {
-                        if(curr_time >= curr_table->start_time[week]) {
+                        if(curr_time >= curr_table->start_time[week] && curr_time <= curr_table->start_time[week]+GRACE_TIME) {
                             printf("du äta\n");
                         } else {
                             printf("du ej äta\n");
@@ -151,7 +155,11 @@ int main(int argc, const char **argv)
             }
             curr = curr->next;
         }
+        if(!found) {
+            printf("MFR not found\n");
+        }
         curr = NULL;
+        found = 0;
     }
     destroy_indentifier(ids);
     destroy_table(table);
