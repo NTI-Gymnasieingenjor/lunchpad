@@ -92,8 +92,8 @@ def handle_enter(window):
                 write_text_turtle(window, turtle, style, True, "SMAKLIG MÅLTID!")
             else:
                 print("Du får inte äta")
-                start_timestamp = f"{math.floor(lunch_in_m/60)}:{lunch_in_m%60}"
-                end_timestamp = f"{math.floor((lunch_in_m + 20)/60)}:{(lunch_in_m + 20)%60}"
+                start_timestamp = "{:<02}:{:<02}".format(math.floor((lunch_in_m/60)), lunch_in_m%60)
+                end_timestamp = "{:<02}:{:<02}".format(math.floor((lunch_in_m+20)/60), (lunch_in_m+20)%60)
                 write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {start_timestamp}-{end_timestamp}")
         else:
             print("Couldnt find any matching time with your tag")
