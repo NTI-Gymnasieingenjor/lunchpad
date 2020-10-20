@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import datetime
 import time
 import turtle
@@ -77,7 +78,6 @@ def handle_enter(window):
     turtle.clear()
     global key_presses
     mfr = "".join(key_presses)
-    print(key_presses)
     key_presses = []
     tag_match = find_matching_tag(mfr)
     if(len(tag_match) > 0):
@@ -105,7 +105,6 @@ def handle_enter(window):
 def key_press(key):
     global key_presses
     key_presses.append(key)
-
 
 window = turtle.Screen()
 window.setup(width = 1.0, height = 1.0)
