@@ -1,6 +1,7 @@
 import datetime
 import time
 import turtle
+import threading
 from playsound import playsound
 
 def get_file_data(filepath, mode="tags"):
@@ -41,9 +42,42 @@ def get_time_in_minutes(timestamp):
     hours, minutes = timestamp.split(":")
     return int(hours)*60+int(minutes)
 
+def write_text_turtle(window, turtle, style, granted, msg=""):
+    global active
+    turtle.write(msg, font=style, align='center')
+    turtle.hideturtle()
+    if(granted):
+        window.bgcolor("#5cb85c")
+    else:
+        window.bgcolor("#ED4337")
+        #playsound('denied.mp3')
+    #time.sleep(0.8)
+    blipp_your_tagg()
+
+
+timer = None
+def blipp_your_tagg():
+    global timer
+    global style
+    def anus():
+        global timer
+        turtle.clear()
+        turtle.write("Blippa din tag!", font=style, align='center')
+        turtle.bgcolor("black")
+        timer = None
+
+    timer = threading.Timer(1.0, anus)
+    timer.start()
 
 key_presses = []
 def handle_enter(window):
+    global timer
+    if timer:
+        timer.cancel()
+    window.bgcolor("black")
+    turtle.color('white')
+    style = ('Roboto', 30, 'bold')
+    turtle.clear()
     global key_presses
     mfr = "".join(key_presses)
     print(key_presses)
@@ -58,45 +92,46 @@ def handle_enter(window):
             now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
             if((now_in_m >= lunch_in_m) and (now_in_m <= lunch_in_m + 20)):
                 print("Du får äta")
-                turtle.write('DU FÅR ÄTA', font=style, align='center')
-                turtle.hideturtle()
-                window.bgcolor("#5cb85c")
+                write_text_turtle(window, turtle, style, True, "DU FÅR ÄTA")
             else:
                 print("Du får inte äta")
-                turtle.write('DU FÅR INTE ÄTA', font=style, align='center')
-                turtle.hideturtle()
-                window.bgcolor("#ED4337")
-                playsound('denied.mp3')
+                write_text_turtle(window, turtle, style, False, "DU FÅR INTE ÄTA")
         else:
             print("Couldnt find any matching time with your tag")
-            turtle.write('INGEN MATCHANDE LUNCH TID', font=style, align='center')
-            turtle.hideturtle()
-            window.bgcolor("#ED4337")
-            playsound('denied.mp3')
+            write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCH TID")
     else:
+        write_text_turtle(window, turtle, style, False, "OKÄND TAG")
         print("Couldnt find any match with your tag")
-        turtle.write('OKÄND TAG', font=style, align='center')
-        turtle.hideturtle()
-        window.bgcolor("#ED4337")
-        playsound('denied.mp3')
-    window.bgcolor("black")
-    turtle.clear()
+
+def key_press(key):
+    global key_presses
+    key_presses.append(key)
+
 
 window = turtle.Screen()
-# Register keys
-window.onkey(lambda: key_presses.append("0"), "0")
-window.onkey(lambda: key_presses.append("1"), "1")
-window.onkey(lambda: key_presses.append("2"), "2")
-window.onkey(lambda: key_presses.append("3"), "3")
-window.onkey(lambda: key_presses.append("4"), "4")
-window.onkey(lambda: key_presses.append("5"), "5")
-window.onkey(lambda: key_presses.append("6"), "6")
-window.onkey(lambda: key_presses.append("7"), "7")
-window.onkey(lambda: key_presses.append("8"), "8")
-window.onkey(lambda: key_presses.append("9"), "9")
-window.onkey(lambda: handle_enter(window), "Return")
-window.listen()
+window.setup(width = 1.0, height = 1.0)
+
+#remove close,minimaze,maximaze buttons:
+canvas = window.getcanvas()
+root = canvas.winfo_toplevel()
+root.overrideredirect(1)
+
 window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 30, 'bold')
-turtle.mainloop()
+turtle.write("Blippa din tag!", font=style, align='center')
+# Register keys
+
+window.onkey(lambda: key_press("0"), "0")
+window.onkey(lambda: key_press("1"), "1")
+window.onkey(lambda: key_press("2"), "2")
+window.onkey(lambda: key_press("3"), "3")
+window.onkey(lambda: key_press("4"), "4")
+window.onkey(lambda: key_press("5"), "5")
+window.onkey(lambda: key_press("6"), "6")
+window.onkey(lambda: key_press("7"), "7")
+window.onkey(lambda: key_press("8"), "8")
+window.onkey(lambda: key_press("9"), "9")
+window.onkey(lambda: handle_enter(window), "Return")
+window.listen()
+window.mainloop()
