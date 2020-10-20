@@ -1,6 +1,7 @@
 import datetime
 import time
 import turtle
+from playsound import playsound
 
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -47,7 +48,7 @@ while True:
     window = turtle.Screen()
     window.bgcolor("black")
     turtle.color('white')
-    style = ('Courier', 30, 'italic')
+    style = ('Roboto', 30, 'bold')
     turtle.clear()
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
@@ -58,22 +59,25 @@ while True:
             now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
             if((now_in_m >= lunch_in_m) and (now_in_m <= lunch_in_m + 20)):
                 print("Du får äta")
-                turtle.write('Du får äta', font=style, align='center')
+                turtle.write('DU FÅR ÄTA', font=style, align='center')
                 turtle.hideturtle()
-                window.bgcolor("green")
+                window.bgcolor("#5cb85c")
             else:
                 print("Du får inte äta")
-                turtle.write('Du får inte äta', font=style, align='center')
+                turtle.write('DU FÅR INTE ÄTA', font=style, align='center')
                 turtle.hideturtle()
-                window.bgcolor("red")
+                window.bgcolor("#ED4337")
+                playsound('denied.mp3')
         else:
             print("Couldnt find any matching time with your tag")
-            turtle.write('Ingen matchande lunch tid.', font=style, align='center')
+            turtle.write('INGEN MATCHANDE LUNCH TID', font=style, align='center')
             turtle.hideturtle()
-            window.bgcolor("red")
+            window.bgcolor("#ED4337")
+            playsound('denied.mp3')
     else:
         print("Couldnt find any match with your tag")
-        turtle.write('Okänd tag', font=style, align='center')
+        turtle.write('OKÄND TAG', font=style, align='center')
         turtle.hideturtle()
-        window.bgcolor("red")
+        window.bgcolor("#ED4337")
+        playsound('denied.mp3')
 
