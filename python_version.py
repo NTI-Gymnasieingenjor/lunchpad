@@ -45,7 +45,6 @@ def get_time_in_minutes(timestamp):
 def write_text_turtle(window, turtle, style, granted, msg=""):
     global active
     turtle.write(msg, font=style, align='center')
-    turtle.hideturtle()
     if(granted):
         window.bgcolor("#5cb85c")
     else:
@@ -110,6 +109,8 @@ def key_press(key):
 
 window = turtle.Screen()
 window.setup(width = 1.0, height = 1.0)
+turtle.hideturtle()
+window.title("Lunchpad")
 
 #remove close,minimaze,maximaze buttons:
 canvas = window.getcanvas()
