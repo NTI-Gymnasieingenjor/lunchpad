@@ -2,6 +2,7 @@ import datetime
 import time
 import turtle
 import threading
+import math
 
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -48,8 +49,6 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("#5cb85c")
     else:
         window.bgcolor("#ED4337")
-        #playsound('denied.mp3')
-    #time.sleep(0.8)
     blipp_your_tagg()
 
 
@@ -60,11 +59,11 @@ def blipp_your_tagg():
     def anus():
         global timer
         turtle.clear()
-        turtle.write("Blippa din tag!", font=style, align='center')
+        turtle.write("BLIPPA DIN TAGG!", font=style, align='center')
         turtle.bgcolor("black")
         timer = None
 
-    timer = threading.Timer(1.0, anus)
+    timer = threading.Timer(2.0, anus)
     timer.start()
 
 key_presses = []
@@ -90,10 +89,12 @@ def handle_enter(window):
             now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
             if((now_in_m >= lunch_in_m) and (now_in_m <= lunch_in_m + 20)):
                 print("Du får äta")
-                write_text_turtle(window, turtle, style, True, "DU FÅR ÄTA")
+                write_text_turtle(window, turtle, style, True, "SMAKLIG MÅLTID!")
             else:
                 print("Du får inte äta")
-                write_text_turtle(window, turtle, style, False, "DU FÅR INTE ÄTA")
+                start_timestamp = f"{math.floor(lunch_in_m/60)}:{lunch_in_m%60}"
+                end_timestamp = f"{math.floor((lunch_in_m + 20)/60)}:{(lunch_in_m + 20)%60}"
+                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {start_timestamp}-{end_timestamp}")
         else:
             print("Couldnt find any matching time with your tag")
             write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCH TID")
@@ -119,7 +120,7 @@ root.overrideredirect(1)
 window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 30, 'bold')
-turtle.write("Blippa din tag!", font=style, align='center')
+turtle.write("BLIPPA DIN TAGG!", font=style, align='center')
 # Register keys
 
 window.onkey(lambda: key_press("0"), "0")
