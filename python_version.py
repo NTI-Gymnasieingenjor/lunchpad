@@ -42,14 +42,13 @@ def get_time_in_minutes(timestamp):
     return int(hours)*60+int(minutes)
 
 
-while True:
-    mfr = input()
+key_presses = []
+def handle_enter(window):
+    global key_presses
+    mfr = "".join(key_presses)
+    print(key_presses)
+    key_presses = []
     tag_match = find_matching_tag(mfr)
-    window = turtle.Screen()
-    window.bgcolor("black")
-    turtle.color('white')
-    style = ('Roboto', 30, 'bold')
-    turtle.clear()
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
         if(len(times_match) > 0):
@@ -80,4 +79,24 @@ while True:
         turtle.hideturtle()
         window.bgcolor("#ED4337")
         playsound('denied.mp3')
+    window.bgcolor("black")
+    turtle.clear()
 
+window = turtle.Screen()
+# Register keys
+window.onkey(lambda: key_presses.append("0"), "0")
+window.onkey(lambda: key_presses.append("1"), "1")
+window.onkey(lambda: key_presses.append("2"), "2")
+window.onkey(lambda: key_presses.append("3"), "3")
+window.onkey(lambda: key_presses.append("4"), "4")
+window.onkey(lambda: key_presses.append("5"), "5")
+window.onkey(lambda: key_presses.append("6"), "6")
+window.onkey(lambda: key_presses.append("7"), "7")
+window.onkey(lambda: key_presses.append("8"), "8")
+window.onkey(lambda: key_presses.append("9"), "9")
+window.onkey(lambda: handle_enter(window), "Return")
+window.listen()
+window.bgcolor("black")
+turtle.color('white')
+style = ('Roboto', 30, 'bold')
+turtle.mainloop()
