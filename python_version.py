@@ -2,7 +2,6 @@ import datetime
 import time
 import turtle
 import threading
-from playsound import playsound
 
 def get_file_data(filepath, mode="tags"):
     data = []
