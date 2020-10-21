@@ -69,13 +69,12 @@ def blipp_your_tagg():
     timer.start()
 
 key_presses = []
-def handle_enter(window):
+def handle_enter(window, style):
     global timer
     if timer:
         timer.cancel()
     window.bgcolor("black")
     turtle.color('white')
-    style = ('Roboto', 30, 'bold')
     turtle.clear()
     global key_presses
     mfr = "".join(key_presses)
@@ -119,6 +118,7 @@ window.title("Lunchpad")
 canvas = window.getcanvas()
 root = canvas.winfo_toplevel()
 root.overrideredirect(1)
+root.attributes("-fullscreen", True)
 
 window.bgcolor("black")
 turtle.color('white')
@@ -144,7 +144,7 @@ window.onkey(lambda: key_press("6"), "6")
 window.onkey(lambda: key_press("7"), "7")
 window.onkey(lambda: key_press("8"), "8")
 window.onkey(lambda: key_press("9"), "9")
-window.onkey(lambda: handle_enter(window), "Return")
+window.onkey(lambda: handle_enter(window, style), "Return")
 window.onkey(lambda: handle_esc(window), "Escape")
 window.listen()
 window.mainloop()
