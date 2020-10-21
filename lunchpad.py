@@ -97,7 +97,7 @@ def handle_enter(window, style):
                 write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
             else:
                 print("Nekat")
-                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
+                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
