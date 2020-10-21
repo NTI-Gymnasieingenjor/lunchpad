@@ -85,16 +85,19 @@ def handle_enter(window):
         if(len(times_match) > 0):
             weekday = datetime.datetime.today().weekday()
             now = datetime.datetime.now()
-            lunch_in_m = get_time_in_minutes(times_match[weekday + 1])
+
+            lunch_start = times_match[weekday + 1].split("-")[0]
+            lunch_end = times_match[weekday + 1].split("-")[1]
+            lunch_start_in_m = get_time_in_minutes(lunch_start)
+            lunch_end_in_m = get_time_in_minutes(lunch_end)
             now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
-            if((now_in_m >= lunch_in_m) and (now_in_m <= lunch_in_m + 20)):
+
+            if((now_in_m >= lunch_start_in_m) and (now_in_m <= lunch_end_in_m)):
                 print("Du får äta")
                 write_text_turtle(window, turtle, style, True, "SMAKLIG MÅLTID!")
             else:
                 print("Du får inte äta")
-                start_timestamp = "{:<02}:{:<02}".format(math.floor((lunch_in_m/60)), lunch_in_m%60)
-                end_timestamp = "{:<02}:{:<02}".format(math.floor((lunch_in_m+20)/60), (lunch_in_m+20)%60)
-                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {start_timestamp}-{end_timestamp}")
+                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
         else:
             print("Couldnt find any matching time with your tag")
             write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCH TID")
