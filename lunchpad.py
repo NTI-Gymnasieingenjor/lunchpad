@@ -57,14 +57,14 @@ timer = None
 def blipp_your_tagg():
     global timer
     global style
-    def anus():
+    def _timeout():
         global timer
         turtle.clear()
-        turtle.write("BLIPPA DIN TAGG!", font=style, align='center')
+        turtle.write("VÄNTAR PÅ SKANNING...", font=style, align='center')
         turtle.bgcolor("black")
         timer = None
 
-    timer = threading.Timer(2.0, anus)
+    timer = threading.Timer(3.0, _timeout)
     timer.start()
 
 key_presses = []
@@ -93,17 +93,18 @@ def handle_enter(window):
             now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
 
             if((now_in_m >= lunch_start_in_m) and (now_in_m <= lunch_end_in_m)):
-                print("Du får äta")
-                write_text_turtle(window, turtle, style, True, "SMAKLIG MÅLTID!")
+                print("Godkänt")
+                write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING!")
             else:
-                print("Du får inte äta")
-                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
+                print("Nekat")
+                # write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
+                write_text_turtle(window, turtle, style, False, "NEKAD SKANNING.")
         else:
-            print("Couldnt find any matching time with your tag")
-            write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCH TID")
+            print("Ingen matchande lunchtid")
+            write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
     else:
-        write_text_turtle(window, turtle, style, False, "OKÄND TAG")
-        print("Couldnt find any match with your tag")
+        write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
+        print("Okänd nyckeltagg")
 
 def key_press(key):
     global key_presses
@@ -122,7 +123,7 @@ root.overrideredirect(1)
 window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 30, 'bold')
-turtle.write("BLIPPA DIN TAGG!", font=style, align='center')
+turtle.write("VÄNTAR PÅ SKANNING...", font=style, align='center')
 # Register keys
 
 window.onkey(lambda: key_press("0"), "0")
