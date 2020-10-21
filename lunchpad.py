@@ -124,7 +124,7 @@ root.attributes("-fullscreen", True)
 
 window.bgcolor("black")
 turtle.color('white')
-style = ('Roboto', 30, 'bold')
+style = ('Roboto', 50, 'bold')
 turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
 # Register keys
 
