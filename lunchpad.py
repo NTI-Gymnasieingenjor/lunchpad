@@ -123,7 +123,7 @@ root.overrideredirect(1)
 window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 30, 'bold')
-turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN",, font=style, align='center')
+turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
 # Register keys
 
 def handle_esc(window):
