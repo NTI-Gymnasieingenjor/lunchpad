@@ -4,7 +4,7 @@ import time
 import turtle
 import threading
 import math
-import sys
+import sys, os
 
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -23,8 +23,10 @@ def get_file_data(filepath, mode="tags"):
             cnt += 1
     return data
 
-tags = get_file_data("./id.csv", "tags")
-times = get_file_data("./tider.csv", "times")
+file = os.path.dirname(os.path.realpath(__file__))
+
+tags = get_file_data(file+"/id.csv", "tags")
+times = get_file_data(file+"/tider.csv", "times")
 
 def find_matching_tag(tag="***REMOVED***"):
     match = list(filter(lambda x: tag in x, tags))
