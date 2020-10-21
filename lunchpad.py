@@ -4,6 +4,7 @@ import time
 import turtle
 import threading
 import math
+import sys
 
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -126,6 +127,14 @@ style = ('Roboto', 30, 'bold')
 turtle.write("VÄNTAR PÅ SKANNING...", font=style, align='center')
 # Register keys
 
+def handle_esc(window):
+    global timer
+    if timer:
+        timer.cancel()
+    window.bye()
+    time.sleep(1)
+    sys.exit(0)
+
 window.onkey(lambda: key_press("0"), "0")
 window.onkey(lambda: key_press("1"), "1")
 window.onkey(lambda: key_press("2"), "2")
@@ -137,5 +146,6 @@ window.onkey(lambda: key_press("7"), "7")
 window.onkey(lambda: key_press("8"), "8")
 window.onkey(lambda: key_press("9"), "9")
 window.onkey(lambda: handle_enter(window), "Return")
+window.onkey(lambda: handle_esc(window), "Escape")
 window.listen()
 window.mainloop()
