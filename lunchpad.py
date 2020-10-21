@@ -61,7 +61,7 @@ def blipp_your_tagg():
     def _timeout():
         global timer
         turtle.clear()
-        turtle.write("VÄNTAR PÅ SKANNING...", font=style, align='center')
+        turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
         turtle.bgcolor("black")
         timer = None
 
@@ -95,11 +95,10 @@ def handle_enter(window):
 
             if((now_in_m >= lunch_start_in_m) and (now_in_m <= lunch_end_in_m)):
                 print("Godkänt")
-                write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING!")
+                write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
             else:
                 print("Nekat")
-                # write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
-                write_text_turtle(window, turtle, style, False, "NEKAD SKANNING.")
+                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
@@ -124,7 +123,7 @@ root.overrideredirect(1)
 window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 30, 'bold')
-turtle.write("VÄNTAR PÅ SKANNING...", font=style, align='center')
+turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN",, font=style, align='center')
 # Register keys
 
 def handle_esc(window):
