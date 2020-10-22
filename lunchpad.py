@@ -5,6 +5,8 @@ import turtle
 import threading
 import math
 import sys, os
+from playsound import playsound
+import multiprocessing
 
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -24,6 +26,8 @@ def get_file_data(filepath, mode="tags"):
     return data
 
 file = os.path.dirname(os.path.realpath(__file__))
+
+denied_file = "denied_2.mp3"
 
 tags = get_file_data(file+"/id.csv", "tags")
 times = get_file_data(file+"/tider.csv", "times")
@@ -57,6 +61,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
 
 
 timer = None
+sound_t = None
 def blipp_your_tagg():
     global timer
     global style
@@ -72,9 +77,11 @@ def blipp_your_tagg():
 
 key_presses = []
 def handle_enter(window, style):
-    global timer
+    global timer, sound_t, file
     if timer:
         timer.cancel()
+    if sound_t and sound_t.is_alive():
+        sound_t.terminate()
     window.bgcolor("black")
     turtle.color('white')
     turtle.clear()
@@ -82,6 +89,13 @@ def handle_enter(window, style):
     mfr = "".join(key_presses)
     key_presses = []
     tag_match = find_matching_tag(mfr)
+    def play_sound():
+        global denied_file
+        playsound(file+"/"+denied_file)
+    def start_sound():
+        global sound_t
+        sound_t = multiprocessing.Process(target=play_sound)
+        sound_t.start()
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
         if(len(times_match) > 0):
@@ -100,12 +114,16 @@ def handle_enter(window, style):
             else:
                 print("Nekat")
                 write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR MELLAN {lunch_start}-{lunch_end}")
+                start_sound()
+
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
+            start_sound()
     else:
         write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
         print("Okänd nyckeltagg")
+        start_sound()
 
 def key_press(key):
     global key_presses
