@@ -23,3 +23,8 @@ $ cd lunchpad
 # install the requirements
 $ python3 -m pip intall -r requirements.txt
 ```
+
+# Coding Standard
+**File name structure:** this_is_how_you_do (snake_case)
+
+**Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
