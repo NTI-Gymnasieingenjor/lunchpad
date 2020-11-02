@@ -7,6 +7,7 @@ import math
 import sys, os
 import multiprocessing
 
+# Reads respective csv file and adds the content into a list
 def get_file_data(filepath, mode="tags"):
     data = []
     with open(filepath) as fp:
@@ -24,12 +25,17 @@ def get_file_data(filepath, mode="tags"):
             cnt += 1
     return data
 
+# Path to the working directory
 file = os.path.dirname(os.path.realpath(__file__))
-
-denied_file = "denied_2.mp3"
 
 tags = get_file_data(file+"/id.csv", "tags")
 times = get_file_data(file+"/tider.csv", "times")
+
+# for x in tags:
+#     if tag in x:
+#         save()
+#     else:
+#         throwaway()
 
 def find_matching_tag(tag="536956614"):
     match = list(filter(lambda x: tag in x, tags))
@@ -58,7 +64,6 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("#ED4337")
     blipp_your_tagg()
 
-
 timer = None
 sound_t = None
 def blipp_your_tagg():
@@ -73,6 +78,8 @@ def blipp_your_tagg():
 
     timer = threading.Timer(3.0, _timeout)
     timer.start()
+
+denied_sound = "denied_2.mp3"
 
 key_presses = []
 def handle_enter(window, style):
@@ -89,8 +96,8 @@ def handle_enter(window, style):
     key_presses = []
     tag_match = find_matching_tag(mfr)
     def play_sound():
-        global denied_file
-        os.system('mpg123 ' + denied_file)
+        global denied_sound
+        os.system('mpg123 ' + denied_sound)
     def start_sound():
         global sound_t
         sound_t = multiprocessing.Process(target=play_sound)
@@ -142,7 +149,7 @@ window.bgcolor("black")
 turtle.color('white')
 style = ('Roboto', 50, 'bold')
 turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
-# Register keys
+
 
 def handle_esc(window):
     global timer
