@@ -5,7 +5,6 @@ import turtle
 import threading
 import math
 import sys, os
-from playsound import playsound
 import multiprocessing
 
 def get_file_data(filepath, mode="tags"):
@@ -91,7 +90,7 @@ def handle_enter(window, style):
     tag_match = find_matching_tag(mfr)
     def play_sound():
         global denied_file
-        playsound(file+"/"+denied_file)
+        os.system('mpg123 ' + denied_file)
     def start_sound():
         global sound_t
         sound_t = multiprocessing.Process(target=play_sound)
