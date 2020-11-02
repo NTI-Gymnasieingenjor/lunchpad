@@ -1,13 +1,30 @@
 # Lunchpad
-Lunchpad, Made by team Atlantic
+Lunchpad, Made by team Atlantic and team Goblins
 
 # Definition of Done
-+ Tests should be green.
-+ Code should be commented.
-+ Code and documentation should be uploaded on GitHub.
++ Tests must pass.
++ Code must be commented.
++ No commented-out code.
++ Code and documentation must be uploaded and be up to date on GitHub.
 + Code should follow the coding conventions in place.
-+ Content/Documentation should go through spellchecker.
 
 # Before merging with main
 + All code and documentation should be read by groupmembers onsite and approved.
-+ Should be complete and ready to be shipped to customer.
++ Code must follow Definition of Done.
+
+# Installation
+```
+# Clone repository
+$ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
+
+# Change working directory to lunchpad
+$ cd lunchpad
+
+# install the requirements
+$ python3 -m pip intall -r requirements.txt
+```
+
+# Coding Standard
+**File name structure:** this_is_how_you_do (snake_case)
+
+**Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
