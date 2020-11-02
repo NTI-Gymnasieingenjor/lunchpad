@@ -11,3 +11,15 @@ Lunchpad, Made by team Atlantic and team Goblins
 # Before merging with main
 + All code and documentation should be read by groupmembers onsite and approved.
 + Code must follow Definition of Done.
+
+# Installation
+```
+# Clone repository
+$ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
+
+# Change working directory to lunchpad
+$ cd lunchpad
+
+# install the requirements
+$ python3 -m pip intall -r requirements.txt
+```
