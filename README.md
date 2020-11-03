@@ -13,6 +13,8 @@ Lunchpad, Made by team Atlantic and team Goblins
 + Code must follow Definition of Done.
 
 # Installation
+
+### Linux terminal
 ```
 # Clone repository
 $ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
@@ -23,6 +25,19 @@ $ cd lunchpad
 # install the requirements
 $ python3 -m pip install -r requirements.txt
 ```
+
+### Windows terminal
+```
+# Clone repository
+git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
+
+# Change working directory to lunchpad
+cd lunchpad
+
+# install the requirements
+pip install -r requirements.txt
+```
+
 
 # Coding Standard
 **File name structure:** this_is_how_you_do (snake_case)
