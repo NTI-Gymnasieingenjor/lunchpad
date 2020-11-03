@@ -7,6 +7,8 @@ import math
 import sys, os
 import multiprocessing
 
+used_tags = []
+
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath, mode="tags"):
     data = []
@@ -70,7 +72,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     blipp_your_tagg()
 
 timer = None
-# sound_t = None
+sound_t = None
 # Default display
 def blipp_your_tagg():
     global timer
@@ -86,17 +88,16 @@ def blipp_your_tagg():
     timer = threading.Timer(3.0, _timeout)
     timer.start()
 
-# original code below, I added folder maybe no work
-# denied_sound = "./audio/denied_2.mp3"
+denied_sound = "./audio/denied_2.mp3"
 
 key_presses = []
 def handle_enter(window, style):
     
-    # global timer, sound_t, file
-    # if timer:
-    #     timer.cancel()
-    # if sound_t and sound_t.is_alive():
-    #     sound_t.terminate()
+    global timer, sound_t, file
+    if timer:
+        timer.cancel()
+    if sound_t and sound_t.is_alive():
+        sound_t.terminate()
 
     window.bgcolor("black")
     turtle.color('white')
@@ -107,14 +108,15 @@ def handle_enter(window, style):
     key_presses = []
     tag_match = find_matching_tag(mfr)
 
-    # def play_sound():
-    #     global denied_sound
-    #     os.system('mpg123 ' + denied_sound)
 
-    # def start_sound():
-    #     global sound_t
-    #     sound_t = multiprocessing.Process(target=play_sound)
-    #     sound_t.start()
+    def play_sound():
+        global denied_sound
+        os.system('mpg123 ' + denied_sound)
+
+    def start_sound():
+        global sound_t
+        sound_t = multiprocessing.Process(target=play_sound)
+        sound_t.start()
 
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
@@ -127,21 +129,27 @@ def handle_enter(window, style):
             lunch_end_in_min = get_time_in_min(lunch_end)
             now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
 
-            if((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min)):
+            if tag_match[1] in used_tags:
+                write_text_turtle(window, turtle, style, False, "ERROR: DU HAR REDAN SKANNAT!")
+
+            elif((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min) and (tag_match[1] not in used_tags)):
                 print("Godkänt")
                 write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
+                used_tags.append(tag_match[1])
+                print(used_tags)
+
             else:
                 print("Nekat")
-                #start_sound()
+                start_sound()
                 write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
-            #start_sound()
+            start_sound()
     else:
         write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
         print("Okänd nyckeltagg")
-        #start_sound()
+        start_sound()
 
 def key_press(key):
     global key_presses
@@ -152,11 +160,11 @@ window.setup(width = 1.0, height = 1.0)
 turtle.hideturtle()
 window.title("Lunchpad")
 
-#remove close,minimaze,maximaze buttons:
+# remove close,minimaze,maximaze buttons:
 canvas = window.getcanvas()
 root = canvas.winfo_toplevel()
-#root.overrideredirect(1)
-#root.attributes("-fullscreen", True)
+root.overrideredirect(1)
+root.attributes("-fullscreen", True)
 
 window.bgcolor("black")
 turtle.color('white')
