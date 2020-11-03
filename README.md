@@ -38,7 +38,25 @@ cd lunchpad
 pip install -r requirements.txt
 ```
 
+# Raspberry pi Setup
 
+Install Python version 3.7.2 or later on the Raspberry pi:
+https://www.python.org/downloads/
+```
+# To run the program on bootup on the Raspberry pi in case of power shutdown in any form
+$ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+
+# Proceed to add these in the GNI nano 3.2 terminal
+
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@xscreensaver -no-splash
+@xset s off
+@xset -dpms
+@xset s noblank
+@sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
+point-rpi
+```
 # Coding Standard
 **File name structure:** this_is_how_you_do (snake_case)
 
