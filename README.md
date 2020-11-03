@@ -64,17 +64,7 @@ point-rpi
 # Run on Windows
 If you want to test or run the program on windows, you will have to comment out some parts of the code with a #.
 The text with the # infront of it is what you will need to comment out or copy and replace
-```
-# denied_sound = "denied_2.mp3"
 
-key_presses = []
-def handle_enter(window, style):
-    # global timer, sound_t, file
-    # if timer:
-    #     timer.cancel()
-    # if sound_t and sound_t.is_alive():
-    #     sound_t.terminate()
-```
 ```
     # def play_sound():
     #     global denied_sound
@@ -85,16 +75,5 @@ def handle_enter(window, style):
     #     sound_t.start()
 ```
 ```
-            else:
-                print("Nekat")
-                #start_sound()
-                write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
-        else:
-            print("Ingen matchande lunchtid")
-            write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
-            #start_sound()
-    else:
-        write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
-        print("Okänd nyckeltagg")
-        #start_sound()
+    #root.attributes("-fullscreen", True)
 ```
