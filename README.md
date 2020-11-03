@@ -21,7 +21,7 @@ $ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
 $ cd lunchpad
 
 # install the requirements
-$ python3 -m pip intall -r requirements.txt
+$ python3 -m pip install -r requirements.txt
 ```
 
 # Coding Standard
