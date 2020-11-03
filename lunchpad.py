@@ -37,6 +37,8 @@ times = get_file_data(file+"/tider.csv", "times")
 #     else:
 #         throwaway()
 
+# Looks through all the tags and returns the tag and the corresponding class,
+# otherwise it returns an empty list
 def find_matching_tag(tag="***REMOVED***"):
     match = list(filter(lambda x: tag in x, tags))
     if(len(match) > 0):
@@ -44,6 +46,7 @@ def find_matching_tag(tag="***REMOVED***"):
     else:
         return match
 
+# Uses the matched class to find and return the corresponding lunch time
 def find_matching_lunch_time(grade=""):
     match = list(filter(lambda x: grade in x, times))
     if(len(match) > 0):
@@ -51,7 +54,9 @@ def find_matching_lunch_time(grade=""):
     else:
         return match
 
-def get_time_in_minutes(timestamp):
+# Takes a time value, for example 12:00 and splits it,
+# then converts it into minutes
+def get_time_in_min(timestamp):
     hours, minutes = timestamp.split(":")
     return int(hours)*60+int(minutes)
 
@@ -65,10 +70,12 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     blipp_your_tagg()
 
 timer = None
-sound_t = None
+# sound_t = None
+# Default display
 def blipp_your_tagg():
     global timer
     global style
+
     def _timeout():
         global timer
         turtle.clear()
@@ -79,56 +86,61 @@ def blipp_your_tagg():
     timer = threading.Timer(3.0, _timeout)
     timer.start()
 
-denied_sound = "denied_2.mp3"
+# denied_sound = "denied_2.mp3"
 
 key_presses = []
 def handle_enter(window, style):
-    global timer, sound_t, file
-    if timer:
-        timer.cancel()
-    if sound_t and sound_t.is_alive():
-        sound_t.terminate()
+    
+    # global timer, sound_t, file
+    # if timer:
+    #     timer.cancel()
+    # if sound_t and sound_t.is_alive():
+    #     sound_t.terminate()
+
     window.bgcolor("black")
     turtle.color('white')
     turtle.clear()
+
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
     tag_match = find_matching_tag(mfr)
-    def play_sound():
-        global denied_sound
-        os.system('mpg123 ' + denied_sound)
-    def start_sound():
-        global sound_t
-        sound_t = multiprocessing.Process(target=play_sound)
-        sound_t.start()
+
+    # def play_sound():
+    #     global denied_sound
+    #     os.system('mpg123 ' + denied_sound)
+
+    # def start_sound():
+    #     global sound_t
+    #     sound_t = multiprocessing.Process(target=play_sound)
+    #     sound_t.start()
+
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
         if(len(times_match) > 0):
             weekday = datetime.datetime.today().weekday()
             now = datetime.datetime.now()
-
             lunch_start = times_match[weekday + 1].split("-")[0]
             lunch_end = times_match[weekday + 1].split("-")[1]
-            lunch_start_in_m = get_time_in_minutes(lunch_start)
-            lunch_end_in_m = get_time_in_minutes(lunch_end)
-            now_in_m = get_time_in_minutes(f"{now.hour}:{now.minute}")
+            lunch_start_in_min = get_time_in_min(lunch_start)
+            lunch_end_in_min = get_time_in_min(lunch_end)
+            now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
 
-            if((now_in_m >= lunch_start_in_m) and (now_in_m <= lunch_end_in_m)):
+            if((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min)):
                 print("Godkänt")
                 write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
             else:
                 print("Nekat")
-                start_sound()
+                #start_sound()
                 write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
-            start_sound()
+            #start_sound()
     else:
         write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
         print("Okänd nyckeltagg")
-        start_sound()
+        #start_sound()
 
 def key_press(key):
     global key_presses
@@ -142,8 +154,8 @@ window.title("Lunchpad")
 #remove close,minimaze,maximaze buttons:
 canvas = window.getcanvas()
 root = canvas.winfo_toplevel()
-root.overrideredirect(1)
-root.attributes("-fullscreen", True)
+#root.overrideredirect(1)
+#root.attributes("-fullscreen", True)
 
 window.bgcolor("black")
 turtle.color('white')
