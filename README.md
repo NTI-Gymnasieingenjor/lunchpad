@@ -65,6 +65,17 @@ point-rpi
 If you want to test or run the program on windows, you will have to comment out some parts of the code with a #.
 The text with the # infront of it is what you will need to comment out or copy and replace
 ```
+# denied_sound = "denied_2.mp3"
+
+key_presses = []
+def handle_enter(window, style):
+    # global timer, sound_t, file
+    # if timer:
+    #     timer.cancel()
+    # if sound_t and sound_t.is_alive():
+    #     sound_t.terminate()
+```
+```
     # def play_sound():
     #     global denied_sound
     #     os.system('mpg123 ' + denied_sound)
@@ -86,16 +97,4 @@ The text with the # infront of it is what you will need to comment out or copy a
         write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
         print("Okänd nyckeltagg")
         #start_sound()
-```
-
-```
-# denied_sound = "denied_2.mp3"
-
-key_presses = []
-def handle_enter(window, style):
-    # global timer, sound_t, file
-    # if timer:
-    #     timer.cancel()
-    # if sound_t and sound_t.is_alive():
-    #     sound_t.terminate()
 ```
