@@ -42,7 +42,7 @@ pip install -r requirements.txt
 Install Python version 3.7.2 or later on the Raspberry pi:
 https://www.python.org/downloads/
 ```
-# To run the program on bootup on the Raspberry pi in case of power shutdown in any form
+# To enable autostart on a new Raspberry pi in case of power shutdown in any form.
 $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 
 # Proceed to add these in the GNI nano 3.2 terminal
