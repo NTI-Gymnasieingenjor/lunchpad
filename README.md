@@ -10,7 +10,6 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 # Before merging with main
 + All code and documentation should be read by groupmembers onsite and approved.
-+ Code must follow Definition of Done.
 
 # Installation
 
