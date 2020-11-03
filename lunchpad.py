@@ -33,12 +33,6 @@ file = os.path.dirname(os.path.realpath(__file__))
 tags = get_file_data(file+"/id.csv", "tags")
 times = get_file_data(file+"/tider.csv", "times")
 
-# for x in tags:
-#     if tag in x:
-#         save()
-#     else:
-#         throwaway()
-
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
 def find_matching_tag(tag="***REMOVED***"):
@@ -103,6 +97,7 @@ def handle_enter(window, style):
     turtle.color('white')
     turtle.clear()
 
+    #mfr is the tagg code on the back of the tagg
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
