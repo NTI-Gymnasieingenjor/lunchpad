@@ -86,7 +86,8 @@ def blipp_your_tagg():
     timer = threading.Timer(3.0, _timeout)
     timer.start()
 
-# denied_sound = "denied_2.mp3"
+# original code below, I added folder maybe no work
+# denied_sound = "./audio/denied_2.mp3"
 
 key_presses = []
 def handle_enter(window, style):
