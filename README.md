@@ -63,7 +63,7 @@ point-rpi
 
 # Run on Windows
 If you want to test or run the program on windows, you will have to comment out some parts of the code with a #.
-The text with the # infront of it is what you will need to comment out or copy and replace
+The text with the # infront of it is what you will need to comment out or copy and replace.
 
 ```
     # def play_sound():
@@ -73,6 +73,10 @@ The text with the # infront of it is what you will need to comment out or copy a
     #     global sound_t
     #     sound_t = multiprocessing.Process(target=play_sound)
     #     sound_t.start()
+```
+You also need to comment out the code as shown below that resides under the "handle_enter" function. The code below occurs 3 times in the function.
+```
+    # start_sound()
 ```
 ```
     #root.attributes("-fullscreen", True)
