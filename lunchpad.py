@@ -96,7 +96,7 @@ def blipp_your_tagg():
     timer = threading.Timer(3.0, _timeout)
     timer.start()
 
-denied_sound = "./audio/denied_2.mp3"
+denied_sound = "/home/pi/Desktop/lunchpad/denied.mp3"
 sound_t = None
 key_presses = []
 used_tags = []
