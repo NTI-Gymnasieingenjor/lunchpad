@@ -3,11 +3,10 @@ import datetime
 import time
 import turtle
 import threading
-import math
 import sys, os
 import multiprocessing
+import hashlib
 
-used_tags = []
 
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath, mode="tags"):
@@ -56,6 +55,22 @@ def get_time_in_min(timestamp):
     hours, minutes = timestamp.split(":")
     return int(hours)*60+int(minutes)
 
+window = turtle.Screen()
+window.setup(width = 1.0, height = 1.0)
+turtle.hideturtle()
+window.title("Lunchpad")
+
+# remove close,minimaze,maximaze buttons:
+canvas = window.getcanvas()
+root = canvas.winfo_toplevel()
+root.overrideredirect(1)
+root.attributes("-fullscreen", True)
+
+window.bgcolor("black")
+turtle.color('white')
+style = ('Roboto', 50, 'bold')
+turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
+
 def write_text_turtle(window, turtle, style, granted, msg=""):
     global active
     turtle.write(msg, font=style, align='center')
@@ -66,7 +81,6 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     blipp_your_tagg()
 
 timer = None
-sound_t = None
 # Default display
 def blipp_your_tagg():
     global timer
@@ -83,8 +97,9 @@ def blipp_your_tagg():
     timer.start()
 
 denied_sound = "./audio/denied_2.mp3"
-
+sound_t = None
 key_presses = []
+used_tags = []
 def handle_enter(window, style):
     
     global timer, sound_t, file
@@ -97,7 +112,8 @@ def handle_enter(window, style):
     turtle.color('white')
     turtle.clear()
 
-    #mfr is the tagg code on the back of the tagg
+    # "mfr" variable refers to the MFR ID,
+    # displayed on the back of the tag
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
@@ -124,13 +140,14 @@ def handle_enter(window, style):
             lunch_end_in_min = get_time_in_min(lunch_end)
             now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
 
-            if tag_match[1] in used_tags:
+            hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
+            if hashed in used_tags:
                 write_text_turtle(window, turtle, style, False, "ERROR: DU HAR REDAN SKANNAT!")
 
-            elif((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min) and (tag_match[1] not in used_tags)):
+            elif((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min)):
                 print("Godkänt")
                 write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
-                used_tags.append(tag_match[1])
+                used_tags.append(hashed)
                 print(used_tags)
 
             else:
@@ -149,23 +166,6 @@ def handle_enter(window, style):
 def key_press(key):
     global key_presses
     key_presses.append(key)
-
-window = turtle.Screen()
-window.setup(width = 1.0, height = 1.0)
-turtle.hideturtle()
-window.title("Lunchpad")
-
-# remove close,minimaze,maximaze buttons:
-canvas = window.getcanvas()
-root = canvas.winfo_toplevel()
-root.overrideredirect(1)
-root.attributes("-fullscreen", True)
-
-window.bgcolor("black")
-turtle.color('white')
-style = ('Roboto', 50, 'bold')
-turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
-
 
 def handle_esc(window):
     global timer
