@@ -56,7 +56,31 @@ $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
 point-rpi
 ```
+Automatic reboot at a certain time
+
+
+# In the terminal
+```
+$ sudo crontab -e
+```
+Below the comments in the terminal, add this line below <br>
+and change the stars "*" accordingly to the desired time you want a reboot.
+
+The  below the code is an explanation of what the different stars mean
+```
+*    *    *    *    *  /sbin/reboot
+```
+```
+┬    ┬    ┬    ┬    ┬
+│    │    │    │    └─  Weekday  (0=Sun .. 6=Sat)
+│    │    │    └──────  Month    (1..12)
+│    │    └───────────  Day      (1..31)
+│    └────────────────  Hour     (0..23)
+└─────────────────────  Minute   (0..59)
+```
+
 # Coding Standard
+
 **File name structure:** this_is_how_you_do (snake_case)
 
 **Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
