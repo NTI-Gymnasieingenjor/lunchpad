@@ -156,3 +156,28 @@ If we were to add to the Raspberry pi a <a href="https://en.wikipedia.org/wiki/R
 An RTC is found in your standard smartphone. It's a clock that runs from your phones battery and can be changed depending on where you are or to whatever you want.
 We could add one of these to the Raspberry pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
 This is beacause instead of the time being depentent from a NTP server it would just run on a local RTC which isn't dependent on Wifi.
+
+## In case of powerdown
+
+### Currently
+
+Currently the system restarts automatically perfectly fine when the Raspberry pi loses power. But there is a problem with the stored tags.
+
+### Problem
+
+Currently we reset the list of used tags at the end of each day by rebooting the Raspberry pi.
+
+The problem with this is that if it were to lose power for just a second and the Raspberry pi has to reboot, the list will be reset. 
+This is problematic becasue someone might unplug the Raspberry pi  by accident or with intent and then reset the list so more people can eat. It would also be problematic if the power were to go randomly. Even if it's just a couple of minutes it would reset the list.
+
+### Solution
+
+If we instead of storing the used tags in a list located in the file, we could store them all in a seperate file and encrypt them there.
+This would solve the reboot problem beacuse the list wouldn't be reset when the raspberry pi reboots.
+We could for example make it so the file only resets at a certain time or does something else with the information.
+It would also make the system alot safer because you can't easily access the used tags if you so desired.
+
+
+
+
+
