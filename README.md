@@ -65,9 +65,10 @@ Proceed to add these in the GNI nano 3.2 terminal
 @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
 point-rpi
 ```
+
 ## Automatic reboot at a certain time
 
-### In the Raspberry pi terminal
+In the Raspberry pi terminal
 ```
 $ sudo crontab -e
 ```
@@ -94,6 +95,7 @@ The box below the code is an explanation of what the different stars mean.
 **Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
 
 # Run on Windows
+
 If you want to test or run the program on windows, you will have to comment out some parts of the code with a #.
 The text with the # infront of it is what you will need to comment out or copy and replace.
 
