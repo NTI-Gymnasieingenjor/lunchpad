@@ -13,27 +13,35 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 # Installation
 
-### Linux terminal
+### In Linux terminal
+
+Clone the repository:
 ```
-# Clone repository
 $ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
+```
 
-# Change working directory to lunchpad
+Change working directory to lunchpad:
+```
 $ cd lunchpad
+```
 
-# install the requirements
+Install the requirements:
+```
 $ python3 -m pip install -r requirements.txt
 ```
 
-### Windows terminal
+### In Windows terminal
+
+Clone the repository
 ```
-# Clone repository
 git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
-
-# Change working directory to lunchpad
+```
+Change working directory to lunchpad
+```
 cd lunchpad
-
-# install the requirements
+```
+install the requirements
+```
 pip install -r requirements.txt
 ```
 
@@ -41,12 +49,13 @@ pip install -r requirements.txt
 
 Install Python version 3.7.2 or later on the Raspberry pi:
 https://www.python.org/downloads/
+
+To enable autostart on a new Raspberry pi in case of power shutdown in any form.
 ```
-# To enable autostart on a new Raspberry pi in case of power shutdown in any form.
 $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
-
-# Proceed to add these in the GNI nano 3.2 terminal
-
+```
+Proceed to add these in the GNI nano 3.2 terminal
+```
 @lxpanel --profile LXDE-pi
 @pcmanfm --desktop --profile LXDE-pi
 @xscreensaver -no-splash
@@ -56,17 +65,16 @@ $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
 @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
 point-rpi
 ```
-Automatic reboot at a certain time
+## Automatic reboot at a certain time
 
-
-# In the terminal
+### In the Raspberry pi terminal
 ```
 $ sudo crontab -e
 ```
 Below the comments in the terminal, add this line below <br>
 and change the stars "*" accordingly to the desired time you want a reboot.
 
-The  below the code is an explanation of what the different stars mean
+The box below the code is an explanation of what the different stars mean.
 ```
 *    *    *    *    *  /sbin/reboot
 ```
