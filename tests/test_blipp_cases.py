@@ -8,7 +8,8 @@ p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=
 tests = [
     ["12348910", "Okänd nyckeltagg"],
     ["536956614", "Nekat"],
-    ["101129785", "Godkänt"]
+    ["101129785", "Godkänt"],
+    ["101129785", "Dubbel skann"]
 ]
 
 time.sleep(2)
