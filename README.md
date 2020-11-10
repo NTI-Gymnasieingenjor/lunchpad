@@ -118,7 +118,7 @@ You also need to comment out the code as shown below that resides under the "han
 
 ## In case of a Wifi shutdown
 
-### Explanation:
+### Explanation
 
 The Raspberry pi gets it's time from a <a href="https://en.wikipedia.org/wiki/Network_Time_Protocol">Network Time Protocol<a> (NTP) server from the internet via Wifi/Ethernet. <br>
 If the clock is 11:00 in realtime it would be 11:00 on the Raspberry pi.<br>
@@ -129,7 +129,7 @@ This is because when it loses connection it will continue from when it lost conn
 This is not a problem in itself however if the Raspberry pi were to lose power while not connected to the Wifi, it would store the time just before shutting down.<br>
 Then when it starts up again it will start from that stored time, 11:00 in this case, even if an hour has passed.<br>
 
-### Problem:
+### Problem
 
 This could become a problem in the long run.
 
