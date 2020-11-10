@@ -161,22 +161,24 @@ This is beacause instead of the time being depentent from a NTP server it would 
 
 ### Currently
 
-Currently the system restarts automatically perfectly fine when the Raspberry pi loses power. But there is a problem with the stored tags.
+The system restarts automatically without any problems when the Raspberry pi loses power. But there is a problem when it comes to the stored tags.
 
 ### Problem
 
-Currently we reset the list of used tags at the end of each day by rebooting the Raspberry pi.
+We currently reset the list of used tags at the end of each day by rebooting the Raspberry pi automatically at a set time.
 
-The problem with this is that if it were to lose power for just a second and the Raspberry pi has to reboot, the list will be reset. 
-This is problematic becasue someone might unplug the Raspberry pi  by accident or with intent and then reset the list so more people can eat. It would also be problematic if the power were to go randomly. Even if it's just a couple of minutes it would reset the list.
+The problem with this is that if it were to lose power for even just a second during lunch, the Raspberry pi would reboot and restart the system and with that reset the list. This is problematic becasue someone might accidentally or intentionally unplug the Raspberry pi so the list would reset.
+The power might also go out randomly but that's not as likely.
+
+In short we don't want the list to reset when the Raspberry pi reboots, here's a solution.
 
 ### Solution
 
-If we instead of storing the used tags in a list located in the file, we could store them all in a seperate file and encrypt them there.
-This would solve the reboot problem beacuse the list wouldn't be reset when the raspberry pi reboots.
-We could for example make it so the file only resets at a certain time or does something else with the information.
-It would also make the system alot safer because you can't easily access the used tags if you so desired.
+If we store the used tags in a seperate file and encrypt them there we avoid the problem entierly. <br>
 
+This would solve the reboot problem beacuse the file wouldn't be reset when the Raspberry pi reboots and the system restarts, instead it would be stored safely.
+This also opens up possibilities such as reseting the file at a set time via a script without having to rely on the Raspberry pi entierly.
+We can also access the tags in a seperate file easier rather than in the actual code and do something else with that information. This might seem like a safety issue but since the tags will be encrypted you can't do anything with that information. 
 
 
 
