@@ -64,7 +64,7 @@ window.title("Lunchpad")
 canvas = window.getcanvas()
 root = canvas.winfo_toplevel()
 root.overrideredirect(1)
-root.attributes("-fullscreen", True)
+# root.attributes("-fullscreen", True)
 
 window.bgcolor("black")
 turtle.color('white')
@@ -120,14 +120,14 @@ def handle_enter(window, style):
     tag_match = find_matching_tag(mfr)
 
 
-    def play_sound():
-        global denied_sound
-        os.system('mpg123 ' + denied_sound)
+    # def play_sound():
+    #     global denied_sound
+    #     os.system('mpg123 ' + denied_sound)
 
-    def start_sound():
-        global sound_t
-        sound_t = multiprocessing.Process(target=play_sound)
-        sound_t.start()
+    # def start_sound():
+    #     global sound_t
+    #     sound_t = multiprocessing.Process(target=play_sound)
+    #     sound_t.start()
 
     if(len(tag_match) > 0):
         times_match = find_matching_lunch_time(tag_match[0])
@@ -142,26 +142,27 @@ def handle_enter(window, style):
 
             hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
             if hashed in used_tags:
+                print("Dubbel skann")
                 write_text_turtle(window, turtle, style, False, "ERROR: DU HAR REDAN SKANNAT!")
 
             elif((now_in_min >= lunch_start_in_min) and (now_in_min <= lunch_end_in_min)):
                 print("Godkänt")
                 write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
                 used_tags.append(hashed)
-                print(used_tags)
+               
 
             else:
                 print("Nekat")
-                start_sound()
+                # start_sound()
                 write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
         else:
             print("Ingen matchande lunchtid")
             write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
-            start_sound()
+            # start_sound()
     else:
         write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
         print("Okänd nyckeltagg")
-        start_sound()
+        # start_sound()
 
 def key_press(key):
     global key_presses
