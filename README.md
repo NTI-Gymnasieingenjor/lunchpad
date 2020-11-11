@@ -13,9 +13,13 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 # Installation
 
-### In Linux terminal
+## In Linux Terminal
 
+<details>
+    <summary>Follow these steps!</summary><br>
+  
 Clone the repository:
+
 ```
 $ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
 ```
@@ -29,8 +33,12 @@ Install the requirements:
 ```
 $ python3 -m pip install -r requirements.txt
 ```
+</details>
 
-### In Windows terminal
+## In Windows Terminal
+
+<details>
+    <summary>Follow these steps</summary><br>
 
 Clone the repository
 ```
@@ -44,27 +52,93 @@ install the requirements
 ```
 pip install -r requirements.txt
 ```
+</details>
 
 # Raspberry pi Setup
 
-Install Python version 3.7.2 or later on the Raspberry pi:
-https://www.python.org/downloads/
+## How to set up a Raspberry pi for the lunch system
 
-To enable autostart on a new Raspberry pi in case of power shutdown in any form.
-```
-$ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
-```
-Proceed to add these in the GNI nano 3.2 terminal
-```
-@lxpanel --profile LXDE-pi
-@pcmanfm --desktop --profile LXDE-pi
-@xscreensaver -no-splash
-@xset s off
-@xset -dpms
-@xset s noblank
-@sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
-point-rpi
-```
+<details>
+    <summary>VNC Viewer download</summary>
+
+   1. Click <a href="https://www.realvnc.com/en/connect/download/viewer/">here</a> to download VNC Viewer for your OS.
+   
+   2. Follow the installation guide step by step
+   
+   This is all you need to do now, you will use VNC Viewer later in this setup guide
+</details>
+
+<details>
+   <summary>Enable VNC Viewer on Raspberry pi</summary>
+    
+   1. Start the Raspberry pi
+   
+   2. From the desktop click the Raspberri pi icon in the top left
+   
+   3. In the drop down menu click "Preferences"
+   
+   4. Click "Raspberry Pi Configuration"
+   
+   5. In the Raspberry Pi Configuration window, click on the "Interfaces" tab
+   
+   6. Make sure to enable both "SSH" and "VNC"
+   
+   Now you don't have to manually head into the Raspberry pi everytime you wish to change something.
+   You can just connect to the pi via your own computer assuming you're on the same network.
+</details>
+
+<details>
+    
+   <summary>Connect to the Raspberry pi</summary>
+   
+   1. 
+    
+</details>
+
+<details>
+    <summary>Download Python</summary><br>
+    
+   Make sure to complete "Connect to Raspberry pi".
+   
+   When we get the sytem on the Raspberry pi we need Python to actually run it.
+    
+   Install Python version 3.7.2 or later on the Raspberry pi <a href=""https://www.python.org/downloads/>here</a>
+
+</details>
+    
+<details>
+    
+   <summary>Upload lunch system folder to Raspberry pi</summary><br>
+   
+   Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window
+   
+   You now have the system on the Raspberry pi and can run it manually whenever you want.
+   
+   However we don't want to restart the system manually at all. If we lose power we want it to start automatically.
+</details>
+  
+<details>
+    
+   <summary>Enable autostart on raspberry pi</summary><br>
+   
+   To enable autostart on a new Raspberry pi in case of power shutdown in any form.
+   ```
+   $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+   ```
+   Proceed to add these in the GNI nano 3.2 terminal
+   ```
+   @lxpanel --profile LXDE-pi
+   @pcmanfm --desktop --profile LXDE-pi
+   @xscreensaver -no-splash
+   @xset s off
+   @xset -dpms
+   @xset s noblank
+   @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
+   point-rpi
+   ```
+   
+</details>
+
 
 ## Automatic reboot at a certain time
 
@@ -87,6 +161,7 @@ The box below the code is an explanation of what the different stars mean.
 │    └────────────────  Hour     (0..23)
 └─────────────────────  Minute   (0..59)
 ```
+
 
 # Coding Standard
 
