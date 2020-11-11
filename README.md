@@ -11,12 +11,19 @@ Lunchpad, Made by team Atlantic and team Goblins
 # Before merging with main
 + All code and documentation should be read by groupmembers onsite and approved.
 
+# Coding Standard
+
+**File name structure:** this_is_how_you_do (snake_case)
+
+**Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
+
+
 # Installation
 
 ## In Linux Terminal
 
 <details>
-    <summary>Follow these steps!</summary><br>
+    <summary>Follow these steps</summary><br>
   
 Clone the repository:
 
@@ -54,9 +61,11 @@ pip install -r requirements.txt
 ```
 </details>
 
+
+
 # Raspberry pi Setup
 
-## How to set up a Raspberry pi for the lunch system
+### How to set up a Raspberry pi for the lunch system
 
 <details>
     <summary>VNC Viewer download</summary>
@@ -65,7 +74,7 @@ pip install -r requirements.txt
    
    2. Follow the installation guide step by step
    
-   This is all you need to do now, you will use VNC Viewer later in this setup guide
+   This is all you need to do now, you will use VNC Viewer later in this setup guide.
 </details>
 
 <details>
@@ -89,20 +98,37 @@ pip install -r requirements.txt
 
 <details>
     
-   <summary>Connect to the Raspberry pi</summary>
+   <summary>Connect to the Raspberry pi</summary><br>
    
-   1. 
-    
+   1. In the Raspberry pi terminal write
+   ```
+   $ ifconfig
+   ```
+   2. Under "wlan0" you will see something like this
+   ```
+   flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500<br>
+   inet 10.100.100.100  netmask 000.000.0.0  broadcast 00.000.000.000
+   inet6 fe80::c2ff:5f43:5cbb:eb8e  prefixlen 64  scopeid 0x20<link>
+   inet6 2001:9b1:845c:201:ecdc:ec28:ce5c:89df  prefixlen 64  scopeid 0x0<g
+   ```
+   3. What you want to find is the "inet" ip, in the example above it's: 10.100.100.100
+   
+   4. Enter the inet ip you just aquired in VNC Viewer on your PC in field at the top. (Make sure you're on the same connection)
+   
+   5. Standard login credentials are:
+   ```
+   username: pi
+   password: raspberry
+   ```
+   6. Now you have access to the Raspberry pi from your PC.
 </details>
 
 <details>
     <summary>Download Python</summary><br>
-    
-   Make sure to complete "Connect to Raspberry pi".
    
-   When we get the sytem on the Raspberry pi we need Python to actually run it.
+   When we have the sytem on the Raspberry pi we need Python to actually run it.
     
-   Install Python version 3.7.2 or later on the Raspberry pi <a href=""https://www.python.org/downloads/>here</a>
+   Install Python version 3.7.2 or later on the Raspberry pi <a href="https://www.python.org/downloads/">here</a>
 
 </details>
     
@@ -110,11 +136,12 @@ pip install -r requirements.txt
     
    <summary>Upload lunch system folder to Raspberry pi</summary><br>
    
-   Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window
+   - Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window
    
    You now have the system on the Raspberry pi and can run it manually whenever you want.
    
    However we don't want to restart the system manually at all. If we lose power we want it to start automatically.
+   
 </details>
   
 <details>
@@ -139,35 +166,30 @@ pip install -r requirements.txt
    
 </details>
 
+<details>
+   <summary>Automatic reboot at a set time</summary><br>
 
-## Automatic reboot at a certain time
+   In the Raspberry pi terminal
+   ```
+   $ sudo crontab -e
+   ```
+   Below the comments in the terminal, add the line below and change the stars "*" accordingly to the desired time you want a reboot.
+   ```
+   *    *    *    *    *  /sbin/reboot
+   ```
+   This is an explanation of what the different stars mean.
 
-In the Raspberry pi terminal
-```
-$ sudo crontab -e
-```
-Below the comments in the terminal, add this line below <br>
-and change the stars "*" accordingly to the desired time you want a reboot.
-
-The box below the code is an explanation of what the different stars mean.
-```
-*    *    *    *    *  /sbin/reboot
-```
-```
-┬    ┬    ┬    ┬    ┬
-│    │    │    │    └─  Weekday  (0=Sun .. 6=Sat)
-│    │    │    └──────  Month    (1..12)
-│    │    └───────────  Day      (1..31)
-│    └────────────────  Hour     (0..23)
-└─────────────────────  Minute   (0..59)
-```
-
-
-# Coding Standard
-
-**File name structure:** this_is_how_you_do (snake_case)
-
-**Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
+   ```
+   *    *    *    *    *
+   ┬    ┬    ┬    ┬    ┬
+   │    │    │    │    └─  Weekday  (0=Sun .. 6=Sat)
+   │    │    │    └──────  Month    (1..12)
+   │    │    └───────────  Day      (1..31)
+   │    └────────────────  Hour     (0..23)
+   └─────────────────────  Minute   (0..59)
+   ```
+    
+</details>
 
 # Run on Windows
 
@@ -191,7 +213,7 @@ You also need to comment out the code as shown below that resides under the "han
     #root.attributes("-fullscreen", True)
 ```
 
-## In case of a Wifi shutdown
+# In case of a Wifi shutdown
 
 ### Explanation
 
@@ -232,7 +254,7 @@ An RTC is found in your standard smartphone. It's a clock that runs from your ph
 We could add one of these to the Raspberry pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
 This is beacause instead of the time being depentent from a NTP server it would just run on a local RTC which isn't dependent on Wifi.
 
-## In case of powerdown
+# In case of powerdown
 
 ### Currently
 
