@@ -122,7 +122,7 @@ def handle_enter(window, style):
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
     
-    if(valid_lunch_time(times_match)):
+    if(valid_lunch_time(times_match, datetime.datetime.now())):
         if hashed in used_tags:
             print("Dubbel skann")
             write_text_turtle(window, turtle, style, False, "ERROR: DU HAR REDAN SKANNAT!")  
@@ -146,9 +146,8 @@ def lunch_time(times_match):
     lunch_end = times_match[weekday + 1].split("-")[1]
     return lunch_start, lunch_end
 
-def valid_lunch_time(times_match):
+def valid_lunch_time(times_match, now):
     lunch_start, lunch_end = lunch_time(times_match)
-    now = datetime.datetime.now()
     lunch_start_in_min = get_time_in_min(lunch_start)
     lunch_end_in_min = get_time_in_min(lunch_end)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
