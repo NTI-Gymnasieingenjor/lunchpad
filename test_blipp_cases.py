@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import subprocess, time, psutil, sys
 from pynput.keyboard import Key, Controller
-
+from lunchpad import *
+import datetime
 
 def correct_text():
     time.sleep(2)
@@ -18,22 +19,33 @@ def correct_text():
 
     for test in tests:
         res = p.stdout.readline().decode("latin-1").strip()
-        if res == test[1]:
-            print("\u001b[32mTest successful\u001b[0m")
-        else:
-            print("\u001b[31mTest failed\u001b[0m")
-            sys.exit(1)
+        check_test(test[1], res)
+
+def check_test(expected, actual):
+    if expected == actual:
+        print("\u001b[32mTest successful\u001b[0m")
+    else:
+        print("\u001b[31mTest failed\u001b[0m")
+        sys.exit(1)
+
 
 
 if __name__ == '__main__':
     args = ["python","lunchpad.py"]
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-
     tests = [
         ["12348910", "Okänd nyckeltagg"],
         ["***REMOVED***", "Nekat"],
         ["***REMOVED***", "Godkänt"],
         ["***REMOVED***", "Dubbel skann"]
     ]
-    correct_text()
+    on_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 10, 10))
+    off_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 00, 10))
+ 
 
+
+    print("Correct_text")
+    correct_text()
+    print("Time_test")
+    check_test(True, on_time)
+    check_test(False, off_time)
