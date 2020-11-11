@@ -31,4 +31,5 @@ for test in tests:
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
+        sys.exit(1)
 
