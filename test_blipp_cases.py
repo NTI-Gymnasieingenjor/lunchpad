@@ -4,7 +4,8 @@ from pynput.keyboard import Key, Controller
 from lunchpad import *
 import datetime
 
-def correct_text():
+def correct_output():
+
     time.sleep(2)
     keyboard = Controller()
 
@@ -21,29 +22,27 @@ def correct_text():
         res = p.stdout.readline().decode("latin-1").strip()
         check_test(test[1], res)
 
-def check_test(expected, actual):
-    if expected == actual:
-        print("\u001b[32mTest successful\u001b[0m")
-    else:
-        print("\u001b[31mTest failed\u001b[0m")
-        sys.exit(1)
+def correct_text():
+
+    actual = handle_input("537047414", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+    check_test(expected, actual)
+
+    actual = handle_input("934219478", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    expected = False, "DIN LUNCHTID ÄR 11:00-11:20"
+    check_test(expected, actual)
+    
+    actual = handle_input("101051865", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    expected = False, "INGEN MATCHANDE LUNCHTID"
+    check_test(expected, actual)
+
+    actual = handle_input("123456789", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    expected = False, "OKÄND NYCKELTAGG"
+    check_test(expected, actual)
+
 
 def time_test():
-    check_test(True, correct_time)
-    check_test(False, wrong_before_1min)
-    check_test(False, wrong_after_1min)
-    check_test(False, wrong_time_midnight)
 
-
-if __name__ == '__main__':
-    args = ["python","lunchpad.py"]
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-    tests = [
-        ["12348910", "Okänd nyckeltagg"],
-        ["536956614", "Nekat"],
-        ["101129785", "Godkänt"],
-        ["101129785", "Dubbel skann"]
-    ]
     # On time for lunch
     correct_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 10, 10))
     # 1 minute before lunch time
@@ -53,7 +52,40 @@ if __name__ == '__main__':
     # Midnight
     wrong_time_midnight = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 0, 0, 1))
 
-    print("Correct_text")
-    correct_text()
+    check_test(True, correct_time)
+    check_test(False, wrong_before_1min)
+    check_test(False, wrong_after_1min)
+    check_test(False, wrong_time_midnight)
+    
+def check_test(expected, actual):
+    if expected == actual:
+        print("\u001b[32mTest successful\u001b[0m")
+    else:
+        print("\u001b[31mTest failed\u001b[0m")
+        print(expected)
+        print(actual)
+        sys.exit(1)
+
+if __name__ == '__main__':
+    args = ["python","lunchpad.py"]
+
+    file = os.path.dirname(os.path.realpath(__file__))
+
+    tags = get_file_data(file+"/id.csv", "tags")
+    times = get_file_data(file+"/tider.csv", "times")
+
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+    
+    tests = [
+        ["12348910", "OKÄND NYCKELTAGG"],
+        ["537047414", "DIN LUNCHTID ÄR 12:30-12:50"],
+        ["101129785", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
+        ["101129785", "DU HAR REDAN SKANNAT"]
+    ]
+
+    print("Correct_output")
+    correct_output()
     print("Time_test")
     time_test()
+    print("Correct_text")
+    correct_text()
