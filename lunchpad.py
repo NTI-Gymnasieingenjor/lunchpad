@@ -60,6 +60,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("red")
     blipp_your_tagg()
 
+skanna_tagg = "VÄNLIGEN SKANNA DIN NYCKELTAGG TILL VÄNSTER"
 
 # Default display
 def blipp_your_tagg():
@@ -69,7 +70,7 @@ def blipp_your_tagg():
     def _timeout():
         global timer
         turtle.clear()
-        turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
+        turtle.write(skanna_tagg, font=style, align='center')
         turtle.bgcolor("black")
         timer = None
 
@@ -126,7 +127,6 @@ def handle_input(mfr, tags, times, now, used_tags):
         return False, "INGEN MATCHANDE LUNCHTID"
     
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
-    
 
     if(valid_lunch_time(times_match, now)):
         if hashed in used_tags:  
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     window.bgcolor("black")
     turtle.color('white')
     style = ('Roboto', 50, 'bold')
-    turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
+    turtle.write(skanna_tagg, font=style, align='center')
 
     timer = None
 
