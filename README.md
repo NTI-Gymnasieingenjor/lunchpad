@@ -70,11 +70,11 @@ pip install -r requirements.txt
 <details>
     <summary>VNC Viewer download</summary><br>
     
-   VNC Viewer is an application that allows us to remotley access the raspberry pi.
+   VNC Viewer is an application that allows us to remotely access the raspberry pi.
 
    1. Click <a href="https://www.realvnc.com/en/connect/download/viewer/">here</a> to download VNC Viewer for your OS.
    
-   2. Follow the installation guide step by step
+   2. Follow the installation guide step by step.
    
    This is all you need to do now, you will use VNC Viewer later in this setup guide.
 </details>
@@ -82,17 +82,17 @@ pip install -r requirements.txt
 <details>
    <summary>Enable VNC Viewer on Raspberry pi</summary>
     
-   1. Start the Raspberry pi
+   1. Start the Raspberry pi.
    
-   2. From the desktop click the Raspberri pi icon in the top left
+   2. From the desktop click the Raspberry pi icon in the top left.
    
-   3. In the drop down menu click "Preferences"
+   3. In the drop down menu click "Preferences".
    
-   4. Click "Raspberry Pi Configuration"
+   4. Click "Raspberry Pi Configuration".
    
-   5. In the Raspberry Pi Configuration window, click on the "Interfaces" tab
+   5. In the Raspberry Pi Configuration window, click on the "Interfaces" tab.
    
-   6. Make sure to enable both "SSH" and "VNC"
+   6. Make sure to enable both "SSH" and "VNC".
    
    Now you don't have to manually head into the Raspberry pi everytime you wish to change something.
    You can just connect to the pi via your own computer assuming you're on the same network.
@@ -102,11 +102,11 @@ pip install -r requirements.txt
     
    <summary>Connect to the Raspberry pi</summary><br>
    
-   1. In the Raspberry pi terminal write
+   1. In the Raspberry pi terminal write:
    ```
    $ ifconfig
    ```
-   2. Under "wlan0" you will see something like this
+   2. Under "wlan0" you will see something like this.
    ```
    flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500<br>
    inet 10.100.100.100  netmask 000.000.0.0  broadcast 00.000.000.000
@@ -128,9 +128,9 @@ pip install -r requirements.txt
 <details>
     <summary>Download Python</summary><br>
    
-   When we have the sytem on the Raspberry pi we need Python to actually run it.
+   Python is required to run the lunch system on the Raspberry pi.
     
-   Install Python version 3.7.2 or later on the Raspberry pi <a href="https://www.python.org/downloads/">here</a>
+   Install Python version 3.7.2 or later on the Raspberry pi <a href="https://www.python.org/downloads/">here.</a>
 
 </details>
     
@@ -138,7 +138,7 @@ pip install -r requirements.txt
     
    <summary>Upload lunch system folder to Raspberry pi</summary><br>
    
-   - Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window
+   - Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window.
    
    You now have the system on the Raspberry pi and can run it manually whenever you want.
    
@@ -151,10 +151,12 @@ pip install -r requirements.txt
    <summary>Enable autostart on raspberry pi</summary><br>
    
    To enable autostart on a new Raspberry pi in case of power shutdown in any form.
+   
+   In the Raspberry pi terminal write:
    ```
    $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
    ```
-   Proceed to add these in the GNI nano 3.2 terminal
+   Proceed to add these in the GNI nano 3.2 terminal.
    ```
    @lxpanel --profile LXDE-pi
    @pcmanfm --desktop --profile LXDE-pi
@@ -172,15 +174,15 @@ pip install -r requirements.txt
 <details>
    <summary>Automatic reboot at a set time</summary><br>
 
-   In the Raspberry pi terminal
+   In the Raspberry pi terminal write:
    ```
    $ sudo crontab -e
    ```
-   Below the comments in the terminal, add the line below and change the stars "*" accordingly to the desired time you want a reboot.
+   Below the comments in the terminal, add the following line below and change the stars "*" accordingly to the desired time you want a reboot.
    ```
    *    *    *    *    *  /sbin/reboot
    ```
-   This is an explanation of what the different stars mean.
+   The following is an explanation of what the different stars mean:
 
    ```
    *    *    *    *    *
@@ -198,13 +200,13 @@ pip install -r requirements.txt
 <details>
    <summary>Turn off screens at set times</summary><br>
     
-   1. In the Raspberry pi terminal
+   1. In the Raspberry pi terminal write:
    ```
    $ sudo crontab -e
    ```
    > Note: This is the same place where we set the pi to automatically reboot at a certain time, and we'll use the same system again to turn of the screens.
    
-   2. Below where we added automatic reboot in the terminal, add the lines below and change the stars "*" accordingly to the desired time you want to turn on and off the screens.
+   2. Below where we added automatic reboot in the terminal, add the following lines below and change the stars "*" accordingly to the desired time you want to turn on and off the screens.
    ```
    30 6 * * * vcgencmd display_power 1
    * 18 * * * vcgencmd display_power 0
@@ -212,21 +214,21 @@ pip install -r requirements.txt
    This will turn ON the display (display_power 1) at 6:30.<br>
    This will turn OFF the display (display_power 0) at 18:00.
 
-   If you forgot what the stars mean see "Automatic reboot at a set time".
+   If you forgot what the stars mean refer to "Automatic reboot at a set time".
 </details>
 
 <details>
    <summary>Using two screens (Optional)</summary>
     
-   1. From the desktop click the Raspberri pi icon in the top left
+   1. From the desktop click the Raspberri pi icon in the top left.
    
-   3. In the drop down menu click "Preferences"
+   3. In the drop down menu click "Preferences".
    
-   4. Click "Screen Configuration"
+   4. Click "Screen Configuration".
    
-   5. In this layout editor you should see HDMI 1 and HDMI 2 boxes if you have connected two screns successfully
+   5. In this layout editor you should see HDMI 1 and HDMI 2 boxes if you have connected two screens successfully.
    
-   6. Simply drag and drop one screen on the other to mirror it, now it will display the same thing on both screens
+   6. Simply drag and drop one screen on top of the other to mirror it, now the displays will be mirrored.
    
 </details>
 
