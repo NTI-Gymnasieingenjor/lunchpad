@@ -60,6 +60,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("#ED4337")
     blipp_your_tagg()
 
+skanna_tagg = "VÄNLIGEN SKANNA DIN NYCKELTAGG TILL VÄNSTER"
 
 # Default display
 def blipp_your_tagg():
@@ -69,7 +70,7 @@ def blipp_your_tagg():
     def _timeout():
         global timer
         turtle.clear()
-        turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
+        turtle.write(skanna_tagg, font=style, align='center')
         turtle.bgcolor("black")
         timer = None
 
@@ -115,7 +116,7 @@ def handle_enter(window, style):
     times_match = find_matching_lunch_time(tag_match[0])
     if(not (len(times_match) > 0)):
         print("Ingen matchande lunchtid")
-        write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
+        write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCHTID")
         # start_sound()
         return
     
@@ -125,7 +126,7 @@ def handle_enter(window, style):
     if(valid_lunch_time(times_match)):
         if hashed in used_tags:
             print("Dubbel skann")
-            write_text_turtle(window, turtle, style, False, "ERROR: DU HAR REDAN SKANNAT!")  
+            write_text_turtle(window, turtle, style, False, "DU HAR REDAN SKANNAT!")  
             return
 
         print("Godkänt")
@@ -189,7 +190,7 @@ if __name__ == '__main__':
     window.bgcolor("black")
     turtle.color('white')
     style = ('Roboto', 50, 'bold')
-    turtle.write("VÄNLIGEN SKANNA DIN NYCKELTAGG NEDAN", font=style, align='center')
+    turtle.write(skanna_tagg, font=style, align='center')
 
     timer = None
 
