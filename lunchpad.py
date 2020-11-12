@@ -29,7 +29,7 @@ def get_file_data(filepath, mode="tags"):
 
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
-def find_matching_tag(tag="***REMOVED***"):
+def find_matching_tag(tag, tags):
     match = list(filter(lambda x: tag in x, tags))
     if(len(match) > 0):
         return match[0]
@@ -37,7 +37,7 @@ def find_matching_tag(tag="***REMOVED***"):
         return match
 
 # Uses the matched class to find and return the corresponding lunch time
-def find_matching_lunch_time(grade=""):
+def find_matching_lunch_time(grade, times):
     match = list(filter(lambda x: grade in x, times))
     if(len(match) > 0):
         return match[0]
@@ -55,9 +55,9 @@ def get_time_in_min(timestamp):
 def write_text_turtle(window, turtle, style, granted, msg=""):
     turtle.write(msg, font=style, align='center')
     if(granted):
-        window.bgcolor("#5cb85c")
+        window.bgcolor("green")
     else:
-        window.bgcolor("#ED4337")
+        window.bgcolor("red")
     blipp_your_tagg()
 
 skanna_tagg = "VÄNLIGEN SKANNA DIN NYCKELTAGG TILL VÄNSTER"
@@ -95,7 +95,10 @@ def handle_enter(window, style):
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
-    tag_match = find_matching_tag(mfr)
+    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags)
+    write_text_turtle(window, turtle, style, allowed, message)
+    print(message)
+    
 
 
     # def play_sound():
@@ -107,49 +110,45 @@ def handle_enter(window, style):
     #     sound_t = multiprocessing.Process(target=play_sound)
     #     sound_t.start()
 
+
+
+def handle_input(mfr, tags, times, now, used_tags):
+
+    tag_match = find_matching_tag(mfr, tags)
     if(not (len(tag_match) > 0)):
-        write_text_turtle(window, turtle, style, False, "OKÄND NYCKELTAGG")
-        print("Okänd nyckeltagg")
         # start_sound()
-        return
+        return False, "OKÄND NYCKELTAGG"
         
-    times_match = find_matching_lunch_time(tag_match[0])
+    times_match = find_matching_lunch_time(tag_match[0], times)
+
+    # If the tag is in the system but not registered to a class
     if(not (len(times_match) > 0)):
-        print("Ingen matchande lunchtid")
-        write_text_turtle(window, turtle, style, False, "INGEN MATCHANDE LUNCHTID")
         # start_sound()
-        return
+        return False, "INGEN MATCHANDE LUNCHTID"
     
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
-    
-    if(valid_lunch_time(times_match)):
-        if hashed in used_tags:
-            print("Dubbel skann")
-            write_text_turtle(window, turtle, style, False, "DU HAR REDAN SKANNAT!")  
-            return
+    if(valid_lunch_time(times_match, now)):
+        if hashed in used_tags:  
+            return False, "DU HAR REDAN SKANNAT"
 
-        print("Godkänt")
-        write_text_turtle(window, turtle, style, True, "GODKÄND SKANNING! SMAKLIG MÅLTID!")
         used_tags.append(hashed)
+        return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 
     else:
-        print("Nekat")
-        lunch_start, lunch_end = lunch_time(times_match)
+        lunch_start, lunch_end = lunch_time(times_match, now)
         # start_sound()
-        write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
+        return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
-
-def lunch_time(times_match):
-    weekday = datetime.datetime.today().weekday()
+def lunch_time(times_match, now):
+    weekday = now.weekday()
     lunch_start = times_match[weekday + 1].split("-")[0]
     lunch_end = times_match[weekday + 1].split("-")[1]
     return lunch_start, lunch_end
 
-def valid_lunch_time(times_match):
-    lunch_start, lunch_end = lunch_time(times_match)
-    now = datetime.datetime.now()
+def valid_lunch_time(times_match, now):
+    lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
     lunch_end_in_min = get_time_in_min(lunch_end)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
@@ -173,8 +172,8 @@ if __name__ == '__main__':
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-    tags = get_file_data(file+"/id.csv", "tags")
-    times = get_file_data(file+"/tider.csv", "times")
+    tags_root = get_file_data(file+"/id.csv", "tags")
+    times_root = get_file_data(file+"/tider.csv", "times")
 
     window = turtle.Screen()
     window.setup(width = 1.0, height = 1.0)
