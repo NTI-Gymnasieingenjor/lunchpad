@@ -191,6 +191,42 @@ pip install -r requirements.txt
     
 </details>
 
+
+<details>
+   <summary>Turn off screens at set times</summary><br>
+    
+   1. In the Raspberry pi terminal
+   ```
+   $ sudo crontab -e
+   ```
+   > Note: This is the same place where we set the pi to automatically reboot at a certain time, and we'll use the same system again to turn of the screens.
+   
+   2. Below where we added automatic reboot in the terminal, add the lines below and change the stars "*" accordingly to the desired time you want to turn on and off the screens.
+   ```
+   30 6 * * * vcgencmd display_power 1
+   * 18 * * * vcgencmd display_power 0
+   ```
+   This will turn ON the display (display_power 1) at 6:30.<br>
+   This will turn OFF the display (display_power 0) at 18:00.
+
+   If you forgot what the stars mean see "Automatic reboot at a set time".
+</details>
+
+<details>
+   <summary>Using two screens (Optional)</summary>
+    
+   1. From the desktop click the Raspberri pi icon in the top left
+   
+   3. In the drop down menu click "Preferences"
+   
+   4. Click "Screen Configuration"
+   
+   5. In this layout editor you should see HDMI 1 and HDMI 2 boxes if you have connected two screns successfully
+   
+   6. Simply drag and drop one screen on the other to mirror it, now it will display the same thing on both screens
+   
+</details>
+
 # Run on Windows
 
 If you want to test or run the program on windows, you will have to comment out some parts of the code with a #.
@@ -254,7 +290,7 @@ An RTC is found in your standard smartphone. It's a clock that runs from your ph
 We could add one of these to the Raspberry pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
 This is beacause instead of the time being depentent from a NTP server it would just run on a local RTC which isn't dependent on Wifi.
 
-# In case of powerdown
+# In case of a Powerdown
 
 ### Currently
 
