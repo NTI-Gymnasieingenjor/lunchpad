@@ -68,7 +68,9 @@ pip install -r requirements.txt
 ### How to set up a Raspberry pi for the lunch system
 
 <details>
-    <summary>VNC Viewer download</summary>
+    <summary>VNC Viewer download</summary><br>
+    
+   VNC Viewer is an application that allows us to remotley access the raspberry pi.
 
    1. Click <a href="https://www.realvnc.com/en/connect/download/viewer/">here</a> to download VNC Viewer for your OS.
    
@@ -163,6 +165,7 @@ pip install -r requirements.txt
    @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
    point-rpi
    ```
+   > NOTE: The filepath above "/home/pi/Desktop/lunchpad/lunchpad.py" might differ from where you add it on your own Raspberry pi. Make sure they match.
    
 </details>
 
