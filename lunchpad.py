@@ -60,7 +60,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("red")
     blipp_your_tagg()
 
-skanna_tagg = "VÄNLIGEN SKANNA DIN NYCKELTAGG TILL VÄNSTER"
+
 
 # Default display
 def blipp_your_tagg():
@@ -101,6 +101,8 @@ def handle_enter(window, style):
     
 
 
+def handle_input(mfr, tags, times, now, used_tags):
+
     # def play_sound():
     #     global denied_sound
     #     os.system('mpg123 ' + denied_sound)
@@ -109,10 +111,6 @@ def handle_enter(window, style):
     #     global sound_t
     #     sound_t = multiprocessing.Process(target=play_sound)
     #     sound_t.start()
-
-
-
-def handle_input(mfr, tags, times, now, used_tags):
 
     tag_match = find_matching_tag(mfr, tags)
     if(not (len(tag_match) > 0)):
@@ -131,6 +129,7 @@ def handle_input(mfr, tags, times, now, used_tags):
     if(valid_lunch_time(times_match, now)):
         if hashed in used_tags:  
             return False, "DU HAR REDAN SKANNAT"
+            # start_sound()
 
         used_tags.append(hashed)
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
@@ -174,6 +173,8 @@ if __name__ == '__main__':
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
+
+    skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
     window = turtle.Screen()
     window.setup(width = 1.0, height = 1.0)
