@@ -15,8 +15,7 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 **File name structure:** this_is_how_you_do (snake_case)
 
-**Variables/Classes/Functions:** thisIsHowYouDo (camelCaseExample)
-
+**Variables/Classes/Functions:** Same as file names
 
 # Installation
 
@@ -193,6 +192,11 @@ pip install -r requirements.txt
    │    └────────────────  Hour     (0..23)
    └─────────────────────  Minute   (0..59)
    ```
+   > NOTE: You do not need to specify all the stars, this will work perfectly for fine example:
+   ```
+   *    10    *    *    *  /sbin/reboot
+   ```
+   
     
 </details>
 
