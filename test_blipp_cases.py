@@ -28,6 +28,11 @@ def check_test(expected, actual):
         print("\u001b[31mTest failed\u001b[0m")
         sys.exit(1)
 
+def time_test():
+    check_test(True, correct_time)
+    check_test(False, wrong_before_1min)
+    check_test(False, wrong_after_1min)
+    check_test(False, wrong_time_midnight)
 
 
 if __name__ == '__main__':
@@ -39,13 +44,16 @@ if __name__ == '__main__':
         ["***REMOVED***", "Godkänt"],
         ["***REMOVED***", "Dubbel skann"]
     ]
-    on_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 10, 10))
-    off_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 00, 10))
- 
-
+    # On time for lunch
+    correct_time = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 10, 10))
+    # 1 minute before lunch time
+    wrong_before_1min = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 9, 10))
+    # 1 minute after lunch time
+    wrong_after_1min = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 12, 9, 10))
+    # Midnight
+    wrong_time_midnight = valid_lunch_time(["TE4","12:10-12:30","12:10-12:30","12:10-12:30","12:30-12:50","12:30-12:50"], datetime.datetime(2020, 11, 11, 0, 0, 1))
 
     print("Correct_text")
     correct_text()
     print("Time_test")
-    check_test(True, on_time)
-    check_test(False, off_time)
+    time_test()

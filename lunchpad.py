@@ -113,6 +113,8 @@ def handle_enter(window, style):
         return
         
     times_match = find_matching_lunch_time(tag_match[0])
+
+    # If the tag is in the system but not registered to a class
     if(not (len(times_match) > 0)):
         print("Ingen matchande lunchtid")
         write_text_turtle(window, turtle, style, False, "ERROR: INGEN MATCHANDE LUNCHTID")
@@ -120,8 +122,8 @@ def handle_enter(window, style):
         return
     
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
-
     
+
     if(valid_lunch_time(times_match, datetime.datetime.now())):
         if hashed in used_tags:
             print("Dubbel skann")
@@ -135,19 +137,19 @@ def handle_enter(window, style):
 
     else:
         print("Nekat")
-        lunch_start, lunch_end = lunch_time(times_match)
+        lunch_start, lunch_end = lunch_time(times_match, datetime.datetime.now())
         # start_sound()
         write_text_turtle(window, turtle, style, False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}")
 
 
-def lunch_time(times_match):
-    weekday = datetime.datetime.today().weekday()
+def lunch_time(times_match, now):
+    weekday = now.weekday()
     lunch_start = times_match[weekday + 1].split("-")[0]
     lunch_end = times_match[weekday + 1].split("-")[1]
     return lunch_start, lunch_end
 
 def valid_lunch_time(times_match, now):
-    lunch_start, lunch_end = lunch_time(times_match)
+    lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
     lunch_end_in_min = get_time_in_min(lunch_end)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
