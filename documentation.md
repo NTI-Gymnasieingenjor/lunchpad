@@ -219,8 +219,11 @@ pip install -r requirements.txt
 
 # In case of a Wifi shutdown
 
+<details>
+    <summary>Click here</summary>
+    
 ### Explanation
-
+    
 The Raspberry pi gets it's time from a <a href="https://en.wikipedia.org/wiki/Network_Time_Protocol">Network Time Protocol<a> (NTP) server from the internet via Wifi/Ethernet. <br>
 If the clock is 11:00 in realtime it would be 11:00 on the Raspberry pi.<br>
 
@@ -229,6 +232,8 @@ This is because when it loses connection it will continue from when it lost conn
 
 This is not a problem in itself however if the Raspberry pi were to lose power while not connected to the Wifi, it would store the time just before shutting down.<br>
 Then when it starts up again it will start from that stored time, 11:00 in this case, even if an hour has passed.<br>
+
+
 
 ### Problem
 
@@ -258,7 +263,12 @@ An RTC is found in your standard smartphone. It's a clock that runs from your ph
 We could add one of these to the Raspberry pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
 This is beacause instead of the time being depentent from a NTP server it would just run on a local RTC which isn't dependent on Wifi.
 
+</details>
+
 # In case of a Powerdown
+
+<details>
+    <summary>Click here</summary>
 
 ### Currently
 
@@ -280,3 +290,5 @@ If we store the used tags in a seperate file and encrypt them there we avoid the
 This would solve the reboot problem beacuse the file wouldn't be reset when the Raspberry pi reboots and the system restarts, instead it would be stored safely.
 This also opens up possibilities such as reseting the file at a set time via a script without having to rely on the Raspberry pi entierly.
 We can also access the tags in a seperate file easier rather than in the actual code and do something else with that information. This might seem like a safety issue but since the tags will be encrypted you can't do anything with that information. 
+
+</details>
