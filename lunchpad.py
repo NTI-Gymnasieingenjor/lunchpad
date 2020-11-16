@@ -6,7 +6,7 @@ import threading
 import sys, os
 import multiprocessing
 import hashlib
-
+import platform
 
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath, mode="tags"):
@@ -98,32 +98,20 @@ def handle_enter(window, style):
     allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
-    
-
-
-    # def play_sound():
-    #     global denied_sound
-    #     os.system('mpg123 ' + denied_sound)
-
-    # def start_sound():
-    #     global sound_t
-    #     sound_t = multiprocessing.Process(target=play_sound)
-    #     sound_t.start()
-
+    if allowed == False:
+        start_sound()
 
 
 def handle_input(mfr, tags, times, now, used_tags):
 
     tag_match = find_matching_tag(mfr, tags)
     if(not (len(tag_match) > 0)):
-        # start_sound()
         return False, "OKÄND NYCKELTAGG"
         
     times_match = find_matching_lunch_time(tag_match[0], times)
 
     # If the tag is in the system but not registered to a class
     if(not (len(times_match) > 0)):
-        # start_sound()
         return False, "INGEN MATCHANDE LUNCHTID"
     
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
@@ -131,6 +119,7 @@ def handle_input(mfr, tags, times, now, used_tags):
     if(valid_lunch_time(times_match, now)):
         if hashed in used_tags:  
             return False, "DU HAR REDAN SKANNAT"
+            
 
         used_tags.append(hashed)
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
@@ -138,7 +127,6 @@ def handle_input(mfr, tags, times, now, used_tags):
 
     else:
         lunch_start, lunch_end = lunch_time(times_match, now)
-        # start_sound()
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
 def lunch_time(times_match, now):
@@ -167,6 +155,21 @@ def handle_esc(window):
     sys.exit(0)
 
 
+def play_sound():
+    global denied_sound
+    os.system('mpg123 ' + denied_sound)
+
+def start_sound():
+    if platform.system() == "Linux":
+        global sound_t
+        sound_t = multiprocessing.Process(target=play_sound)
+        sound_t.start()
+
+
+def os_checker():
+    if platform.system() == "Linux":
+        root.attributes("-fullscreen", True)
+    
 
 if __name__ == '__main__':
 # Path to the working directory
@@ -184,7 +187,7 @@ if __name__ == '__main__':
     canvas = window.getcanvas()
     root = canvas.winfo_toplevel()
     root.overrideredirect(1)
-    # root.attributes("-fullscreen", True)  
+    os_checker()
 
     window.bgcolor("black")
     turtle.color('white')
