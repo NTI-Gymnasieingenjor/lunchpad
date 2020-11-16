@@ -116,6 +116,9 @@ def save_students_eaten():
                 new_line = ",".join(new_line)
                 new_line += "\n"
                 lunch_data[idx] = new_line
+            else:
+                new_line = f"{date},{nti_eaten},{procivitas_eaten}\n"
+                lunch_data.append(new_line)
         fp.truncate(0)
         fp.writelines(lunch_data)
 
