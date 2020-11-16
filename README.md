@@ -16,3 +16,8 @@ Lunchpad, Made by team Atlantic and team Goblins
 **File name structure:** this_is_how_you_do (snake_case)
 
 **Variables/Classes/Functions:** Same as file names
+
+# Setup guide
+
+
+### Follow the documentation <a href="/documentation.md">here</a>.
