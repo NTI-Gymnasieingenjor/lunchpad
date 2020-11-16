@@ -115,9 +115,10 @@ keyboard.press(Key.esc)
 keyboard.release(Key.esc)
 lunchpad.terminate()
 
-# TEST FÖR OLIKA DATUm
+# TEST FÖR OLIKA DATUM
 print("[*] Testing with two different dates")
-lunchpad = subprocess.Popen(["python3", "lunchpad.py", "--date", + "2020-11-16"])
+date_to_test = "2020-11-16"
+lunchpad = subprocess.Popen(["python3", "lunchpad.py", "--date", date_to_test])
 
 time.sleep(1)
 
@@ -135,7 +136,7 @@ try:
         f.readline() # Reads first line and does nothing with it.
         line = f.readline()
         date, nti, procivitas = line.split(",")
-        if date == "2020-11-16":
+        if date == date_to_test:
             print("TEST COMPLETE")
         else:
             print("TEST FAILED")
