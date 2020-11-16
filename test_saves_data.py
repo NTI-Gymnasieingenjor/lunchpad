@@ -114,3 +114,35 @@ except Exception as err:
 keyboard.press(Key.esc)
 keyboard.release(Key.esc)
 lunchpad.terminate()
+
+# TEST FÖR OLIKA DATUm
+print("[*] Testing with two different dates")
+lunchpad = subprocess.Popen(["python3", "lunchpad.py", "--date", + "2020-11-16"])
+
+time.sleep(1)
+
+keyboard = Controller()
+keyboard.type(nti_tag)
+keyboard.press(Key.enter)
+keyboard.release(Key.enter)
+
+time.sleep(1)
+
+# Kolla efter csv filen
+filename = "lunch_data.csv"
+try:
+    with open(filename, "r") as f:
+        f.readline() # Reads first line and does nothing with it.
+        line = f.readline()
+        date, nti, procivitas = line.split(",")
+        if date == "2020-11-16":
+            print("TEST COMPLETE")
+        else:
+            print("TEST FAILED")
+except Exception as err:
+    print("TEST FAILED")
+    print(err)
+
+keyboard.press(Key.esc)
+keyboard.release(Key.esc)
+lunchpad.terminate()
