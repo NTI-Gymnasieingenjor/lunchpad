@@ -158,14 +158,15 @@ def handle_esc(window):
 def play_sound():
     global denied_sound
     os.system('mpg123 ' + denied_sound)
-
+# Sound can only play on Linux
+# This function only plays sound when on Linux
 def start_sound():
     if platform.system() == "Linux":
         global sound_t
         sound_t = multiprocessing.Process(target=play_sound)
         sound_t.start()
 
-
+# If os is Linux, sets the display to fullscreen
 def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
