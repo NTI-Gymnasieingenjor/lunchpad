@@ -62,8 +62,14 @@ def check_test(expected, actual):
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
-        print(expected)
-        print(actual)
+        print("Expected:" + expected)
+        print("Actual:" + actual)
+        fail + 1
+        return fail
+
+
+def fail_check(fail):
+    if fail >= 1:
         sys.exit(1)
 
 if __name__ == '__main__':
@@ -71,17 +77,19 @@ if __name__ == '__main__':
 
     file = os.path.dirname(os.path.realpath(__file__))
 
-    tags = get_file_data(file+"/id.csv", "tags")
-    times = get_file_data(file+"/tider.csv", "times")
-
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-    
+
+    tags = get_file_data(file+"/id_tester.csv", "tags")
+    times = get_file_data(file+"/tider_tester.csv", "times")
+
+
     tests = [
         ["12348910", "OKÄND NYCKELTAGG"],
-        ["***REMOVED***", "DIN LUNCHTID ÄR 12:30-12:50"],
         ["***REMOVED***", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
         ["***REMOVED***", "DU HAR REDAN SKANNAT"]
     ]
+
+    fail = 0
 
     print("Correct_output")
     correct_output()
@@ -89,3 +97,4 @@ if __name__ == '__main__':
     time_test()
     print("Correct_text")
     correct_text()
+    fail_check(fail)
