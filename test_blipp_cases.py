@@ -24,7 +24,7 @@ def correct_output():
 
 def correct_text():
 
-    actual = handle_input("537047414", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    actual = handle_input("101129785", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
     expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
     check_test(expected, actual)
 
@@ -62,8 +62,14 @@ def check_test(expected, actual):
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
-        print(expected)
-        print(actual)
+        print("Expected:" + expected)
+        print("Actual:" + actual)
+        fail + 1
+        return fail
+
+
+def fail_check(fail):
+    if fail >= 1:
         sys.exit(1)
 
 if __name__ == '__main__':
@@ -71,17 +77,19 @@ if __name__ == '__main__':
 
     file = os.path.dirname(os.path.realpath(__file__))
 
-    tags = get_file_data(file+"/id.csv", "tags")
-    times = get_file_data(file+"/tider.csv", "times")
-
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-    
+
+    tags = get_file_data(file+"/id_tester.csv", "tags")
+    times = get_file_data(file+"/tider_tester.csv", "times")
+
+
     tests = [
         ["12348910", "OKÄND NYCKELTAGG"],
-        ["537047414", "DIN LUNCHTID ÄR 12:30-12:50"],
         ["101129785", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
         ["101129785", "DU HAR REDAN SKANNAT"]
     ]
+
+    fail = 0
 
     print("Correct_output")
     correct_output()
@@ -89,3 +97,4 @@ if __name__ == '__main__':
     time_test()
     print("Correct_text")
     correct_text()
+    fail_check(fail)
