@@ -79,7 +79,7 @@ def blipp_your_tagg():
 
 
 def handle_enter(window, style):
-    
+
     global timer, sound_t, file
     if timer:
         timer.cancel()
@@ -101,6 +101,23 @@ def handle_enter(window, style):
     if allowed == False:
         start_sound()
 
+def save_students_eaten():
+    global nti_eaten
+    global procivitas_eaten
+    global date
+
+    with open("lunch_data.csv", "r+") as fp:
+        lunch_data = fp.readlines()
+        for idx, line in enumerate(lunch_data):
+            if date in line:
+                new_line = line.split(",")
+                new_line[1] = str(nti_eaten)
+                new_line[2] = str(procivitas_eaten)
+                new_line = ",".join(new_line)
+                new_line += "\n"
+                lunch_data[idx] = new_line
+        fp.truncate(0)
+        fp.writelines(lunch_data)
 
 def handle_input(mfr, tags, times, now, used_tags):
     global nti_classes
@@ -128,8 +145,10 @@ def handle_input(mfr, tags, times, now, used_tags):
         used_tags.append(hashed)
         if tag_match[0] in nti_classes:
             nti_eaten += 1
+            save_students_eaten()
         else:
             procivitas_eaten += 1
+            save_students_eaten()
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 
@@ -189,6 +208,8 @@ if __name__ == '__main__':
 
     nti_eaten = 0
     procivitas_eaten = 0
+
+    date = datetime.datetime.today().strftime('%Y-%m-%d')
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
