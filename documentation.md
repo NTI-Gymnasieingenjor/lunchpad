@@ -81,7 +81,7 @@ pip install -r requirements.txt
 <details>
     
    <summary>Connect to the Raspberry pi</summary><br>
-   
+  
    1. In the Raspberry pi terminal write:
    ```
    $ ifconfig
@@ -97,12 +97,19 @@ pip install -r requirements.txt
    
    4. Enter the inet ip you just aquired in VNC Viewer on your PC in field at the top. (Make sure you're on the same connection)
    
-   5. Standard login credentials are:
+   5.
+   
+   - On a new Raspberry pi:<br>
+   Standard login credentials are:
    ```
    username: pi
    password: raspberry
    ```
-   6. Now you have access to the Raspberry pi from your PC.
+   - On the old raspberry pi:<br>
+   See "Raspberry pi Credentials" link in README for login.
+   
+   6. Now you have access to the Raspberry pi from your PC via VNC Viewer.
+   
 </details>
 
 <details>
