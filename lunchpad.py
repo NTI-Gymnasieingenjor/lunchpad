@@ -103,25 +103,33 @@ def handle_enter(window, style):
 
 
 def handle_input(mfr, tags, times, now, used_tags):
+    global nti_classes
+    global procivitas_classes
+    global nti_eaten
+    global procivitas_eaten
 
     tag_match = find_matching_tag(mfr, tags)
     if(not (len(tag_match) > 0)):
         return False, "OKÄND NYCKELTAGG"
-        
+
     times_match = find_matching_lunch_time(tag_match[0], times)
 
     # If the tag is in the system but not registered to a class
     if(not (len(times_match) > 0)):
         return False, "INGEN MATCHANDE LUNCHTID"
-    
+
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
     if(valid_lunch_time(times_match, now)):
-        if hashed in used_tags:  
+        if hashed in used_tags:
             return False, "DU HAR REDAN SKANNAT"
-            
+
 
         used_tags.append(hashed)
+        if tag_match[0] in nti_classes:
+            nti_eaten += 1
+        else:
+            procivitas_eaten += 1
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 
@@ -170,11 +178,17 @@ def start_sound():
 def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
-    
+
 
 if __name__ == '__main__':
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
+
+    nti_classes = ["1A_SA", "1B_ES", "1C_NA", "1D_TE", "1E_EE", "1F_TE", "1G_TE", "2A_SA", "2B_ES", "2C_NA", "2C_TE", "2D_TE", "2E_EE", "2F_TE", "3A_SA", "3B_ES", "3C_NA", "3D_TE", "3E_EE", "3F_TE", "TE4", "Cool"]
+    procivitas_classes = ["Ek20", "Na20", "Sa20"]
+
+    nti_eaten = 0
+    procivitas_eaten = 0
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
