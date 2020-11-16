@@ -2,7 +2,7 @@ id.csv
 tider.csv
 a.out
 .vscode
-_pycache_
+__pycache__
 id_tester.csv
 lunch_data.csv
 tider_tester.csv
