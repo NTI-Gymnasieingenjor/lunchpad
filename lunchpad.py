@@ -60,7 +60,7 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("red")
     blipp_your_tagg()
 
-skanna_tagg = "VÄNLIGEN SKANNA DIN NYCKELTAGG TILL VÄNSTER"
+
 
 # Default display
 def blipp_your_tagg():
@@ -177,6 +177,8 @@ if __name__ == '__main__':
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
+
+    skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
     window = turtle.Screen()
     window.setup(width = 1.0, height = 1.0)
