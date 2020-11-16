@@ -24,7 +24,7 @@ def correct_output():
 
 def correct_text():
 
-    actual = handle_input("***REMOVED***", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
+    actual = handle_input("***REMOVED***7654854", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10),[])
     expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
     check_test(expected, actual)
 
