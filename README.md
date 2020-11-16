@@ -17,7 +17,11 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 **Variables/Classes/Functions:** Same as file names
 
+
 # Setup guide
 
 
 ### Follow the documentation <a href="/documentation.md">here</a>.
+
+# Raspberry pi credentials
+https://docs.google.com/document/d/1uhNkTdPoOy71JWvDgdG-ppMmyD-SrDYEeLO8v2bo4ZY/edit?usp=sharing
