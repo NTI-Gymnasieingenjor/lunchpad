@@ -263,7 +263,7 @@ You also need to comment out the code as shown below that resides under the "han
 
 The code for Lunchpad saves the data of how many people have successfully scanned each day. For uploading this data to Google Spreadsheets, we use a Google API Service Account connected to the Raspberry Pi.
 
-[Here](https://docs.google.com/document/d/1Fhw4WIC9lVZuAJ3NJjE2ZAt_Lwe_UcJcmD8Hc1QBknc) is our guide on how to create a Google API Service Account, and to create a key from that service account.
+[Here](https://docs.google.com/document/d/1Fhw4WIC9lVZuAJ3NJjE2ZAt_Lwe_UcJcmD8Hc1QBknc) is our guide on how to create a Google API Service Account, create a key from that service account, and use that service account key with the [gspread API](https://gspread.readthedocs.io/en/latest/index.html)
 
 
 # In case of a Wifi shutdown
