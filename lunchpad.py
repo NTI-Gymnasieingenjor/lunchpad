@@ -92,7 +92,7 @@ def handle_enter(window, style):
     turtle.clear()
 
     # "mfr" variable refers to the MFR ID,
-    # displayed on the back of the tag
+    # Displayed on the back of the tag
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
@@ -247,7 +247,7 @@ if __name__ == '__main__':
     nti_eaten = 0
     procivitas_eaten = 0
 
-    # Loads data from lunc_data.csv
+    # Loads data from lunch_data.csv
     load_lunch_data()
 
     tags_root = get_file_data(file+"/id.csv", "tags")
@@ -260,7 +260,7 @@ if __name__ == '__main__':
     turtle.hideturtle()
     window.title("Lunchpad")
 
-    # remove close,minimaze,maximaze buttons:
+    # Remove close, minimize, maximize buttons:
     canvas = window.getcanvas()
     root = canvas.winfo_toplevel()
     root.overrideredirect(1)
