@@ -123,6 +123,16 @@ def save_students_eaten():
         fp.truncate(0)
         fp.writelines(lunch_data)
 
+def validate_date_variable():
+    global nti_eaten
+    global procivitas_eaten
+    global date
+
+    if date != datetime.datetime.today().strftime('%Y-%m-%d'):
+        date = datetime.datetime.today().strftime('%Y-%m-%d')
+        nti_eaten = 0
+        procivitas_eaten = 0
+
 def handle_input(mfr, tags, times, now, used_tags):
     global nti_classes
     global procivitas_classes
@@ -147,6 +157,7 @@ def handle_input(mfr, tags, times, now, used_tags):
 
 
         used_tags.append(hashed)
+        validate_date_variable()
         if tag_match[0] in nti_classes:
             nti_eaten += 1
             save_students_eaten()
@@ -202,7 +213,6 @@ def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
-
 if __name__ == '__main__':
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
@@ -214,6 +224,7 @@ if __name__ == '__main__':
 
     nti_eaten = 0
     procivitas_eaten = 0
+
     try:
         with open("lunch_data.csv", "r") as f:
             for line in f:
