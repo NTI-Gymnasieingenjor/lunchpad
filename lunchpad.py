@@ -102,6 +102,7 @@ def handle_enter(window, style):
         start_sound()
 
 
+
 def handle_input(mfr, tags, times, now, used_tags):
 
     tag_match = find_matching_tag(mfr, tags)
@@ -116,6 +117,7 @@ def handle_input(mfr, tags, times, now, used_tags):
     
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
+
     if(valid_lunch_time(times_match, now)):
         if hashed in used_tags:  
             return False, "DU HAR REDAN SKANNAT"
@@ -129,11 +131,16 @@ def handle_input(mfr, tags, times, now, used_tags):
         lunch_start, lunch_end = lunch_time(times_match, now)
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
+
+
 def lunch_time(times_match, now):
-    weekday = now.weekday()
-    lunch_start = times_match[weekday + 1].split("-")[0]
-    lunch_end = times_match[weekday + 1].split("-")[1]
-    return lunch_start, lunch_end
+    try:
+        weekday = now.weekday()
+        lunch_start = times_match[weekday + 1].split("-")[0]
+        lunch_end = times_match[weekday + 1].split("-")[1]
+        return lunch_start, lunch_end
+    except:
+        return "00:00","00:00"
 
 def valid_lunch_time(times_match, now):
     lunch_start, lunch_end = lunch_time(times_match, now)
@@ -177,6 +184,7 @@ if __name__ == '__main__':
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
+    
     if "-test" in sys.argv:
         tags_root = get_file_data(file+"/id_tester.csv", "tags")
         times_root = get_file_data(file+"/tider_tester.csv", "times")
