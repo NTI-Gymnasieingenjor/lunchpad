@@ -73,7 +73,7 @@ def fail_check(fail):
         sys.exit(1)
 
 if __name__ == '__main__':
-    args = ["python","lunchpad.py"]
+    args = ["python","lunchpad.py","-test"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 
