@@ -4,6 +4,7 @@ import time
 import turtle
 import threading
 import sys, os
+import os.path
 import multiprocessing
 import hashlib
 import platform
@@ -209,10 +210,20 @@ if __name__ == '__main__':
     nti_classes = ["1A_SA", "1B_ES", "1C_NA", "1D_TE", "1E_EE", "1F_TE", "1G_TE", "2A_SA", "2B_ES", "2C_NA", "2C_TE", "2D_TE", "2E_EE", "2F_TE", "3A_SA", "3B_ES", "3C_NA", "3D_TE", "3E_EE", "3F_TE", "TE4", "Cool"]
     procivitas_classes = ["Ek20", "Na20", "Sa20"]
 
+    date = datetime.datetime.today().strftime('%Y-%m-%d')
+
     nti_eaten = 0
     procivitas_eaten = 0
-
-    date = datetime.datetime.today().strftime('%Y-%m-%d')
+    try:
+        with open("lunch_data.csv", "r") as f:
+            for line in f:
+                if date in line:
+                    nti_eaten = int(line.split(",")[1].rstrip())
+                    procivitas_eaten = int(line.split(",")[2].rstrip())
+    except Exception as err:
+        with open("lunch_data.csv", "w") as f:
+            f.writelines(["DATUM,NTI,PROCIVITAS\n"])
+        print(err)
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
