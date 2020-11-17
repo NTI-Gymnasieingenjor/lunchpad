@@ -1,5 +1,7 @@
 # Lunchpad
-Lunchpad, Made by team Atlantic and team Goblins
+A system for making sure students eat at their correct lunch time, using NFC scanning.
+
+The goal of this system is to prevent spread of covid-19, as well as reduce the amount of food that is thrown away by keeping data on how many people eat each day.
 
 # Definition of Done
 + Tests must pass.
@@ -13,7 +15,7 @@ Lunchpad, Made by team Atlantic and team Goblins
 
 # Coding Standard
 
-**File name structure:** this_is_how_you_do (snake_case)
+**File name structure:** example_file_name (snake_case)
 
 **Variables/Classes/Functions:** Same as file names
 
@@ -257,6 +259,12 @@ You also need to comment out the code as shown below that resides under the "han
 ```
     #root.attributes("-fullscreen", True)
 ```
+# Creating a Google API Service Account
+
+The code for Lunchpad saves the data of how many people have successfully scanned each day. For uploading this data to Google Spreadsheets, we use a Google API Service Account connected to the Raspberry Pi.
+
+[Here](https://docs.google.com/document/d/1Fhw4WIC9lVZuAJ3NJjE2ZAt_Lwe_UcJcmD8Hc1QBknc/edit) is our guide on how to create a Google API Service Account, and to create a key from that service account.
+
 
 # In case of a Wifi shutdown
 
