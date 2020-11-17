@@ -3,7 +3,7 @@ import subprocess, os, time
 from pynput.keyboard import Key, Controller
 
 valid_tags = ["***REMOVED***", "***REMOVED***"]
-nti_tag = "123456789"
+nti_tag = "***REMOVED***"
 procivitas_tag = "234567810"
 
 keyboard = Controller()
