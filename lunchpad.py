@@ -103,6 +103,7 @@ def handle_enter(window, style):
         start_sound()
 
 def save_students_eaten():
+    """ Saves the students eaten data to lunch_data.csv """
     global nti_eaten
     global procivitas_eaten
     global date
@@ -124,6 +125,7 @@ def save_students_eaten():
         fp.writelines(lunch_data)
 
 def validate_date_variable():
+    """ Checks if the date variable is equal to today. If not it resets nti_eaten, procivitas_eaten and sets date to todays date """
     global nti_eaten
     global procivitas_eaten
     global date
@@ -213,6 +215,19 @@ def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
+def load_lunch_data():
+    """ Loads students eaten data from lunch_data.csv """
+    try:
+        with open("lunch_data.csv", "r") as f:
+            for line in f:
+                if date in line:
+                    nti_eaten = int(line.split(",")[1].rstrip())
+                    procivitas_eaten = int(line.split(",")[2].rstrip())
+    except Exception as err:
+        with open("lunch_data.csv", "w") as f:
+            f.writelines(["DATUM,NTI,PROCIVITAS\n"])
+        print(err)
+
 if __name__ == '__main__':
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
@@ -225,16 +240,8 @@ if __name__ == '__main__':
     nti_eaten = 0
     procivitas_eaten = 0
 
-    try:
-        with open("lunch_data.csv", "r") as f:
-            for line in f:
-                if date in line:
-                    nti_eaten = int(line.split(",")[1].rstrip())
-                    procivitas_eaten = int(line.split(",")[2].rstrip())
-    except Exception as err:
-        with open("lunch_data.csv", "w") as f:
-            f.writelines(["DATUM,NTI,PROCIVITAS\n"])
-        print(err)
+    # Loads data from lunc_data.csv
+    load_lunch_data()
 
     tags_root = get_file_data(file+"/id.csv", "tags")
     times_root = get_file_data(file+"/tider.csv", "times")
