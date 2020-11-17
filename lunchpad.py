@@ -110,17 +110,22 @@ def save_students_eaten():
 
     with open("lunch_data.csv", "r+") as fp:
         lunch_data = fp.readlines()
+        modified = False
         for idx, line in enumerate(lunch_data):
+            line = line.replace('\x00', '')
+            lunch_data[idx] = line
             if date in line:
+                modified = True
                 new_line = line.split(",")
                 new_line[1] = str(nti_eaten)
                 new_line[2] = str(procivitas_eaten)
                 new_line = ",".join(new_line)
                 new_line += "\n"
                 lunch_data[idx] = new_line
-            else:
-                new_line = f"{date},{nti_eaten},{procivitas_eaten}\n"
-                lunch_data.append(new_line)
+
+        if(not modified):
+            new_line = f"{date},{nti_eaten},{procivitas_eaten}\n"
+            lunch_data.append(new_line)
         fp.truncate(0)
         fp.writelines(lunch_data)
 
@@ -216,6 +221,9 @@ def os_checker():
         root.attributes("-fullscreen", True)
 
 def load_lunch_data():
+    global nti_eaten
+    global procivitas_eaten
+
     """ Loads students eaten data from lunch_data.csv """
     try:
         with open("lunch_data.csv", "r") as f:
