@@ -123,7 +123,7 @@ def save_students_eaten():
                 new_line += "\n"
                 lunch_data[idx] = new_line
 
-        if(not modified):
+        if not modified:
             new_line = f"{date},{nti_eaten},{procivitas_eaten}\n"
             lunch_data.append(new_line)
         fp.truncate(0)
@@ -167,10 +167,9 @@ def handle_input(mfr, tags, times, now, used_tags):
         validate_date_variable()
         if tag_match[0] in nti_classes:
             nti_eaten += 1
-            save_students_eaten()
         else:
             procivitas_eaten += 1
-            save_students_eaten()
+        save_students_eaten()
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 
