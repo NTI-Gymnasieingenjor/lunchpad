@@ -173,11 +173,16 @@ def os_checker():
     
 
 if __name__ == '__main__':
+    arguments: ["/id_tester.csv", "/tider_tester.csv" ]
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-    tags_root = get_file_data(file+"/id.csv", "tags")
-    times_root = get_file_data(file+"/tider.csv", "times")
+    if "-test" in sys.argv:
+        tags_root = get_file_data(file+"/id_tester.csv", "tags")
+        times_root = get_file_data(file+"/tider_tester.csv", "times")
+    else:
+        tags_root = get_file_data(file+"/id.csv", "tags")
+        times_root = get_file_data(file+"/tider.csv", "times")
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
