@@ -82,12 +82,12 @@ def fail_check(fail):
 if __name__ == '__main__':
     args = ["python3","lunchpad.py","-test"]
 
-    filee = os.path.dirname(os.path.realpath(__file__))
+    file = os.path.dirname(os.path.realpath(__file__))
 
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-    tags = get_file_data(filee+"/id_tester.csv", "tags")
-    times = get_file_data(filee+"/tider_tester.csv", "times")
+    tags = get_file_data(file+"/id_tester.csv", "tags")
+    times = get_file_data(file+"/tider_tester.csv", "times")
 
 
     tests = [
