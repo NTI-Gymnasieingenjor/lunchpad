@@ -30,7 +30,7 @@ if __name__ == '__main__':
     data_file = "lunch_data.csv"
 
     if "--csv" in sys.argv:
-        data_file = sys.argv[sys.argv.index("--csv") + 1] 
+        data_file = sys.argv[sys.argv.index("--csv") + 1]
 
     if "--test" in sys.argv:
         worksheet = sh.worksheet("TEST")
@@ -51,7 +51,9 @@ if __name__ == '__main__':
     with open(data_file, 'r') as f:
         local_data = f.read().split("\n")
 
+    local_data = list(filter(lambda elem: elem != "", local_data))
     combined_data = local_data + formatted_sheet_data
     unique_data = list(set(combined_data))
+
 
     upload_data(unique_data)
