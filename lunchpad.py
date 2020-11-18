@@ -140,6 +140,7 @@ def validate_date_variable():
         nti_eaten = 0
         procivitas_eaten = 0
 
+
 def handle_input(mfr, tags, times, now, used_tags):
     global nti_classes
     global procivitas_classes
@@ -157,6 +158,7 @@ def handle_input(mfr, tags, times, now, used_tags):
         return False, "INGEN MATCHANDE LUNCHTID"
 
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
+
 
     if(valid_lunch_time(times_match, now)):
         if hashed in used_tags:
@@ -177,11 +179,16 @@ def handle_input(mfr, tags, times, now, used_tags):
         lunch_start, lunch_end = lunch_time(times_match, now)
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
+
+
 def lunch_time(times_match, now):
-    weekday = now.weekday()
-    lunch_start = times_match[weekday + 1].split("-")[0]
-    lunch_end = times_match[weekday + 1].split("-")[1]
-    return lunch_start, lunch_end
+    try:
+        weekday = now.weekday()
+        lunch_start = times_match[weekday + 1].split("-")[0]
+        lunch_end = times_match[weekday + 1].split("-")[1]
+        return lunch_start, lunch_end
+    except:
+        return "00:00","00:00"
 
 def valid_lunch_time(times_match, now):
     lunch_start, lunch_end = lunch_time(times_match, now)
@@ -236,8 +243,18 @@ def load_lunch_data():
         print(err)
 
 if __name__ == '__main__':
+    arguments: ["/id_tester.csv", "/tider_tester.csv" ]
 # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
+
+
+    
+    if "-test" in sys.argv:
+        tags_root = get_file_data(file+"/id_tester.csv", "tags")
+        times_root = get_file_data(file+"/tider_tester.csv", "times")
+    else:
+        tags_root = get_file_data(file+"/id.csv", "tags")
+        times_root = get_file_data(file+"/tider.csv", "times")
 
     nti_classes = ["1A_SA", "1B_ES", "1C_NA", "1D_TE", "1E_EE", "1F_TE", "1G_TE", "2A_SA", "2B_ES", "2C_NA", "2C_TE", "2D_TE", "2E_EE", "2F_TE", "3A_SA", "3B_ES", "3C_NA", "3D_TE", "3E_EE", "3F_TE", "TE4", "Cool"]
     procivitas_classes = ["Ek20", "Na20", "Sa20"]
@@ -249,9 +266,6 @@ if __name__ == '__main__':
 
     # Loads data from lunch_data.csv
     load_lunch_data()
-
-    tags_root = get_file_data(file+"/id.csv", "tags")
-    times_root = get_file_data(file+"/tider.csv", "times")
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
