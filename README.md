@@ -1,5 +1,7 @@
 # Lunchpad
-Lunchpad, Made by team Atlantic and team Goblins
+A system for making sure students eat at their correct lunch time, using NFC scanning.
+
+The goal of this system is to prevent spread of covid-19, as well as reduce the amount of food that is thrown away by keeping data on how many people eat each day.
 
 # Definition of Done
 + Tests must pass.
