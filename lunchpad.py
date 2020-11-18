@@ -96,41 +96,51 @@ def handle_enter(window, style):
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
-    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags)
+    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, data_file)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
     if allowed == False:
         start_sound()
 
-def save_students_eaten(date,school):
+def save_students_eaten(date,school,filename):
     """ Saves the students eaten data to lunch_data.csv """
 
     date = date.strftime('%Y-%m-%d')
 
-    with open("lunch_data.csv", "r+") as fp:
-        lunch_data = fp.readlines()
-        modified = False
-        for idx, line in enumerate(lunch_data):
-            line = line.replace('\x00', '')
-            lunch_data[idx] = line
-            if date in line:
-                modified = True
-                new_line = line.split(",")
-                if school == "NTI":
-                    new_line[1] = str(int(new_line[1]) + 1)
-                else:
-                    new_line[2] = str(int(new_line[2]) + 1)
-                new_line = ",".join(new_line)
-                new_line += "\n"
-                lunch_data[idx] = new_line
+    try:
+        with open(filename, "r+") as fp:
+            lunch_data = fp.readlines()
+            modified = False
+            for idx, line in enumerate(lunch_data):
+                line = line.replace('\x00', '')
+                lunch_data[idx] = line
+                if date in line:
+                    modified = True
+                    new_line = line.split(",")
+                    if school == "NTI":
+                        new_line[1] = str(int(new_line[1]) + 1)
+                    else:
+                        new_line[2] = str(int(new_line[2]) + 1)
+                    new_line = ",".join(new_line)
+                    new_line += "\n"
+                    lunch_data[idx] = new_line
 
-        if not modified:
-            new_line = f"{date},0,0\n"
-            lunch_data.append(new_line)
-        fp.truncate(0)
-        fp.writelines(lunch_data)
+            if not modified:
+                new_line = f"{date},0,0\n"
+                lunch_data.append(new_line)
+            fp.truncate(0)
+            fp.writelines(lunch_data)
+    except Exception as err:
+        print(err)
+        with open(filename, "w") as fd:
+            lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
+            if school == "NTI":
+                lunch_data.append(f"{date},1,0")
+            else:
+                lunch_data.append(f"{date},0,1")
+            fd.writelines(lunch_data)
 
-def handle_input(mfr, tags, times, now, used_tags):
+def handle_input(mfr, tags, times, now, used_tags, data_filename):
 
     tag_match = find_matching_tag(mfr, tags)
     if(not (len(tag_match) > 0)):
@@ -151,7 +161,7 @@ def handle_input(mfr, tags, times, now, used_tags):
 
 
         used_tags.append(hashed)
-        save_students_eaten(now, tag_match[2])
+        save_students_eaten(now, tag_match[2], data_filename)
         return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 
@@ -216,6 +226,14 @@ if __name__ == '__main__':
     else:
         tags_root = get_file_data(file+"/id.csv", "tags")
         times_root = get_file_data(file+"/tider.csv", "times")
+
+    data_file = "lunch_data.csv"
+
+    if "--data" in sys.argv:
+        try:
+            data_file = sys.argv[sys.argv.index("--data") + 1]
+        except:
+            print("YOU NEED TO SPECIFY A DATA FILE WITH --data flag")
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
