@@ -207,7 +207,6 @@ def os_checker():
         root.attributes("-fullscreen", True)
 
 if __name__ == '__main__':
-    arguments: ["/id_tester.csv", "/tider_tester.csv" ]
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
