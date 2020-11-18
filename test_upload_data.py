@@ -24,13 +24,12 @@ test_filename = "test_data.csv"
 
 args = ["python3", "upload_data.py", "--csv", test_filename, "--test"]
 p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+p.communicate()
 
-res = p.stdout.readline().decode("latin-1").strip()
-expected_res = "Upload complete."
-
-if expected_res in res:
-    check_data()
-else:
+# If the exit code from the subprocess does not equal 0
+if p.returncode:
     print("\u001b[31mTest failed\u001b[0m")
+else:
+    check_data()
 
 sh.del_worksheet(new_worksheet)

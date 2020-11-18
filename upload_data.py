@@ -1,4 +1,4 @@
-import gspread, sys
+import gspread, sys, os
 
 from datetime import datetime
 
@@ -14,12 +14,11 @@ def upload_data(data):
         for idx, row in enumerate(data):
             date, nti, procivitas = row.split(",")
             worksheet.update_cell(idx + 1, "1", date)
-            worksheet.update_cell(idx + 1 , "2", nti)
+            worksheet.update_cell(idx + 1, "2", nti)
             worksheet.update_cell(idx + 1, "3", procivitas)
-        print("Upload complete.")
     except Exception as err:
-        print("Upload failed.")
         print(err)
+        sys.exit(1)
 
 if __name__ == '__main__':
 
@@ -30,7 +29,16 @@ if __name__ == '__main__':
     data_file = "lunch_data.csv"
 
     if "--csv" in sys.argv:
-        data_file = sys.argv[sys.argv.index("--csv") + 1]
+        try:
+            data_file = sys.argv[sys.argv.index("--csv") + 1] 
+        except IndexError as err:
+            print(err)
+            print("\u001b[31mNo file was specified\u001b[0m.")
+            sys.exit(1)
+    
+    if not os.path.isfile(data_file):
+        print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
+        sys.exit(1)
 
     if "--test" in sys.argv:
         worksheet = sh.worksheet("TEST")
@@ -50,6 +58,14 @@ if __name__ == '__main__':
 
     with open(data_file, 'r') as f:
         local_data = f.read().split("\n")
+
+    
+    try:
+        with open(data_file, 'r') as f:
+            local_data = f.read().split("\n")
+    except:
+        print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
+        sys.exit(1)
 
     local_data = list(filter(lambda elem: elem != "", local_data))
     combined_data = local_data + formatted_sheet_data
