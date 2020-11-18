@@ -3,14 +3,17 @@ import os, time, datetime
 from lunchpad import *
 
 def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
+    global filename
+
+    time.sleep(1)
+
     for tag in tags_to_blipp:
-        handle_input(tag, tagsfile, timesfile, date, [])
+        handle_input(tag, tagsfile, timesfile, date, [], filename)
 
     try:
         with open(filename, "r") as f:
-            f.readline() # Reads first line and does nothing with it.
-            line = f.readline()
-            data_date, nti, procivitas = line.split(",")
+            data = f.readlines()
+            data_date, nti, procivitas = data[1].split(",")
             if nti.rstrip() == nti_eaten and procivitas.rstrip() == procivitas_eaten:
                 if data_date == date.strftime('%Y-%m-%d'):
                     print("\u001b[32mTest successful\u001b[0m")
@@ -31,20 +34,20 @@ if __name__ == "__main__":
     nti_tag = "100331417"
     procivitas_tag = "123456789"
 
-    filename = "lunch_data.csv"
+    filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
     tagsfile = get_file_data(file+"/id_tester.csv", "tags")
     timesfile = get_file_data(file+"/tider_tester.csv", "times")
 
     print("[*] Testing with 1 green tag from NTI")
-    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.today())
+    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.now())
 
     print("[*] Testing with 2 green tag from NTI")
-    test_students_eaten_saved(valid_tags, "2", "0", datetime.datetime.today())
+    test_students_eaten_saved(valid_tags, "2", "0", datetime.datetime.now())
 
     print("[*] Testing with 1 green tag from NTI and 1 green tag from PROCIVITAS")
-    test_students_eaten_saved([nti_tag, procivitas_tag], "1", "1", datetime.datetime.today())
+    test_students_eaten_saved([nti_tag, procivitas_tag], "1", "1", datetime.datetime.now())
 
     print("[*] Testing with 1 green tag from NTI on date 2020-12-24")
     test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime(2020, 12, 24, 12, 10, 10))
