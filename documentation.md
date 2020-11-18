@@ -1,6 +1,6 @@
 # Installation
 
-## In Linux Terminal
+## Windows/Linux
 
 <details>
     <summary>Follow these steps</summary><br>
@@ -8,49 +8,28 @@
 Clone the repository:
 
 ```
-$ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
+git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
 ```
 
 Change working directory to lunchpad:
 ```
-$ cd lunchpad
+cd lunchpad
 ```
 
 Install the requirements:
 ```
-$ python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 </details>
 
-## In Windows Terminal
+# Raspberry Pi Setup
 
-<details>
-    <summary>Follow these steps</summary><br>
-
-Clone the repository
-```
-git clone https://github.com/NTI-Gymnasieingenjor/lunchpad.git
-```
-Change working directory to lunchpad
-```
-cd lunchpad
-```
-install the requirements
-```
-pip install -r requirements.txt
-```
-</details>
-
-
-
-# Raspberry pi Setup
-
-### How to set up a Raspberry pi for the lunch system
+### How to set up a Raspberry Pi for the lunch system
 
 <details>
     <summary>VNC Viewer download</summary><br>
     
-   VNC Viewer is an application that allows us to remotely access the raspberry pi.
+   VNC Viewer is an application that allows us to remotely access the Raspberry Pi.
 
    1. Click <a href="https://www.realvnc.com/en/connect/download/viewer/">here</a> to download VNC Viewer for your OS.
    
@@ -60,11 +39,11 @@ pip install -r requirements.txt
 </details>
 
 <details>
-   <summary>Enable VNC Viewer on Raspberry pi</summary>
+   <summary>Enable VNC Viewer on Raspberry Pi</summary>
     
-   1. Start the Raspberry pi.
+   1. Start the Raspberry Pi.
    
-   2. From the desktop click the Raspberry pi icon in the top left.
+   2. From the desktop click the Raspberry Pi icon in the top left.
    
    3. In the drop down menu click "Preferences".
    
@@ -74,15 +53,15 @@ pip install -r requirements.txt
    
    6. Make sure to enable both "SSH" and "VNC".
    
-   Now you don't have to manually head into the Raspberry pi everytime you wish to change something.
-   You can just connect to the pi via your own computer assuming you're on the same network.
+   Now you don't have to manually head into the Raspberry Pi everytime you wish to change something.
+   You can just connect to the Pi via your own computer assuming you're on the same network.
 </details>
 
 <details>
     
-   <summary>Connect to the Raspberry pi</summary><br>
+   <summary>Connect to the Raspberry Pi</summary><br>
   
-   1. In the Raspberry pi terminal write:
+   1. In the Raspberry Pi terminal write:
    ```
    $ ifconfig
    ```
@@ -99,47 +78,57 @@ pip install -r requirements.txt
    
    5.
    
-   - On a new Raspberry pi:<br>
+   - On a new Raspberry Pi:<br>
    Standard login credentials are:
    ```
    username: pi
    password: raspberry
    ```
-   - On the old raspberry pi:<br>
-   See "Raspberry pi Credentials" link in README for login.
+   - On the old Raspberry Pi:<br>
+   See "Raspberry Pi Credentials" link in README for login.
    
-   6. Now you have access to the Raspberry pi from your PC via VNC Viewer.
+   6. Now you have access to the Raspberry Pi from your PC via VNC Viewer.
    
 </details>
 
 <details>
     <summary>Download Python</summary><br>
    
-   Python is required to run the lunch system on the Raspberry pi.
+   Python is required to run the lunch system on the Raspberry Pi.
     
-   Install Python version 3.7.2 or later on the Raspberry pi <a href="https://www.python.org/downloads/">here.</a>
+   Install Python version 3.7.2 or later on the Raspberry Pi <a href="https://www.python.org/downloads/">here.</a>
 
 </details>
     
 <details>
     
-   <summary>Upload lunch system folder to Raspberry pi</summary><br>
+   <summary>Upload lunch system folder to Raspberry Pi</summary><br>
    
-   - Click and drag the "lunchpad" folder you cloned over to the Raspberry pi desktop window.
+-  Open the terminal from the desktop.
+
+-  Run the following command in the terminal
+   ```
+   $ git clone https://github.com/NTI-Gymnasieingenjor/lunchpad
+   ```
+
+   Note: If you have already ran the command above and want to update the contents of the folder. Open the terminal from the `lunchpad` folder and run the following command:
+   ```
+   $ git pull
+   ```
    
-   You now have the system on the Raspberry pi and can run it manually whenever you want.
+   You now have the system on the Raspberry Pi and can run it manually whenever you want.
    
    However we don't want to restart the system manually at all. If we lose power we want it to start automatically.
-   
+
 </details>
   
 <details>
     
-   <summary>Enable autostart on raspberry pi</summary><br>
+   <summary>Enable autostart on Raspberry Pi</summary><br>
    
-   To enable autostart on a new Raspberry pi in case of power shutdown in any form.
+   To enable autostart on a new Raspberry Pi in case of power shutdown in any form.
    
-   In the Raspberry pi terminal write:
+   In the Raspberry Pi terminal write:
    ```
    $ sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
    ```
@@ -154,14 +143,14 @@ pip install -r requirements.txt
    @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
    point-rpi
    ```
-   > NOTE: The filepath above "/home/pi/Desktop/lunchpad/lunchpad.py" might differ from where you add it on your own Raspberry pi. Make sure they match.
+   > NOTE: The filepath above "/home/pi/Desktop/lunchpad/lunchpad.py" might differ from where you add it on your own Raspberry Pi. Make sure they match.
    
 </details>
 
 <details>
    <summary>Automatic reboot at a set time</summary><br>
 
-   In the Raspberry pi terminal write:
+   In the Raspberry Pi terminal write:
    ```
    $ sudo crontab -e
    ```
@@ -192,11 +181,11 @@ pip install -r requirements.txt
 <details>
    <summary>Turn off screens at set times</summary><br>
     
-   1. In the Raspberry pi terminal write:
+   1. In the Raspberry Pi terminal write:
    ```
    $ sudo crontab -e
    ```
-   > Note: This is the same place where we set the pi to automatically reboot at a certain time, and we'll use the same system again to turn of the screens.
+   > Note: This is the same place where we set the Pi to automatically reboot at a certain time, and we'll use the same system again to turn of the screens.
    
    2. Below where we added automatic reboot in the terminal, add the following lines below and change the stars "*" accordingly to the desired time you want to turn on and off the screens.
    ```
@@ -212,7 +201,7 @@ pip install -r requirements.txt
 <details>
    <summary>Using two screens (Optional)</summary>
     
-   1. From the desktop click the Raspberri pi icon in the top left.
+   1. From the desktop click the Raspberri Pi icon in the top left.
    
    3. In the drop down menu click "Preferences".
    
@@ -224,6 +213,64 @@ pip install -r requirements.txt
    
 </details>
 
+# Configure Google Services
+
+<details>
+   <summary>Google API Service Account</summary>
+   
+### Info
+
+The code for Lunchpad saves the data of how many people have successfully scanned each day. For uploading this data to Google Spreadsheets, we use a Google API Service Account connected to the Raspberry Pi.
+
+### Guide
+
+[Here](https://docs.google.com/document/d/1Fhw4WIC9lVZuAJ3NJjE2ZAt_Lwe_UcJcmD8Hc1QBknc) is our guide on  how to create a Google API Service Account, create a key from that service account, and use that service  account key with the [gspread API](https://gspread.readthedocs.io/en/latest/index.html)
+
+</details>
+
+<details>
+   <summary>Setup date formatting script (if new spreadsheet)</summary>
+   
+   1. Open spreadsheet-file in Google docs.
+
+   2. Click on <b>Tools</b> on the toolbar.
+
+   3. Click on <b>Script editor</b> from the list of options.
+
+   4. Paste in the following code in the editor that opens up:
+      ```javascript
+      const sheetName = "Lunchsystem";
+
+      function formatDate(range) {
+        for (let i = 1; i <= range.getNumRows(); i++) {
+          var cell = range.getCell(i, 1);
+          var weeknum = Utilities.formatDate(new Date(cell.getValue()), "GMT+1", "w");
+          cell.setNumberFormat("yyyy-mm-dd dddd v." + weeknum);
+        }
+      }
+
+      function onOpen(e) {
+        var sheet = e.source.getSheetByName(sheetName);
+        var range = sheet.getRange("A2:A");
+        formatDate(range);
+      }
+
+      function onEdit(e) {
+        var sheet = e.source.getSheetByName(sheetName);
+        var range = e.range;
+        if (range.getColumn() == 1 && range.getRow() != 1) {
+          formatDate(range);
+        }
+      }
+      ```
+      Note: Change the value of `sheetName` to the name of the sheet (<span style="color:red">Not the name of the spreadsheet</span>).
+
+   5. Save the code.
+
+   6. Set the name of the project. For instance, `Date formatting` and click `OK`.
+
+</details>
+
 # In case of a Wifi shutdown
 
 <details>
@@ -231,13 +278,13 @@ pip install -r requirements.txt
     
 ### Explanation
     
-The Raspberry pi gets it's time from a <a href="https://en.wikipedia.org/wiki/Network_Time_Protocol">Network Time Protocol<a> (NTP) server from the internet via Wifi/Ethernet. <br>
-If the clock is 11:00 in realtime it would be 11:00 on the Raspberry pi.<br>
+The Raspberry Pi gets it's time from a <a href="https://en.wikipedia.org/wiki/Network_Time_Protocol">Network Time Protocol<a> (NTP) server from the internet via Wifi/Ethernet. <br>
+If the clock is 11:00 in realtime it would be 11:00 on the Raspberry Pi.<br>
 
-If the Raspberry pi were to lose Wifi at 11:00 and 5 minutes pass. The time would be 11:05 both realtime and on the Raspberry pi.<br>
+If the Raspberry Pi were to lose Wifi at 11:00 and 5 minutes pass. The time would be 11:05 both realtime and on the Raspberry Pi.<br>
 This is because when it loses connection it will continue from when it lost connection, in this case 11:00.<br>
 
-This is not a problem in itself however if the Raspberry pi were to lose power while not connected to the Wifi, it would store the time just before shutting down.<br>
+This is not a problem in itself however if the Raspberry Pi were to lose power while not connected to the Wifi, it would store the time just before shutting down.<br>
 Then when it starts up again it will start from that stored time, 11:00 in this case, even if an hour has passed.<br>
 
 
@@ -246,28 +293,28 @@ Then when it starts up again it will start from that stored time, 11:00 in this 
 
 This could become a problem in the long run.
 
-If the Raspberry pi were to lose Wifi connection from time to time it wouldn't really matter, as the clock would continue and then reset to the correct time when it gets a connection again. <br>
+If the Raspberry Pi were to lose Wifi connection from time to time it wouldn't really matter, as the clock would continue and then reset to the correct time when it gets a connection again. <br>
 However if we were to lose Wifi during a longer period of time, for example: 
-* Someone accidentally turns off the Wifi and the Raspberry pi can't automatically connect back 
-* Someone accidentally disables Wifi on the Raspberry pi
-* The school decides to change something about the Wifi and the Raspberry pi can't automatically connect back 
+* Someone accidentally turns off the Wifi and the Raspberry Pi can't automatically connect back 
+* Someone accidentally disables Wifi on the Raspberry Pi
+* The school decides to change something about the Wifi and the Raspberry Pi can't automatically connect back 
 
-If any of these would happen the Raspberry pi's time would keep running from a saved point, when it lost Wifi. 
+If any of these would happen the Raspberry Pi's time would keep running from a saved point, when it lost Wifi. 
 When it then reboots everyday to clear the list, it could slip one or two minutes behind because it pasues the locally saved one. 
 This could in the long run, and even after one or two weeks, pose a big problem.
 One minute per day during two school weeks is 10 minutes.
-This would mean that just after two weeks the class that eats 11:00 - 11:20 can't tag in and eat at 11:05 because the Raspberry pi thinks it's 10:55.
+This would mean that just after two weeks the class that eats 11:00 - 11:20 can't tag in and eat at 11:05 because the Raspberry Pi thinks it's 10:55.
 After more weeks we would just have more problems such as classes only being able to eat 23:00 which would be horrible.
 
-A powerdown as you can imagine would also have huge consequences, it would set the time on the Raspberry pi back immensly. 
+A powerdown as you can imagine would also have huge consequences, it would set the time on the Raspberry Pi back immensly. 
 But only if we aren't connected to the Wifi, see "In case of a powerdown" below for more info.
 
 ### Solution
 
-If we were to add to the Raspberry pi a <a href="https://en.wikipedia.org/wiki/Real-time_clock">Real Time Clock</a> (RTC), we could avoid the Wifi problem entirely.
+If we were to add to the Raspberry Pi a <a href="https://en.wikipedia.org/wiki/Real-time_clock">Real Time Clock</a> (RTC), we could avoid the Wifi problem entirely.
 
 An RTC is found in your standard smartphone. It's a clock that runs from your phones battery and can be changed depending on where you are or to whatever you want.
-We could add one of these to the Raspberry pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
+We could add one of these to the Raspberry Pi and make it run from it's power supply. Meaning we can avoid the Wifi problem entierly.
 This is beacause instead of the time being depentent from a NTP server it would just run on a local RTC which isn't dependent on Wifi.
 
 </details>
@@ -279,23 +326,23 @@ This is beacause instead of the time being depentent from a NTP server it would 
 
 ### Currently
 
-The system restarts automatically without any problems when the Raspberry pi loses power. But there is a problem when it comes to the stored tags.
+The system restarts automatically without any problems when the Raspberry Pi loses power. But there is a problem when it comes to the stored tags.
 
 ### Problem
 
-We currently reset the list of used tags at the end of each day by rebooting the Raspberry pi automatically at a set time.
+We currently reset the list of used tags at the end of each day by rebooting the Raspberry Pi automatically at a set time.
 
-The problem with this is that if it were to lose power for even just a second during lunch, the Raspberry pi would reboot and restart the system and with that reset the list. This is problematic becasue someone might accidentally or intentionally unplug the Raspberry pi so the list would reset.
+The problem with this is that if it were to lose power for even just a second during lunch, the Raspberry Pi would reboot and restart the system and with that reset the list. This is problematic becasue someone might accidentally or intentionally unplug the Raspberry Pi so the list would reset.
 The power might also go out randomly but that's not as likely.
 
-In short we don't want the list to reset when the Raspberry pi reboots, here's a solution.
+In short we don't want the list to reset when the Raspberry Pi reboots, here's a solution.
 
 ### Solution
 
 If we store the used tags in a seperate file and encrypt them there we avoid the problem entierly. <br>
 
-This would solve the reboot problem beacuse the file wouldn't be reset when the Raspberry pi reboots and the system restarts, instead it would be stored safely.
-This also opens up possibilities such as reseting the file at a set time via a script without having to rely on the Raspberry pi entierly.
+This would solve the reboot problem beacuse the file wouldn't be reset when the Raspberry Pi reboots and the system restarts, instead it would be stored safely.
+This also opens up possibilities such as reseting the file at a set time via a script without having to rely on the Raspberry Pi entierly.
 We can also access the tags in a seperate file easier rather than in the actual code and do something else with that information. This might seem like a safety issue but since the tags will be encrypted you can't do anything with that information. 
 
 </details>
