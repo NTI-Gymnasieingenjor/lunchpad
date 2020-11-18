@@ -5,7 +5,7 @@ from lunchpad import *
 import datetime
 
 def correct_output():
-
+    global tests
     time.sleep(2)
     keyboard = Controller()
 
@@ -80,11 +80,11 @@ def fail_check(fail):
         sys.exit(1)
 
 if __name__ == '__main__':
-    args = ["python","lunchpad.py","-test"]
+    args = ["python3","lunchpad.py","-test"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     tags = get_file_data(file+"/id_tester.csv", "tags")
     times = get_file_data(file+"/tider_tester.csv", "times")
