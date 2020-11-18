@@ -107,28 +107,38 @@ def save_students_eaten(date,school):
 
     date = date.strftime('%Y-%m-%d')
 
-    with open("lunch_data.csv", "r+") as fp:
-        lunch_data = fp.readlines()
-        modified = False
-        for idx, line in enumerate(lunch_data):
-            line = line.replace('\x00', '')
-            lunch_data[idx] = line
-            if date in line:
-                modified = True
-                new_line = line.split(",")
-                if school == "NTI":
-                    new_line[1] = str(int(new_line[1]) + 1)
-                else:
-                    new_line[2] = str(int(new_line[2]) + 1)
-                new_line = ",".join(new_line)
-                new_line += "\n"
-                lunch_data[idx] = new_line
+    try:
+        with open("lunch_data.csv", "r+") as fp:
+            lunch_data = fp.readlines()
+            modified = False
+            for idx, line in enumerate(lunch_data):
+                line = line.replace('\x00', '')
+                lunch_data[idx] = line
+                if date in line:
+                    modified = True
+                    new_line = line.split(",")
+                    if school == "NTI":
+                        new_line[1] = str(int(new_line[1]) + 1)
+                    else:
+                        new_line[2] = str(int(new_line[2]) + 1)
+                    new_line = ",".join(new_line)
+                    new_line += "\n"
+                    lunch_data[idx] = new_line
 
-        if not modified:
-            new_line = f"{date},0,0\n"
-            lunch_data.append(new_line)
-        fp.truncate(0)
-        fp.writelines(lunch_data)
+            if not modified:
+                new_line = f"{date},0,0\n"
+                lunch_data.append(new_line)
+            fp.truncate(0)
+            fp.writelines(lunch_data)
+    except Exception as err:
+        print(err)
+        with open("lunch_data.csv", "w") as fd:
+            lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
+            if school == "NTI":
+                lunch_data.append(f"{date},1,0")
+            else:
+                lunch_data.append(f"{date},0,1")
+            fd.writelines(lunch_data)
 
 def handle_input(mfr, tags, times, now, used_tags):
 
