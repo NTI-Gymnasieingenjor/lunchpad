@@ -1,124 +1,50 @@
 #!/usr/bin/env python3
-import subprocess, os, time
-from pynput.keyboard import Key, Controller
+import os, time, datetime
+from lunchpad import *
 
-valid_tags = ["100331417", "101129785"]
-nti_tag = "100331417"
-procivitas_tag = "123456789"
-filename = "lunch_data.csv"
+def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
+    for tag in tags_to_blipp:
+        handle_input(tag, tagsfile, timesfile, date, [])
 
-keyboard = Controller()
+    try:
+        with open(filename, "r") as f:
+            f.readline() # Reads first line and does nothing with it.
+            line = f.readline()
+            data_date, nti, procivitas = line.split(",")
+            if nti.rstrip() == nti_eaten and procivitas.rstrip() == procivitas_eaten:
+                if data_date == date.strftime('%Y-%m-%d'):
+                    print("\u001b[32mTest successful\u001b[0m")
+                else:
+                    print("\u001b[31mTest failed\u001b[0m")
+                    print("Wrong date")
+            else:
+                print("\u001b[31mTest failed\u001b[0m")
+    except Exception as err:
+        print("\u001b[31mTest failed\u001b[0m")
 
-# TEST FÖR GRÖNTAGG
-print("[*] Testing with 1 green tag")
-try:
+    # Resets the lunch_data.csv
     os.remove(filename)
-except:
-    pass
-lunchpad = subprocess.Popen(["python3", "lunchpad.py"])
 
-time.sleep(1)
-# Skriva in tagg.
-keyboard.type(nti_tag)
-keyboard.press(Key.enter)
-keyboard.release(Key.enter)
 
-time.sleep(1)
+if __name__ == "__main__":
+    valid_tags = ["100331417", "101129785"]
+    nti_tag = "100331417"
+    procivitas_tag = "123456789"
 
-# Kolla efter csv filen
-try:
-    with open(filename, "r") as f:
-        # Kolla så csv filen har värdet 1 i rätt kolumn
-        f.readline() # Reads first line and does nothing with it.
-        line = f.readline()
-        date, nti, procivitas = line.split(",")
-        if nti.rstrip() == "1" and procivitas.rstrip() == "0":
-            print("TEST COMPLETE")
-        else:
-            print("TEST FAILED")
-except Exception as err:
-    print("TEST FAILED")
-    print(err)
+    filename = "lunch_data.csv"
 
-keyboard.press(Key.esc)
-keyboard.release(Key.esc)
-lunchpad.terminate()
+    file = os.path.dirname(os.path.realpath(__file__))
+    tagsfile = get_file_data(file+"/id_tester.csv", "tags")
+    timesfile = get_file_data(file+"/tider_tester.csv", "times")
 
-# TEST FÖR TVÅ GRÖNTAGGAR
-print("[*] Testing with 2 green tags")
-try:
-    os.remove(filename)
-except:
-    pass
-lunchpad = subprocess.Popen(["python3", "lunchpad.py"])
+    print("[*] Testing with 1 green tag from NTI")
+    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.today())
 
-time.sleep(1)
+    print("[*] Testing with 2 green tag from NTI")
+    test_students_eaten_saved(valid_tags, "2", "0", datetime.datetime.today())
 
-keyboard.type(valid_tags[0])
-keyboard.press(Key.enter)
-keyboard.release(Key.enter)
+    print("[*] Testing with 1 green tag from NTI and 1 green tag from PROCIVITAS")
+    test_students_eaten_saved([nti_tag, procivitas_tag], "1", "1", datetime.datetime.today())
 
-time.sleep(1)
-
-keyboard.type(valid_tags[1])
-keyboard.press(Key.enter)
-keyboard.release(Key.enter)
-
-time.sleep(1)
-
-# Kolla efter csv filen
-try:
-    with open(filename, "r") as f:
-        f.readline() # Reads first line and does nothing with it.
-        line = f.readline()
-        date, nti, procivitas = line.split(",")
-        if nti.rstrip() == "2" and procivitas.rstrip() == "0":
-            print("TEST COMPLETE")
-        else:
-            print("TEST FAILED")
-except Exception as err:
-    print("TEST FAILED")
-    print(err)
-
-keyboard.press(Key.esc)
-keyboard.release(Key.esc)
-lunchpad.terminate()
-
-print("[*] Testing with 1 nti tag and 1 procivitas tag")
-try:
-    os.remove(filename)
-except:
-    pass
-lunchpad = subprocess.Popen(["python3", "lunchpad.py"])
-
-time.sleep(1)
-
-keyboard.type(nti_tag)
-keyboard.press(Key.enter)
-keyboard.release(Key.enter)
-
-time.sleep(1)
-
-keyboard.type(procivitas_tag)
-keyboard.press(Key.enter)
-keyboard.release(Key.enter)
-
-time.sleep(1)
-
-# Kolla efter csv filen
-try:
-    with open(filename, "r") as f:
-        f.readline() # Reads first line and does nothing with it.
-        line = f.readline()
-        date, nti, procivitas = line.split(",")
-        if nti.rstrip() == "1" and procivitas.rstrip() == "1":
-            print("TEST COMPLETE")
-        else:
-            print("TEST FAILED")
-except Exception as err:
-    print("TEST FAILED")
-    print(err)
-
-keyboard.press(Key.esc)
-keyboard.release(Key.esc)
-lunchpad.terminate()
+    print("[*] Testing with 1 green tag from NTI on date 2020-12-24")
+    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime(2020, 12, 24, 12, 10, 10))
