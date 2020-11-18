@@ -5,9 +5,10 @@ def check_data():
     global worksheet
     new_worksheet_value = new_worksheet.get_all_values()
     test_content = open(test_filename, "r").read()
-    expected_result = list(map(lambda x: x.split(","), test_content.split("\n")))
-    print(new_worksheet_value)
-    print(expected_result)
+    test_content_list = test_content.split("\n")
+    test_content_list = list(filter(lambda elem: elem != "", test_content_list))
+    expected_result = list(map(lambda x: x.split(","), test_content_list))
+    expected_result = list(filter(lambda elem: elem != "", expected_result))
     if expected_result == new_worksheet_value:
         print("\u001b[32mTest successful\u001b[0m")
     else:
