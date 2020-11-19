@@ -41,6 +41,7 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
+    os.remove(filename)
 
 if __name__ == "__main__":
     valid_tags = ["***REMOVED***", "***REMOVED***"]
