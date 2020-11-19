@@ -9,3 +9,5 @@ tider_tester.csv
 upload_data_test.csv
 temp_old_data.csv
 test_data.csv
+/htmlcov
+.coverage

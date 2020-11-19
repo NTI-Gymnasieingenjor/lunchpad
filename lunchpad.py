@@ -60,9 +60,6 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     else:
         window.bgcolor("red")
     blipp_your_tagg()
-
-
-
 # Default display
 def blipp_your_tagg():
     global timer
