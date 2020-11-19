@@ -3,8 +3,7 @@ tider.csv
 a.out
 .vscode
 __pycache__
-id_tester.csv
 lunch_data.csv
+id_tester.csv
 tider_tester.csv
-upload_data_test.csv
-temp_old_data.csv
+test_data.csv
