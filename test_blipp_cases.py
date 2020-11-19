@@ -88,9 +88,9 @@ class TestLunchpad(unittest.TestCase):
 if __name__ == '__main__':
 
     if platform.system() == "Linux":
-        args = ["python3","lunchpad.py","-test"]
+        args = ["python3","lunchpad.py","-test", "--csv", "test_data.csv"]
     else:
-        args = ["python","lunchpad.py","-test"]
+        args = ["python","lunchpad.py","-test", "--csv", "test_data.csv"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 
