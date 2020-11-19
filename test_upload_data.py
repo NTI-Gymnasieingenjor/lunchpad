@@ -1,4 +1,4 @@
-import subprocess, gspread
+import subprocess, gspread,os
 
 def check_data():
     global test_filename
@@ -9,6 +9,8 @@ def check_data():
     test_content_list = list(filter(lambda elem: elem != "", test_content_list))
     expected_result = list(map(lambda x: x.split(","), test_content_list))
     expected_result = list(filter(lambda elem: elem != "", expected_result))
+    print(expected_result)
+    print(new_worksheet_value)
     if expected_result == new_worksheet_value:
         print("\u001b[32mTest successful\u001b[0m")
     else:
@@ -22,6 +24,10 @@ new_worksheet = sh.add_worksheet(title="TEST", rows="10", cols="10")
 
 test_filename = "test_data.csv"
 
+with open(test_filename, "w") as fd:
+    data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-12,20,20\n", "2020-11-13,50,60\n", "2020-11-15,100,60\n"]
+    fd.writelines(data)
+
 args = ["python3", "upload_data.py", "--csv", test_filename, "--test"]
 p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 p.communicate()
@@ -33,3 +39,4 @@ else:
     check_data()
 
 sh.del_worksheet(new_worksheet)
+os.remove(test_filename)
