@@ -14,19 +14,11 @@ def get_file_data(filepath, mode="tags"):
     data = []
     with open(filepath) as fp:
         line = fp.readline()
-        cnt = 1
         while line:
             line_data = line.rstrip().split(",")
-            if(mode == "tags"):
-                data.append(line_data)
-            elif(mode == "times"):
-                data.append(line_data)
-            else:
-                print("Invalid mode.")
+            data.append(line_data)
             line = fp.readline()
-            cnt += 1
     return data
-
 
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
@@ -149,24 +141,20 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename):
     if(not (len(times_match) > 0)):
         return False, "INGEN MATCHANDE LUNCHTID"
 
+    # Hashes the scanned tag
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
-
-    if(valid_lunch_time(times_match, now)):
-        if hashed in used_tags:
-            return False, "DU HAR REDAN SKANNAT"
-
-
-        used_tags.append(hashed)
-        save_students_eaten(now, tag_match[2], data_filename)
-        return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
-
-
-    else:
+    if(not (valid_lunch_time(times_match, now))):
         lunch_start, lunch_end = lunch_time(times_match, now)
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
+    if hashed in used_tags:
+        return False, "DU HAR REDAN SKANNAT"
 
+    # Adds the recently hashed tag into a list
+    used_tags.append(hashed)
+    save_students_eaten(now, tag_match[2], data_filename)
+    return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 def lunch_time(times_match, now):
     try:
