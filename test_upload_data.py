@@ -1,4 +1,4 @@
-import subprocess, gspread,os
+import subprocess, gspread, os, sys
 
 def check_data():
     global test_filename
@@ -28,7 +28,7 @@ with open(test_filename, "w") as fd:
     data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-12,20,20\n", "2020-11-13,50,60\n", "2020-11-15,100,60\n"]
     fd.writelines(data)
 
-args = ["python3", "upload_data.py", "--csv", test_filename, "--test"]
+args = [sys.executable, "upload_data.py", "--csv", test_filename, "--test"]
 p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 p.communicate()
 
