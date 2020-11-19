@@ -23,7 +23,10 @@ class TestLunchpad(unittest.TestCase):
         keyboard.release(Key.esc)
 
         for test in tests:
-            res = p.stdout.readline().decode("latin-1").strip()
+            charset = "latin-1"
+            if platform.system() == "Linux":
+                charset = "utf-8"
+            res = p.stdout.readline().decode(charset).strip()
             self.assertEqual(test[1], res)
 
     def test_correct_text(self):
