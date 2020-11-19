@@ -102,7 +102,7 @@ python3 -m pip install -r requirements.txt
     
 <details>
     
-   <summary>Upload lunch system folder to Raspberry Pi</summary><br>
+   <summary>Install Lunchpad</summary><br>
    
 -  Open the terminal from the desktop.
 
@@ -124,7 +124,7 @@ python3 -m pip install -r requirements.txt
   
 <details>
     
-   <summary>Enable autostart on Raspberry Pi</summary><br>
+   <summary>Run Lunchpad on startup</summary><br>
    
    To enable autostart on a new Raspberry Pi in case of power shutdown in any form.
    
@@ -212,6 +212,33 @@ python3 -m pip install -r requirements.txt
    6. Simply drag and drop one screen on top of the other to mirror it, now the displays will be mirrored.
    
 </details>
+
+# Required CSV files
+
+For Lunchpad to function correctly, two CSV files needs to added manually to the root folder of the program:
+
+- *id.csv*, containing a list of students and the MFR number on their keycards in this format: *class,mfr*.
+
+- *tider.csv*, containing a list of lunch times for each class on each day of the week in this format: *class,monday,tuesday,wednesday,thursday,friday*. Times are formatted in 24 hour time with a colon between the hour and minute and a dash between the start and ending of the lunch time: *12:00-12:20*.
+
+Below is an example of how both files can be written.
+
+*id.csv:*
+
+```csv
+1A,123123123
+1A,231231231
+1B,456456456
+1B,465465465
+1C,789789789
+1C,798798798
+```
+*tider.csv*
+```csv
+1A,12:00-12:20,12:10-12:30,12:40-13:10,11:30-12:30,11:50-12:10
+1B,11:30-11:50,11:40-12:10,12:10-12:30,11:00-11:40,11:20-11:40
+1C,12:30-13:00,12:40-13:10,13:20-13:40,12:40-13:20,12:20-12:30
+```
 
 # Configure Google Services
 
