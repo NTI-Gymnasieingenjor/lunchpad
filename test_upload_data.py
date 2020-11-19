@@ -9,8 +9,6 @@ def check_data():
     test_content_list = list(filter(lambda elem: elem != "", test_content_list))
     expected_result = list(map(lambda x: x.split(","), test_content_list))
     expected_result = list(filter(lambda elem: elem != "", expected_result))
-    print(expected_result)
-    print(new_worksheet_value)
     if expected_result == new_worksheet_value:
         print("\u001b[32mTest successful\u001b[0m")
     else:
