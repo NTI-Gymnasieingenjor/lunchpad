@@ -1,5 +1,5 @@
 import gspread, sys, os
-
+from google.auth.exceptions import *
 from datetime import datetime
 
 def sort_data(data):
@@ -16,11 +16,11 @@ def upload_data(data):
             worksheet.update_cell(idx + 1, "1", date)
             worksheet.update_cell(idx + 1, "2", nti)
             worksheet.update_cell(idx + 1, "3", procivitas)
-    except TimeoutError:
-        print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
-        sys.exit(1)
     except Exception as err:
-        print(err)
+        if type(err) == TransportError:
+            print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
+        else:
+            print(err)
         sys.exit(1)
 
 if __name__ == '__main__':
@@ -77,6 +77,9 @@ if __name__ == '__main__':
 
         upload_data(unique_data)
 
-    except TimeoutError:
-        print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
+    except Exception as err:
+        if type(err) == TransportError:
+            print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
+        else:
+            print(err)
         sys.exit(1)
