@@ -1,4 +1,4 @@
-import gspread, sys, os
+import gspread, sys, os, argparse
 
 from datetime import datetime
 
@@ -20,35 +20,29 @@ def upload_data(data):
         print(err)
         sys.exit(1)
 
+def get_options(args):
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="CSV file containing lunch data which is to be uploaded.")
+    parser.add_argument("-w", "--worksheet", nargs='?', default="Lunchsystem", help="The name of the worksheet which is going to be modified on Google Spreadsheets.")
+    
+    options = parser.parse_args(args)
+    return options
+
 if __name__ == '__main__':
+    file = os.path.dirname(os.path.realpath(__file__))
+    options = get_options(sys.argv[1:])
+    print(options.data)
 
     gc = gspread.service_account()
     sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
-    worksheet = sh.worksheet("Lunchsystem")
+    worksheet = sh.worksheet(options.worksheet)
 
-    data_file = "lunch_data.csv"
+    local_data = options.data.read().splitlines()
 
-    if "--csv" in sys.argv:
-        try:
-            data_file = sys.argv[sys.argv.index("--csv") + 1] 
-        except IndexError as err:
-            print(err)
-            print("\u001b[31mNo file was specified\u001b[0m.")
-            sys.exit(1)
-    
-    if not os.path.isfile(data_file):
-        print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
-        sys.exit(1)
+    # Close input file stream
+    options.data.close()
 
-    if "--worksheet" in sys.argv:
-        try:
-            worksheet = sh.worksheet(sys.argv[sys.argv.index("--worksheet") + 1])
-        except IndexError as err:
-            print(err)
-            print("\u001b[31mNo worksheet was specified\u001b[0m.")
-            sys.exit(1)
-
-    local_data = None
     sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
     formatted_sheet_data = []
     combined_data = []
@@ -61,20 +55,8 @@ if __name__ == '__main__':
         else:
             formatted_sheet_data.append(row)
 
-    with open(data_file, 'r') as f:
-        local_data = f.read().split("\n")
-
-    
-    try:
-        with open(data_file, 'r') as f:
-            local_data = f.read().split("\n")
-    except:
-        print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
-        sys.exit(1)
-
     local_data = list(filter(lambda elem: elem != "", local_data))
     combined_data = local_data + formatted_sheet_data
     unique_data = list(set(combined_data))
-
 
     upload_data(unique_data)
