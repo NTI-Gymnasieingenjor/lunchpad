@@ -90,7 +90,7 @@ class TestLunchpad(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    args = [sys.executable, "lunchpad.py", "-test", "--csv", "test_data.csv"]
+    args = [sys.executable, "lunchpad.py", "--csv-id", "id_tester.csv", "--csv-times", "tider_tester.csv", "--data", "test_data.csv"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 

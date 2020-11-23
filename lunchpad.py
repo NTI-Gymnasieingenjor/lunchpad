@@ -205,12 +205,24 @@ if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-    if "-test" in sys.argv:
-        tags_root = get_file_data(file+"/id_tester.csv", "tags")
-        times_root = get_file_data(file+"/tider_tester.csv", "times")
-    else:
-        tags_root = get_file_data(file+"/id.csv", "tags")
-        times_root = get_file_data(file+"/tider.csv", "times")
+    tags_root = get_file_data(file+"/id.csv", "tags")
+    times_root = get_file_data(file+"/tider.csv", "times")
+
+    if "--csv-id" in sys.argv:
+        try:
+            tags_root = get_file_data(file+"/" + sys.argv[sys.argv.index("--csv-id") + 1], "tags")
+        except IndexError as err:
+            print(err)
+            print("\u001b[31mNo CSV file for tag id's was specified\u001b[0m.")
+            sys.exit(1)
+    
+    if "--csv-times" in sys.argv:
+        try:
+            times_root = get_file_data(file+"/" + sys.argv[sys.argv.index("--csv-times") + 1], "times")
+        except IndexError as err:
+            print(err)
+            print("\u001b[31mNo CSV file for lunch times was specified\u001b[0m.")
+            sys.exit(1)
 
     data_file = "lunch_data.csv"
 
