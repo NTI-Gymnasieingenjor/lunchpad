@@ -1,4 +1,8 @@
-import subprocess, gspread, os, sys
+import subprocess
+import gspread
+import os
+import sys
+
 
 def check_data():
     global test_filename
@@ -13,6 +17,7 @@ def check_data():
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
+
 
 gc = gspread.service_account()
 sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
