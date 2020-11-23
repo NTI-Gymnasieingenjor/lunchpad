@@ -3,11 +3,12 @@ import datetime
 import time
 import turtle
 import threading
-import sys, os
-import os.path
+import sys
+import os
 import multiprocessing
 import hashlib
 import platform
+
 
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath, mode="tags"):
@@ -20,6 +21,7 @@ def get_file_data(filepath, mode="tags"):
             line = fp.readline()
     return data
 
+
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
 def find_matching_tag(tag, tags):
@@ -29,6 +31,7 @@ def find_matching_tag(tag, tags):
     else:
         return match
 
+
 # Uses the matched class to find and return the corresponding lunch time
 def find_matching_lunch_time(grade, times):
     match = list(filter(lambda x: grade in x, times))
@@ -36,6 +39,7 @@ def find_matching_lunch_time(grade, times):
         return match[0]
     else:
         return match
+
 
 # Takes a time value, for example 12:00 and splits it,
 # then converts it into minutes
@@ -52,6 +56,8 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     else:
         window.bgcolor("red")
     blipp_your_tagg()
+
+
 # Default display
 def blipp_your_tagg():
     global timer
@@ -88,10 +94,11 @@ def handle_enter(window, style):
     allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, data_file)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
-    if allowed == False:
+    if allowed is False:
         start_sound()
 
-def save_students_eaten(date,school,filename):
+
+def save_students_eaten(date, school, filename):
     """ Saves the students eaten data to lunch_data.csv """
 
     date = date.strftime('%Y-%m-%d')
@@ -129,6 +136,7 @@ def save_students_eaten(date,school,filename):
                 lunch_data.append(f"{date},0,1")
             fd.writelines(lunch_data)
 
+
 def handle_input(mfr, tags, times, now, used_tags, data_filename):
 
     tag_match = find_matching_tag(mfr, tags)
@@ -156,14 +164,16 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename):
     save_students_eaten(now, tag_match[2], data_filename)
     return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
+
 def lunch_time(times_match, now):
     try:
         weekday = now.weekday()
         lunch_start = times_match[weekday + 1].split("-")[0]
         lunch_end = times_match[weekday + 1].split("-")[1]
         return lunch_start, lunch_end
-    except:
-        return "00:00","00:00"
+    except Exception:
+        return "00:00", "00:00"
+
 
 def valid_lunch_time(times_match, now):
     lunch_start, lunch_end = lunch_time(times_match, now)
@@ -172,9 +182,11 @@ def valid_lunch_time(times_match, now):
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
     return lunch_start_in_min <= now_in_min <= lunch_end_in_min
 
+
 def key_press(key):
     global key_presses
     key_presses.append(key)
+
 
 def handle_esc(window):
     global timer
@@ -188,6 +200,8 @@ def handle_esc(window):
 def play_sound():
     global denied_sound
     os.system('mpg123 ' + denied_sound)
+
+
 # Sound can only play on Linux
 # This function only plays sound when on Linux
 def start_sound():
@@ -196,10 +210,12 @@ def start_sound():
         sound_t = multiprocessing.Process(target=play_sound)
         sound_t.start()
 
+
 # If os is Linux, sets the display to fullscreen
 def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
+
 
 if __name__ == '__main__':
     # Path to the working directory
@@ -217,13 +233,13 @@ if __name__ == '__main__':
     if "--data" in sys.argv:
         try:
             data_file = sys.argv[sys.argv.index("--data") + 1]
-        except:
+        except Exception:
             print("YOU NEED TO SPECIFY A DATA FILE WITH --data flag")
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
     window = turtle.Screen()
-    window.setup(width = 1.0, height = 1.0)
+    window.setup(width=1.0, height=1.0)
     turtle.hideturtle()
     window.title("Lunchpad")
 
