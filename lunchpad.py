@@ -104,14 +104,14 @@ def save_students_eaten(date, school, filename):
     date = date.strftime('%Y-%m-%d')
 
     try:
+        new_lunch_data = None
         with open(filename, "r+") as fp:
             lunch_data = fp.readlines()
             modified = False
             for idx, line in enumerate(lunch_data):
-                line = line.replace('\x00', '')
-                lunch_data[idx] = line
                 if date in line:
                     modified = True
+                    line = line.replace("\n", "")
                     new_line = line.split(",")
                     if school == "NTI":
                         new_line[1] = str(int(new_line[1]) + 1)
@@ -120,12 +120,17 @@ def save_students_eaten(date, school, filename):
                     new_line = ",".join(new_line)
                     new_line += "\n"
                     lunch_data[idx] = new_line
+                    break
 
             if not modified:
                 new_line = f"{date},0,0\n"
                 lunch_data.append(new_line)
-            fp.truncate(0)
-            fp.writelines(lunch_data)
+
+            new_lunch_data = lunch_data
+
+        with open(filename, "w") as fd:
+            fd.writelines(new_lunch_data)
+
     except Exception as err:
         print(err)
         with open(filename, "w") as fd:
