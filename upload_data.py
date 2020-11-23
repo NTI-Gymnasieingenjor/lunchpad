@@ -1,12 +1,16 @@
-import gspread, sys, os
+import gspread
+import sys
+import os
 from google.auth.exceptions import *
 from datetime import datetime
+
 
 def sort_data(data):
     headings = data.pop(data.index("DATUM,NTI,PROCIVITAS"))
     sorted_data = sorted(data, key=lambda x: datetime.strptime(x.split(",")[0], "%Y-%m-%d"))
     sorted_data.insert(0, headings)
     return sorted_data
+
 
 def upload_data(data):
     data = sort_data(data)
@@ -23,6 +27,7 @@ def upload_data(data):
             print(err)
         sys.exit(1)
 
+
 if __name__ == '__main__':
     try:
         gc = gspread.service_account()
@@ -38,30 +43,36 @@ if __name__ == '__main__':
                 print(err)
                 print("\u001b[31mNo file was specified\u001b[0m.")
                 sys.exit(1)
+      
+      if not os.path.isfile(data_file):
+          print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
+          sys.exit(1)
 
-        if not os.path.isfile(data_file):
-            print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
-            sys.exit(1)
+          if "--test" in sys.argv:
+              worksheet = sh.worksheet("TEST")
 
-        if "--test" in sys.argv:
-            worksheet = sh.worksheet("TEST")
+          local_data = None
+          sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
+          formatted_sheet_data = []
+          combined_data = []
+          for idx, row in enumerate(sheet_data):
+              if idx != 0:
+                  new_string = row.split(" ")[0]
+                  new_string += "," + row.split(",")[1]
+                  new_string += "," + row.split(",")[2]
+                  formatted_sheet_data.append(new_string)
+              else:
+                  formatted_sheet_data.append(row)
 
-        local_data = None
-        sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
-        formatted_sheet_data = []
-        combined_data = []
-        for idx, row in enumerate(sheet_data):
-            if idx != 0:
-                new_string = row.split(" ")[0]
-                new_string += "," + row.split(",")[1]
-                new_string += "," + row.split(",")[2]
-                formatted_sheet_data.append(new_string)
-            else:
-                formatted_sheet_data.append(row)
+      with open(data_file, 'r') as f:
+          local_data = f.read().split("\n")
 
-        with open(data_file, 'r') as f:
-            local_data = f.read().split("\n")
-
+      try:
+          with open(data_file, 'r') as f:
+              local_data = f.read().split("\n")
+      except Exception:
+          print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
+          sys.exit(1)
 
         try:
             with open(data_file, 'r') as f:
@@ -73,7 +84,6 @@ if __name__ == '__main__':
         local_data = list(filter(lambda elem: elem != "", local_data))
         combined_data = local_data + formatted_sheet_data
         unique_data = list(set(combined_data))
-
 
         upload_data(unique_data)
 
