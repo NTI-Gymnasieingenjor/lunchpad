@@ -40,8 +40,13 @@ if __name__ == '__main__':
         print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
         sys.exit(1)
 
-    if "--test" in sys.argv:
-        worksheet = sh.worksheet("TEST")
+    if "--worksheet" in sys.argv:
+        try:
+            worksheet = sh.worksheet(sys.argv[sys.argv.index("--worksheet") + 1])
+        except IndexError as err:
+            print(err)
+            print("\u001b[31mNo worksheet was specified\u001b[0m.")
+            sys.exit(1)
 
     local_data = None
     sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
