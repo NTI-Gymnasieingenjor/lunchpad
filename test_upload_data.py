@@ -29,7 +29,7 @@ with open(test_filename, "w") as fd:
     data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-12,20,20\n", "2020-11-13,50,60\n", "2020-11-15,100,60\n"]
     fd.writelines(data)
 
-args = [sys.executable, "upload_data.py", "--csv", test_filename, "--worksheet", worksheet_title]
+args = [sys.executable, "upload_data.py", "--data", test_filename, "--worksheet", worksheet_title]
 p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 p.communicate()
 
