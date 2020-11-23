@@ -9,6 +9,7 @@ The goal of this system is to prevent spread of covid-19, as well as reduce the 
 + No commented-out code.
 + Code and documentation must be uploaded and be up to date on GitHub.
 + Code should follow the coding conventions in place.
++ Python code should use docstrings.
 
 # Before merging with main
 + All code and documentation should be read by groupmembers onsite and approved.
