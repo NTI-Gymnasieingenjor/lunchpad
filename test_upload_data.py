@@ -19,6 +19,7 @@ def check_data():
         print("\u001b[31mTest failed\u001b[0m")
 
 
+# Initializes Google Sheets document.
 gc = gspread.service_account()
 sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
 worksheet = sh.worksheet("Lunchsystem")

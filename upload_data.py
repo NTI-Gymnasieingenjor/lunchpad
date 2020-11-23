@@ -26,6 +26,7 @@ def upload_data(data):
 
 if __name__ == '__main__':
 
+    # Initializes Google Sheets document.
     gc = gspread.service_account()
     sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
     worksheet = sh.worksheet("Lunchsystem")
@@ -48,9 +49,11 @@ if __name__ == '__main__':
         worksheet = sh.worksheet("TEST")
 
     local_data = None
+    # Reformats sheet data to match the formatting of our local data.
     sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
     formatted_sheet_data = []
     combined_data = []
+    # Removes all week numbers and weekdays from imported sheet data. 
     for idx, row in enumerate(sheet_data):
         if idx != 0:
             new_string = row.split(" ")[0]
@@ -70,6 +73,7 @@ if __name__ == '__main__':
         print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
         sys.exit(1)
 
+    # Removed potential empty strings from local_data.
     local_data = list(filter(lambda elem: elem != "", local_data))
     combined_data = local_data + formatted_sheet_data
     unique_data = list(set(combined_data))
