@@ -24,6 +24,7 @@ class TestLunchpad(unittest.TestCase):
         keyboard.press(Key.esc)
         keyboard.release(Key.esc)
 
+        # Uses latin-8 charset instead of utf-8 on Windows machines to avoid an error.
         for test in tests:
             charset = "latin-1"
             if platform.system() == "Linux":
