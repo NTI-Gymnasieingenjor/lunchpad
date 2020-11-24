@@ -20,6 +20,8 @@ Install the requirements:
 ```
 python3 -m pip install -r requirements.txt
 ```
+
+Note: Replace `python3` with `python` if running on Windows.
 </details>
 
 # Raspberry Pi Setup
@@ -296,6 +298,44 @@ The code for Lunchpad saves the data of how many people have successfully scanne
 
    6. Set the name of the project. For instance, `Date formatting` and click `OK`.
 
+</details>
+
+# Usage
+
+<details>
+   <summary>lunchpad.py</summary>
+
+   Usage:
+      ```
+      python3 lunchpad.py [-h] [-t [TAGS]] [-s [SCHEDULE]] [-d [DATA]]
+      ```
+
+   Scans id tags and checks if it's a person's lunchtime.
+   
+   | Argument                                | Help                                                                              |
+   | :-------------------------------------- | :-------------------------------------------------------------------------------- |
+   | -h, --help                              | Show help message and exit.                                                       |
+   | -t [TAGS]     <br>--tags [TAGS]         | Specifies CSV file containing the id tags.          <br>Default: `id.csv`         |
+   | -s [SCHEDULE] <br>--schedule [SCHEDULE] | Specifies CSV file containing the lunch schedule.   <br>Default: `tider.csv`      |
+   | -d [DATA]     <br>--data [DATA]         | Specifies CSV file for storing the lunch data.      <br>Default: `lunch_data.csv` |
+
+</details>
+
+<details>
+   <summary>upload_data.py</summary>
+
+   Usage:
+      ```
+      python3 upload_data.py [-h] [-d [DATA]] [-w [WORKSHEET]]
+      ```
+
+   Uploads the number of people that have scanned their tags.
+
+   | Argument                                  | Help                                                                                  |
+   | :---------------------------------------- | :------------------------------------------------------------------------------------ |
+   | -h<br>--help                              | Show help message and exit.                                                           |
+   | -d [DATA]<br>--data [DATA]                | Specifies CSV file containing the lunch data.           <br>Default: `lunch_data.csv` |
+   | -w [WORKSHEET]<br>--worksheet [WORKSHEET] | Specifies name of the worksheet on Google Spreadsheets. <br>Default: `Lunchsystem`    |
 </details>
 
 # In case of a Wifi shutdown
