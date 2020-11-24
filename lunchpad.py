@@ -108,11 +108,13 @@ def save_students_eaten(date, school, filename):
         with open(filename, "r+") as fp:
             lunch_data = fp.readlines()
             modified = False
+            # Goes through all rows in lunch data.
             for idx, line in enumerate(lunch_data):
                 if date in line:
                     modified = True
                     line = line.replace("\n", "")
                     new_line = line.split(",")
+                    # Increases the value of how many people have successfully scanned for the day.
                     if school == "NTI":
                         new_line[1] = str(int(new_line[1]) + 1)
                     else:
@@ -121,7 +123,8 @@ def save_students_eaten(date, school, filename):
                     new_line += "\n"
                     lunch_data[idx] = new_line
                     break
-
+            
+            # If no row with todays date is found, create a new row.
             if not modified:
                 new_line = f"{date},0,0\n"
                 lunch_data.append(new_line)
@@ -133,6 +136,7 @@ def save_students_eaten(date, school, filename):
 
     except Exception as err:
         print(err)
+        # Create lunch_data.csv file if it doesn't exist.
         with open(filename, "w") as fd:
             lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
             if school == "NTI":
