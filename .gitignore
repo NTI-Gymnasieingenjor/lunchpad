@@ -9,3 +9,4 @@ temp_old_data.csv
 test_data.csv
 /htmlcov
 .coverage
+specialcases.csv

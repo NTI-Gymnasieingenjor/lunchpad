@@ -23,6 +23,19 @@ def get_file_data(filepath):
     return data
 
 
+def get_specialcase_times(tag, filename="specialcases.csv"):
+    data = []
+    with open(filename, "r") as fd:
+        line = fd.readline()
+        while line:
+            if tag in line:
+                line_data = line.rstrip().split(",")
+                line_data.remove(tag)
+                line_data.insert(0, "SPECIALCASE")
+                data = line_data
+            line = fd.readline()
+    return data
+
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
 def find_matching_tag(tag, tags):
@@ -146,28 +159,60 @@ def save_students_eaten(date, school, filename):
                 lunch_data.append(f"{date},0,1")
             fd.writelines(lunch_data)
 
+def has_specialcase_for_today(times_match, now):
+    """
+    Returns a boolean if specialcase exists for todays lunch
+    """
+    res = lunch_time(times_match, now)
+    if res != ("00:00", "00:00"):
+        return True
 
-def handle_input(mfr, tags, times, now, used_tags, data_filename):
+    return False
+
+def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_filename="specialcases.csv"):
 
     tag_match = find_matching_tag(mfr, tags)
-    if(not (len(tag_match) > 0)):
+    if not len(tag_match) > 0:
         return False, "OKÄND NYCKELTAGG"
 
-    times_match = find_matching_lunch_time(tag_match[0], times)
-
-    # If the tag is in the system but not registered to a class
-    if(not (len(times_match) > 0)):
-        return False, "INGEN MATCHANDE LUNCHTID"
+    # Gets specialcase match
+    specialcase_match = get_specialcase_times(mfr, specialcase_filename)
+    times_match = None
 
     # Hashes the scanned tag
     hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
-    if(not (valid_lunch_time(times_match, now))):
+    # If the tag is in specialcases
+    if len(specialcase_match) > 0:
+        times_match = specialcase_match
+
+        # If the tag has a specialcase for todays lunch
+        # but is not scanned at correct time
+        if not valid_lunch_time(times_match, now) and has_specialcase_for_today(specialcase_match, now):
+            lunch_start, lunch_end = lunch_time(times_match, now)
+            return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
+
+        # If tag has already been scanned.
+        if hashed in used_tags:
+            return False, "DU HAR REDAN SKANNAT"
+
+        # If specialcase for today exists and is scanned at
+        # correct time
+        if has_specialcase_for_today(times_match, now):
+            used_tags.append(hashed)
+            save_students_eaten(now, tag_match[2], data_filename)
+            return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+
+    # Redefines times_match if no specialcase for todays lunch
+    times_match = find_matching_lunch_time(tag_match[0], times)
+
+    # If the tag is in the system but not registered to a class
+    if not len(times_match) > 0:
+        return False, "INGEN MATCHANDE LUNCHTID"
+
+    if not valid_lunch_time(times_match, now):
         lunch_start, lunch_end = lunch_time(times_match, now)
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
-
-    if hashed in used_tags:
-        return False, "DU HAR REDAN SKANNAT"
 
     # Adds the recently hashed tag into a list
     used_tags.append(hashed)
