@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-import subprocess
-import time
-from pynput.keyboard import Key, Controller
-from lunchpad import *
-import datetime
-import platform
+from datetime import datetime
+from sys import executable
+from os import path
 import unittest
+from lunchpad import handle_input, valid_lunch_time, get_file_data
 
 
 class TestLunchpad(unittest.TestCase):
@@ -79,9 +77,9 @@ class TestLunchpad(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    args = [sys.executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
+    args = [executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
 
-    file = os.path.dirname(os.path.realpath(__file__))
+    file = path.dirname(path.realpath(__file__))
 
     tags = get_file_data(file+"/id_tester.csv")
     times = get_file_data(file+"/tider_tester.csv")
