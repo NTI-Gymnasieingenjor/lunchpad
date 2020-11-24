@@ -12,8 +12,6 @@ import platform
 def get_file_data(filepath, mode="tags"):
     """ 
     Reads respective csv file and adds the content into a list.
-
-    Reads the csv file. Reads line by line, removing the "," and appends every item to the list, "data".
     """
     data = []
     with open(filepath) as fp:
@@ -49,10 +47,6 @@ def find_matching_lunch_time(grade, times):
 def get_time_in_min(timestamp):
     """ 
     Takes a timestamp, for example 12:00 and splits it, then converts it into minutes.
-
-    Takes the lunch times that "find_matching_lunch_time" finds. Splits the minutes from the hours, for example 12:30 into 12 and 30. 
-    Converts the hours into minutes, for example 12 hours into 720 minutes. After that it adds the minutes and the converted hours and gets a total value of minutes.
-    The time then gets returned as "total_minutes"
     """
     hours, minutes = timestamp.split(":")
     total_minutes = int(hours)*60+int(minutes)
@@ -61,7 +55,7 @@ def get_time_in_min(timestamp):
 
 def write_text_turtle(window, turtle, style, granted, msg=""):
     """ 
-    If granted is true, turtle will make the ui-background green. Else, if granted is not true, the ui-background will turn red.
+    Makes the screen green or red based on if granted is true or not.
     """
     turtle.write(msg, font=style, align='center')
     if(granted):
@@ -78,10 +72,7 @@ def blipp_your_tagg():
 
     def _timeout():
         """ 
-        Default screen for the ui
-
-        Clears the current screen. Writes out the text saved in the "skanna_tagg" variable in the center of the screen. 
-        Also sets the ui-background to black. This is done 3 seconds after a tag is scanned.
+        Default screen for the ui. Returns to it 3 seconds after a scan.
         """
         global timer
         turtle.clear()
@@ -95,13 +86,11 @@ def blipp_your_tagg():
 
 def handle_enter(window, style):
     """ 
-    Kills the sound and resets the timer if a new tag is entered before the ui-background has reset into its normal state.
-    
-    Creates a list where all key presses are stored. The key presses are joined together and stored in a variable called mfr.
+    Kills the sound if a new tag is scanned and the sound is playing.
 
-    "allowed" and "message" recives it's values from the respective returns in the "handle_input" function.
-    The function then writes the recieved message on the screen using the "write_text_turtle" function.
-    If allowed is returned as false, the function "start_sound" is called.
+    Stores all key presses in a list.
+
+    Writes the ui for the program
     """
     global timer, sound_t, file
     if timer:
@@ -166,15 +155,7 @@ def save_students_eaten(date,school,filename):
 
 def handle_input(mfr, tags, times, now, used_tags, data_filename):
     """ 
-    Based on the response of the scanned tag, different results will be returned.
-
-    When a tag is scanned, different results will appear, based on what the conditions of the tag is.
-    If the tag's id does not match one of the tag-ids in id.csv, the function will return False and the message "OKÄND NYCKELTAGG".
-    If the tag does not have a matching "lunch_time", the function will return False and the message "INGEN MATCHANDE LUNCHTID". This will happen when the id is in the system,
-    but does not have a class.
-    If the tag does have a matching "lunch_time" but the tag is scanned outside of its matching time, the function will return False and the message "DIN LUNCHTID ÄR {lunch_start}-{lunch_end}".
-    together with the time that the tag scan would result in a "GODKÄND SKANNING! SMAKLIG MÅLTID!" message.
-    If the tag has already been scanned , the screen will display the message "DU HAR REDAN SKANNAT".
+    Based on different conditions, when a tag is scanned, the screen will display different messages and background colors
     """
 
     tag_match = find_matching_tag(mfr, tags)
@@ -204,9 +185,7 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename):
 
 def lunch_time(times_match, now):
     """ 
-    The function calculates the current weekday and returns lunch_start and lunch_end from the list in "tider" csv file for the respective weekday.
-    
-    If there is no valid lunch_start or lunch_end time, for example if a tag is scanned during a weekend, the function will return "00:00","00:00".
+    Based on if it is a weekend or not, the screen will either return lunch_start, lunch_end or "00:00","00:00" in its place.
     """
     try:
         weekday = now.weekday()
@@ -218,7 +197,7 @@ def lunch_time(times_match, now):
 
 def valid_lunch_time(times_match, now):
     """ 
-    Uses the total minutes and total hours and compares them to the total minutes of "lunch_start" and "lunch_end" to determine if it is a valid lunch time or not.
+    Checks if it is a valid lunch time, when a tag is scanned, based on lunch_start and lunch_end.
     """
     lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
