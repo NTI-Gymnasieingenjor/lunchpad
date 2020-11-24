@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-import os, time, datetime
+import os
+import time
+import datetime
 from lunchpad import *
+
 
 def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
     global filename
@@ -28,6 +31,7 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
     # Resets the lunch_data.csv
     os.remove(filename)
 
+
 def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected_data):
     failed = False
     for date in dates:
@@ -43,9 +47,10 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
         print("\u001b[31mTest failed\u001b[0m")
     os.remove(filename)
 
+
 if __name__ == "__main__":
-    valid_tags = ["***REMOVED***", "***REMOVED***"]
-    nti_tag = "***REMOVED***"
+    valid_tags = ["548381316", "900865598"]
+    nti_tag = "548381316"
     procivitas_tag = "123456789"
 
     filename = "test_data.csv"
