@@ -1,4 +1,5 @@
 # Lunchpad
+![Tests](https://github.com/NTI-Gymnasieingenjor/lunchpad/workflows/Tests/badge.svg)
 A system for making sure students eat at their correct lunch time, using NFC scanning.
 
 The goal of this system is to prevent spread of covid-19, as well as reduce the amount of food that is thrown away by keeping data on how many people eat each day.
