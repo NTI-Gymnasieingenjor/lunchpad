@@ -20,6 +20,20 @@ Install the requirements:
 ```
 python3 -m pip install -r requirements.txt
 ```
+<br>
+
+> NOTE: If this does not work, you might need to install pip on Linux:
+```
+sudo apt install python3-pip
+```
+<br>
+
+> NOTE: To run the program on Linux you might need to install tkinter if you don't already have it installed:
+
+```
+sudo apt-get install python3-tk
+```
+
 </details>
 
 # Raspberry Pi Setup
