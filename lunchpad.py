@@ -203,11 +203,11 @@ def os_checker():
         root.attributes("-fullscreen", True)
 
 def get_options(args):
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
 
-    parser.add_argument("-t", "--tags", nargs='?', default=file + "/id.csv", type=argparse.FileType("r"), help="CSV file containing id tags.")
-    parser.add_argument("-s", "--schedule", nargs='?', default=file + "/tider.csv", type=argparse.FileType("r"), help="CSV file containing schedule.")
-    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="CSV file for storing the lunch data.")
+    parser.add_argument("-t", "--tags", nargs='?', default=file + "/id.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags.")
+    parser.add_argument("-s", "--schedule", nargs='?', default=file + "/tider.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch schedule.")
+    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
     
     options = parser.parse_args(args)
     return options

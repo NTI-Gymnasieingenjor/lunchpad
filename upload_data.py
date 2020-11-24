@@ -21,10 +21,10 @@ def upload_data(data):
         sys.exit(1)
 
 def get_options(args):
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Uploads the number of people that have scanned their tags.")
 
-    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="CSV file containing lunch data which is to be uploaded.")
-    parser.add_argument("-w", "--worksheet", nargs='?', default="Lunchsystem", help="The name of the worksheet which is going to be modified on Google Spreadsheets.")
+    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch data.")
+    parser.add_argument("-w", "--worksheet", nargs='?', default="Lunchsystem", help="Specifies name of the worksheet on Google Spreadsheets.")
     
     options = parser.parse_args(args)
     return options
