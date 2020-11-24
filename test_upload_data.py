@@ -1,4 +1,9 @@
-import subprocess, gspread, os, sys
+#!/usr/bin/env python3
+import subprocess
+import gspread
+import os
+import sys
+
 
 def check_data():
     """
@@ -16,6 +21,8 @@ def check_data():
     else:
         print("\u001b[31mTest failed\u001b[0m")
 
+
+# Initializes Google Sheets document.
 gc = gspread.service_account()
 sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
 
