@@ -91,14 +91,14 @@ class TestLunchpad(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    args = [sys.executable, "lunchpad.py", "-test", "--csv", "test_data.csv"]
+    args = [sys.executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-    tags = get_file_data(file+"/id_tester.csv", "tags")
-    times = get_file_data(file+"/tider_tester.csv", "times")
+    tags = get_file_data(file+"/id_tester.csv")
+    times = get_file_data(file+"/tider_tester.csv")
 
     tests = [
         ["12348910", "OKÄND NYCKELTAGG"],
