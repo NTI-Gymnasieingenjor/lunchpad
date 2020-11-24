@@ -6,10 +6,11 @@ from lunchpad import *
 
 
 def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
-    global filename
+    # Resets the lunch_data.csv
+    if os.path.isfile(filename):
+        os.remove(filename)
 
-    time.sleep(1)
-
+    global failed
     for tag in tags_to_blipp:
         handle_input(tag, tagsfile, timesfile, date, [], filename)
 
@@ -22,18 +23,23 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
                     print("\u001b[32mTest successful\u001b[0m")
                 else:
                     print("\u001b[31mTest failed\u001b[0m")
+                    failed = True
                     print("Wrong date")
             else:
                 print("\u001b[31mTest failed\u001b[0m")
+                failed = True
     except Exception as err:
         print("\u001b[31mTest failed\u001b[0m")
+        failed = True
 
-    # Resets the lunch_data.csv
-    os.remove(filename)
 
 
 def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected_data):
-    failed = False
+    global failed
+
+    if os.path.isfile(filename):
+        os.remove(filename)
+
     for date in dates:
         handle_input(tag, tagsfile, timesfile, date, [], filename)
 
@@ -45,14 +51,14 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
         print("\u001b[32mTest successful\u001b[0m")
     else:
         print("\u001b[31mTest failed\u001b[0m")
-    os.remove(filename)
+        failed = True
 
 
 if __name__ == "__main__":
+    failed = False
     valid_tags = ["548381316", "900865598"]
     nti_tag = "548381316"
     procivitas_tag = "123456789"
-
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
@@ -75,3 +81,9 @@ if __name__ == "__main__":
     expected_data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-10,1,0\n", "2020-11-11,1,0\n"]
     dates = [datetime.datetime(2020, 11, 10, 12, 10, 10), datetime.datetime(2020, 11, 11, 12, 10, 10)]
     test_students_eaten_append(nti_tag, "1", "0", dates, expected_data)
+
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    if failed:
+        sys.exit(1)
