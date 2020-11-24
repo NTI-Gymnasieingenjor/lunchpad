@@ -10,28 +10,6 @@ import unittest
 
 class TestLunchpad(unittest.TestCase):
 
-    def test_correct_output(self):
-        global tests
-        time.sleep(2)
-        keyboard = Controller()
-
-        for test in tests:
-            keyboard.type(test[0])
-            keyboard.press(Key.enter)
-            keyboard.release(Key.enter)
-            time.sleep(1)
-
-        keyboard.press(Key.esc)
-        keyboard.release(Key.esc)
-
-        # Uses latin-8 charset instead of utf-8 on Windows machines to avoid an error.
-        for test in tests:
-            charset = "latin-1"
-            if platform.system() == "Linux":
-                charset = "utf-8"
-            res = p.stdout.readline().decode(charset).strip()
-            self.assertEqual(test[1], res)
-
     def test_correct_text(self):
         # Scanned tag is on time, NTI tag
         actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
@@ -104,8 +82,6 @@ if __name__ == '__main__':
     args = [sys.executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
 
     file = os.path.dirname(os.path.realpath(__file__))
-
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     tags = get_file_data(file+"/id_tester.csv")
     times = get_file_data(file+"/tider_tester.csv")
