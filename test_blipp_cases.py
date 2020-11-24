@@ -34,27 +34,27 @@ class TestLunchpad(unittest.TestCase):
 
     def test_correct_text(self):
         # Scanned tag is on time
-        actual = handle_input("101129785", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
         # Scanned tag is first in list
-        actual = handle_input("101129785", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["c3f4286f131e08c4b8d1570bee6a4a44250834d3c44aecae7c10ed9e1e7a98c5", "2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf"], "test_data.csv")
+        actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is last in list
-        actual = handle_input("101129785", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "c3f4286f131e08c4b8d1570bee6a4a44250834d3c44aecae7c10ed9e1e7a98c5"], "test_data.csv")
+        actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is in the middle of the list
-        actual = handle_input("101129785", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "c3f4286f131e08c4b8d1570bee6a4a44250834d3c44aecae7c10ed9e1e7a98c5", "1514aa8277131f9dc6c69f615fae6e15cce2022237a5c98a3533f2007bb99aba"], "test_data.csv")
+        actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "1514aa8277131f9dc6c69f615fae6e15cce2022237a5c98a3533f2007bb99aba"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is off time
-        actual = handle_input("934219478", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("754729301", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 11:00-11:20"
         self.assertEqual(expected, actual)
 
@@ -66,7 +66,7 @@ class TestLunchpad(unittest.TestCase):
         expected = False, "OKÄND NYCKELTAGG"
         self.assertEqual(expected, actual)
 
-        actual = handle_input("934219478", tags, times, datetime.datetime(2020, 11, 14, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("259648828", tags, times, datetime.datetime(2020, 11, 14, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 00:00-00:00"
         self.assertEqual(expected, actual)
 
@@ -102,8 +102,8 @@ if __name__ == '__main__':
 
     tests = [
         ["12348910", "OKÄND NYCKELTAGG"],
-        ["101129785", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
-        ["101129785", "DU HAR REDAN SKANNAT"]
+        ["548381316", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
+        ["548381316", "DU HAR REDAN SKANNAT"]
     ]
 
     unittest.main()
