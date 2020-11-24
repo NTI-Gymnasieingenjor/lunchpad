@@ -149,7 +149,6 @@ def save_students_eaten(date, school, filename):
             fd.writelines(new_lunch_data)
 
     except Exception as err:
-        print(err)
         # Create lunch_data.csv file if it doesn't exist.
         with open(filename, "w") as fd:
             lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
