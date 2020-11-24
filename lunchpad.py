@@ -10,7 +10,7 @@ import hashlib
 import platform
 
 def get_file_data(filepath, mode="tags"):
-    """ 
+    """
     Reads respective csv file and adds the content into a list.
     """
     data = []
@@ -23,7 +23,7 @@ def get_file_data(filepath, mode="tags"):
     return data
 
 def find_matching_tag(tag, tags):
-    """ 
+    """
     Looks through all the tags and returns the tag and its corresponding class, otherwise it returns an empty list
     """
     match = list(filter(lambda x: tag in x, tags))
@@ -33,7 +33,7 @@ def find_matching_tag(tag, tags):
         return match
 
 def find_matching_lunch_time(grade, times):
-    """ 
+    """
     Uses the class of a corresponding tag to find the matching lunch times, then returns the corresponding lunch times.
     """
     match = list(filter(lambda x: grade in x, times))
@@ -45,7 +45,7 @@ def find_matching_lunch_time(grade, times):
 # Takes a time value, for example 12:00 and splits it,
 # then converts it into minutes
 def get_time_in_min(timestamp):
-    """ 
+    """
     Takes a timestamp, for example 12:00 and splits it, then converts it into minutes.
     """
     hours, minutes = timestamp.split(":")
@@ -54,7 +54,7 @@ def get_time_in_min(timestamp):
 
 
 def write_text_turtle(window, turtle, style, granted, msg=""):
-    """ 
+    """
     Makes the screen green or red based on if granted is true or not.
     """
     turtle.write(msg, font=style, align='center')
@@ -71,7 +71,7 @@ def blipp_your_tagg():
     global style
 
     def _timeout():
-        """ 
+        """
         Default screen for the ui. Returns to it 3 seconds after a scan.
         """
         global timer
@@ -85,12 +85,12 @@ def blipp_your_tagg():
 
 
 def handle_enter(window, style):
-    """ 
+    """
     Kills the sound if a new tag is scanned and the sound is playing.
 
     Stores all key presses in a list.
 
-    Writes the ui for the program
+    Writes the ui for the program with respective response from handle_input function.
     """
     global timer, sound_t, file
     if timer:
@@ -112,10 +112,8 @@ def handle_enter(window, style):
         start_sound()
 
 def save_students_eaten(date,school,filename):
-    """ Saves the students eaten data to lunch_data.csv 
-    
-    <><><><><><><><><><><><><> JaG bEhÖvEr HjÄlP mEd AtT kOmMeNtErA dEn HäR dElEn Av KoDeN <><><><><><><><><><><><><>
-
+    """
+    Saves the students eaten data to lunch_data.csv
     """
 
     date = date.strftime('%Y-%m-%d')
@@ -154,8 +152,8 @@ def save_students_eaten(date,school,filename):
             fd.writelines(lunch_data)
 
 def handle_input(mfr, tags, times, now, used_tags, data_filename):
-    """ 
-    Based on different conditions, when a tag is scanned, the screen will display different messages and background colors
+    """
+    Based on different conditions, when a tag is scanned, the function will return a True or False and respective messages 
     """
 
     tag_match = find_matching_tag(mfr, tags)
@@ -184,8 +182,8 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename):
     return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
 def lunch_time(times_match, now):
-    """ 
-    Based on if it is a weekend or not, the screen will either return lunch_start, lunch_end or "00:00","00:00" in its place.
+    """
+    Function will return lunch_start and lunch_end based on the current weekday and relative to times_match, or if a tag is scanned on the weekend it will return "00:00","00:00".
     """
     try:
         weekday = now.weekday()
@@ -196,8 +194,8 @@ def lunch_time(times_match, now):
         return "00:00","00:00"
 
 def valid_lunch_time(times_match, now):
-    """ 
-    Checks if it is a valid lunch time, when a tag is scanned, based on lunch_start and lunch_end.
+    """
+    Checks if it is a valid lunch time when a tag is scanned, based on lunch_start and lunch_end converted into minutes using the get_time_in_min function.
     """
     lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
@@ -206,15 +204,15 @@ def valid_lunch_time(times_match, now):
     return lunch_start_in_min <= now_in_min <= lunch_end_in_min
 
 def key_press(key):
-    """ 
-    Creates a global variable for keypresses and appends them to "key_press".
+    """
+    Appends keypresses into key_presses list.
     """
     global key_presses
     key_presses.append(key)
 
 def handle_esc(window):
-    """ 
-    If escape if pressed, the window will be shut down after 1 second.
+    """
+    If escape if pressed, the window will be terminated after 1 second.
     """
     global timer
     if timer:
@@ -225,18 +223,16 @@ def handle_esc(window):
 
 
 def play_sound():
-    """ 
-    Allows sound to be played.
+    """
+    Function to add sound player and sound.
     """
     global denied_sound
     os.system('mpg123 ' + denied_sound)
 # Sound can only play on Linux
 # This function only plays sound when on Linux
 def start_sound():
-    """ 
-    If the operating system is linux the variable "sound_t" will be used to play the sound.
-
-    If the operating systemis not linux, no sound will be played.
+    """
+    Function used to play the sound from play_sound function. Will only play if the operating system is Linux, since it crashes when used on Windows.
     """
     if platform.system() == "Linux":
         global sound_t
@@ -246,14 +242,11 @@ def start_sound():
 # If os is Linux, sets the display to fullscreen
 def os_checker():
     """ 
-    Makes the ui into fullscreen if the operating system is Linux.
+    Sets the ui into fullscreen if the operating system is Linux. Will crash on Windows.
     """
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
-    """ 
-    <><><><><><><><><><><><><> JaG bEhÖvEr HjÄlP mEd AtT kOmMeNtErA dEn HäR dElEn Av KoDeN <><><><><><><><><><><><><>
-    """
 if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))

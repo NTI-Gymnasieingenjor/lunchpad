@@ -9,6 +9,10 @@ from lunchpad import handle_input, valid_lunch_time, get_file_data
 class TestLunchpad(unittest.TestCase):
 
     def test_correct_text(self):
+        """
+        Test for the handle_input function. Asserts the return bool and message from handle_input and the expected.
+        """
+        
         # Scanned tag is on time, NTI tag
         actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
@@ -57,6 +61,9 @@ class TestLunchpad(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_correct_time(self):
+        """
+        Test for the valid_lunch_time function. Asserts the bool value from valid_lunch_time function and expected bool value.
+        """
         # On time for lunch
         correct_time = valid_lunch_time(["TE4", "12:10-12:30", "12:10-12:30", "12:10-12:30", "12:30-12:50", "12:30-12:50"], datetime(2020, 11, 11, 12, 10, 10))
         # 1 minute before lunch time
@@ -83,11 +90,5 @@ if __name__ == '__main__':
 
     tags = get_file_data(file+"/id_tester.csv")
     times = get_file_data(file+"/tider_tester.csv")
-
-    tests = [
-        ["12348910", "OKÄND NYCKELTAGG"],
-        ["548381316", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
-        ["548381316", "DU HAR REDAN SKANNAT"]
-    ]
 
     unittest.main()
