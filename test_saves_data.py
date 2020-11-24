@@ -49,8 +49,8 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
 
 
 if __name__ == "__main__":
-    valid_tags = ["100331417", "101129785"]
-    nti_tag = "100331417"
+    valid_tags = ["548381316", "900865598"]
+    nti_tag = "548381316"
     procivitas_tag = "123456789"
 
     filename = "test_data.csv"
