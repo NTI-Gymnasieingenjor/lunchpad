@@ -12,12 +12,11 @@ def create_test_specialcases_file():
     Creates the specialcases test file
     """
     data = ["MFR,Monday,Tuesday,Wednesday,Thursday,Friday\n",
-            "536956614,10:00-14:00,,,,\n",
-            "100331417,,,10:00-14:00,,\n"
-        ]
+            "548381316,10:00-14:00,,,,\n",
+            "617153648,,,10:00-14:00,,\n"]
 
     with open(SPECIALCASE_FILENAME, "w") as f:
-        f.writeliens(data)
+        f.writelines(data)
 
 def test_tag_in_specialcase(tag, expected):
     """
@@ -50,14 +49,14 @@ if __name__ == "__main__":
     tags = get_file_data(PATH+"/id_tester.csv")
     times = get_file_data(PATH+"/tider_tester.csv")
 
-    TAGS_WITH_SPECIALCASE = ["536956614", "100331417"]
-    NO_SPECIALCASE_TAG = "101129785"
+    TAGS_WITH_SPECIALCASE = ["548381316", "617153648"]
+    NO_SPECIALCASE_TAG = "611056439"
 
     # Creates the specialcase test file
     create_test_specialcases_file()
 
     print("[*] Testing with tag in specialcase csv")
-    test_tag_in_specialcase(TAGS_WITH_SPECIALCASE[0], ["Mån", "Tis", "Ons", "Tors", "Fre"])
+    test_tag_in_specialcase(TAGS_WITH_SPECIALCASE[0], ["SPECIALCASE", "10:00-14:00", "", "", "", ""])
 
     print("[*] Testing with tag not in specialcase csv")
     test_tag_in_specialcase(NO_SPECIALCASE_TAG, [])
@@ -73,12 +72,12 @@ if __name__ == "__main__":
     test_specialcase(TAGS_WITH_SPECIALCASE[1], test_date, expected_result)
 
     print("[*] Testing with tag with specialcase on monday at correct time")
-    expected_result = True, "GODKÄND SKANNING! SMAKLING MÅLTID!"
+    expected_result = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
     test_date = datetime.datetime(2020, 11, 23, 13, 10, 10)
     test_specialcase(TAGS_WITH_SPECIALCASE[0], test_date, expected_result)
 
     print("[*] Testing with tag with specialcase on wednesday at correct time")
-    expected_result = True, "GODKÄND SKANNING! SMAKLING MÅLTID!"
+    expected_result = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
     test_date = datetime.datetime(2020, 11, 25, 13, 10, 10)
     test_specialcase(TAGS_WITH_SPECIALCASE[1], test_date, expected_result)
 
