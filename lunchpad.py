@@ -8,10 +8,11 @@ import os
 import multiprocessing
 import hashlib
 import platform
+import argparse
 
 
 # Reads respective csv file and adds the content into a list
-def get_file_data(filepath, mode="tags"):
+def get_file_data(filepath):
     data = []
     with open(filepath) as fp:
         line = fp.readline()
@@ -91,7 +92,7 @@ def handle_enter(window, style):
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
-    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, data_file)
+    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, options.data)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
     if allowed is False:
@@ -225,25 +226,29 @@ def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
+def get_options(args):
+    parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
+
+    parser.add_argument("-t", "--tags", nargs='?', default=file + "/id.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags.")
+    parser.add_argument("-s", "--schedule", nargs='?', default=file + "/tider.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch schedule.")
+    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
+    
+    options = parser.parse_args(args)
+    return options
 
 if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-    if "-test" in sys.argv:
-        tags_root = get_file_data(file+"/id_tester.csv", "tags")
-        times_root = get_file_data(file+"/tider_tester.csv", "times")
-    else:
-        tags_root = get_file_data(file+"/id.csv", "tags")
-        times_root = get_file_data(file+"/tider.csv", "times")
+    options = get_options(sys.argv[1:])
 
-    data_file = "lunch_data.csv"
+    tags_root = [s.split(",") for s in options.tags.read().splitlines()]
 
-    if "--data" in sys.argv:
-        try:
-            data_file = sys.argv[sys.argv.index("--data") + 1]
-        except Exception:
-            print("YOU NEED TO SPECIFY A DATA FILE WITH --data flag")
+    times_root = [s.split(",") for s in options.schedule.read().splitlines()]
+
+    # Close file streams
+    options.tags.close()
+    options.schedule.close()
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
