@@ -25,15 +25,21 @@ def get_file_data(filepath):
 
 def get_specialcase_times(tag, filename="specialcases.csv"):
     data = []
-    with open(filename, "r") as fd:
-        line = fd.readline()
-        while line:
-            if tag in line:
-                line_data = line.rstrip().split(",")
-                line_data.remove(tag)
-                line_data.insert(0, "SPECIALCASE")
-                data = line_data
+    try:
+        with open(filename, "r") as fd:
             line = fd.readline()
+            while line:
+                if tag in line:
+                    line_data = line.rstrip().split(",")
+                    line_data.remove(tag)
+                    line_data.insert(0, "SPECIALCASE")
+                    data = line_data
+                line = fd.readline()
+    except:
+        with open(filename, "w") as fd:
+            lines = ["MFR,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY\n"]
+            fd.writelines(lines)
+
     return data
 
 # Looks through all the tags and returns the tag and the corresponding class,
@@ -180,7 +186,11 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_fi
     times_match = None
 
     # Hashes the scanned tag
-    hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
+    hashed = hashlib.sha256(str(mfr).encode('ASCII')).hexdigest()
+
+    # If tag has already been scanned.
+    if hashed in used_tags:
+        return False, "DU HAR REDAN SKANNAT"
 
     # If the tag is in specialcases
     if len(specialcase_match) > 0:
@@ -191,10 +201,6 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_fi
         if not valid_lunch_time(times_match, now) and has_specialcase_for_today(specialcase_match, now):
             lunch_start, lunch_end = lunch_time(times_match, now)
             return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
-
-        # If tag has already been scanned.
-        if hashed in used_tags:
-            return False, "DU HAR REDAN SKANNAT"
 
         # If specialcase for today exists and is scanned at
         # correct time
