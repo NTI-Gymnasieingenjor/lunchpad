@@ -33,8 +33,13 @@ class TestLunchpad(unittest.TestCase):
             self.assertEqual(test[1], res)
 
     def test_correct_text(self):
-        # Scanned tag is on time
+        # Scanned tag is on time, NTI tag
         actual = handle_input("900865598", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+        self.assertEqual(expected, actual)
+
+        # Scanned tag is on time, Procivitas tag
+        actual = handle_input("739341266", tags, times, datetime.datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
@@ -53,9 +58,14 @@ class TestLunchpad(unittest.TestCase):
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
-        # Scanned tag is off time
+        # Scanned tag is off time, NTI tag
         actual = handle_input("754729301", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 11:00-11:20"
+        self.assertEqual(expected, actual)
+
+        # Scanned tag is off time, Procivitas tag
+        actual = handle_input("739341266", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        expected = False, "DIN LUNCHTID ÄR 12:20-12:40"
         self.assertEqual(expected, actual)
 
         actual = handle_input("101051865", tags, times, datetime.datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
@@ -91,14 +101,14 @@ class TestLunchpad(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    args = [sys.executable, "lunchpad.py", "-test", "--csv", "test_data.csv"]
+    args = [sys.executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
 
     file = os.path.dirname(os.path.realpath(__file__))
 
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-    tags = get_file_data(file+"/id_tester.csv", "tags")
-    times = get_file_data(file+"/tider_tester.csv", "times")
+    tags = get_file_data(file+"/id_tester.csv")
+    times = get_file_data(file+"/tider_tester.csv")
 
     tests = [
         ["12348910", "OKÄND NYCKELTAGG"],

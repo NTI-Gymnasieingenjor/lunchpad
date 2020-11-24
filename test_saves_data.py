@@ -56,8 +56,8 @@ if __name__ == "__main__":
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
-    tagsfile = get_file_data(file+"/id_tester.csv", "tags")
-    timesfile = get_file_data(file+"/tider_tester.csv", "times")
+    tagsfile = get_file_data(file+"/id_tester.csv")
+    timesfile = get_file_data(file+"/tider_tester.csv")
 
     print("[*] Testing with 1 green tag from NTI")
     test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.now())

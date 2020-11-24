@@ -2,6 +2,7 @@
 import gspread
 import sys
 import os
+import argparse
 from google.auth.exceptions import *
 from datetime import datetime
 
@@ -28,36 +29,35 @@ def upload_data(data):
             print(err)
         sys.exit(1)
 
+def get_options(args):
+    parser = argparse.ArgumentParser(description="Uploads the number of people that have scanned their tags.")
+
+    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch data.")
+    parser.add_argument("-w", "--worksheet", nargs='?', default="Lunchsystem", help="Specifies name of the worksheet on Google Spreadsheets.")
+    
+    options = parser.parse_args(args)
+    return options
 
 if __name__ == '__main__':
     try:
+        file = os.path.dirname(os.path.realpath(__file__))
+        options = get_options(sys.argv[1:])
+        
         # Initializes Google Sheets document.
         gc = gspread.service_account()
         sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
-        worksheet = sh.worksheet("Lunchsystem")
+        worksheet = sh.worksheet(options.worksheet)
 
-        data_file = "lunch_data.csv"
+        local_data = options.data.read().splitlines()
 
-        if "--csv" in sys.argv:
-            try:
-                data_file = sys.argv[sys.argv.index("--csv") + 1] 
-            except IndexError as err:
-                print(err)
-                print("\u001b[31mNo file was specified\u001b[0m.")
-                sys.exit(1)
-        
-        if not os.path.isfile(data_file):
-            print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
-            sys.exit(1)
+        # Close input file stream
+        options.data.close()
 
-        if "--test" in sys.argv:
-            worksheet = sh.worksheet("TEST")
-
-        local_data = None
         # Reformats sheet data to match the formatting of our local data.
         sheet_data = list(map(lambda x: ",".join(x), worksheet.get_all_values()))
         formatted_sheet_data = []
         combined_data = []
+        
         # Removes all week numbers and weekdays from imported sheet data. 
         for idx, row in enumerate(sheet_data):
             if idx != 0:
@@ -67,21 +67,13 @@ if __name__ == '__main__':
                 formatted_sheet_data.append(new_string)
             else:
                 formatted_sheet_data.append(row)
-                
-        try:
-            with open(data_file, 'r') as f:
-                local_data = f.read().split("\n")
-        except Exception:
-            print("\u001b[31mCould not read file: {}\u001b[0m".format(data_file))
-            sys.exit(1)
-
+        
         # Removed potential empty strings from local_data.
         local_data = list(filter(lambda elem: elem != "", local_data))
         combined_data = local_data + formatted_sheet_data
         unique_data = list(set(combined_data))
 
         upload_data(unique_data)
-    
     except Exception as err:
         if type(err) == TransportError:
             print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
