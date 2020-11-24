@@ -3,16 +3,18 @@ import datetime
 import time
 import turtle
 import threading
-import sys
-import os
+import sys, os
+import os.path
 import multiprocessing
 import hashlib
 import platform
-import argparse
 
+def get_file_data(filepath, mode="tags"):
+    """ 
+    Reads respective csv file and adds the content into a list.
 
-# Reads respective csv file and adds the content into a list
-def get_file_data(filepath):
+    Reads the csv file. Reads line by line, removing the "," and appends every item to the list, "data".
+    """
     data = []
     with open(filepath) as fp:
         line = fp.readline()
@@ -22,54 +24,45 @@ def get_file_data(filepath):
             line = fp.readline()
     return data
 
-
-def get_specialcase_times(tag, filename="specialcases.csv"):
-    data = []
-    try:
-        with open(filename, "r") as fd:
-            line = fd.readline()
-            while line:
-                if tag in line:
-                    line_data = line.rstrip().split(",")
-                    line_data.remove(tag)
-                    line_data.insert(0, "SPECIALCASE")
-                    data = line_data
-                line = fd.readline()
-    except:
-        with open(filename, "w") as fd:
-            lines = ["MFR,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY\n"]
-            fd.writelines(lines)
-
-    return data
-
-# Looks through all the tags and returns the tag and the corresponding class,
-# otherwise it returns an empty list
 def find_matching_tag(tag, tags):
+    """ 
+    Looks through all the tags and returns the tag and its corresponding class, otherwise it returns an empty list
+    """
     match = list(filter(lambda x: tag in x, tags))
     if(len(match) > 0):
         return match[0]
     else:
         return match
 
-
-# Uses the matched class to find and return the corresponding lunch time
 def find_matching_lunch_time(grade, times):
+    """ 
+    Uses the class of a corresponding tag to find the matching lunch times, then returns the corresponding lunch times.
+    """
     match = list(filter(lambda x: grade in x, times))
     if(len(match) > 0):
         return match[0]
     else:
         return match
 
-
 # Takes a time value, for example 12:00 and splits it,
 # then converts it into minutes
 def get_time_in_min(timestamp):
+    """ 
+    Takes a timestamp, for example 12:00 and splits it, then converts it into minutes.
+
+    Takes the lunch times that "find_matching_lunch_time" finds. Splits the minutes from the hours, for example 12:30 into 12 and 30. 
+    Converts the hours into minutes, for example 12 hours into 720 minutes. After that it adds the minutes and the converted hours and gets a total value of minutes.
+    The time then gets returned as "total_minutes"
+    """
     hours, minutes = timestamp.split(":")
     total_minutes = int(hours)*60+int(minutes)
     return total_minutes
 
 
 def write_text_turtle(window, turtle, style, granted, msg=""):
+    """ 
+    If granted is true, turtle will make the ui-background green. Else, if granted is not true, the ui-background will turn red.
+    """
     turtle.write(msg, font=style, align='center')
     if(granted):
         window.bgcolor("green")
@@ -77,13 +70,19 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
         window.bgcolor("red")
     blipp_your_tagg()
 
-
+    
 # Default display
 def blipp_your_tagg():
     global timer
     global style
 
     def _timeout():
+        """ 
+        Default screen for the ui
+
+        Clears the current screen. Writes out the text saved in the "skanna_tagg" variable in the center of the screen. 
+        Also sets the ui-background to black. This is done 3 seconds after a tag is scanned.
+        """
         global timer
         turtle.clear()
         turtle.write(skanna_tagg, font=style, align='center')
@@ -95,15 +94,21 @@ def blipp_your_tagg():
 
 
 def handle_enter(window, style):
+    """ 
+    Kills the sound and resets the timer if a new tag is entered before the ui-background has reset into its normal state.
+    
+    Creates a list where all key presses are stored. The key presses are joined together and stored in a variable called mfr.
 
+    "allowed" and "message" recives it's values from the respective returns in the "handle_input" function.
+    The function then writes the recieved message on the screen using the "write_text_turtle" function.
+    If allowed is returned as false, the function "start_sound" is called.
+    """
     global timer, sound_t, file
     if timer:
         timer.cancel()
     if sound_t and sound_t.is_alive():
         sound_t.terminate()
 
-    window.bgcolor("black")
-    turtle.color('white')
     turtle.clear()
 
     # "mfr" variable refers to the MFR ID,
@@ -111,30 +116,31 @@ def handle_enter(window, style):
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
-    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, options.data)
+    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, data_file)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
-    if allowed is False:
+    if allowed == False:
         start_sound()
 
+def save_students_eaten(date,school,filename):
+    """ Saves the students eaten data to lunch_data.csv 
+    
+    <><><><><><><><><><><><><> JaG bEhÖvEr HjÄlP mEd AtT kOmMeNtErA dEn HäR dElEn Av KoDeN <><><><><><><><><><><><><>
 
-def save_students_eaten(date, school, filename):
-    """ Saves the students eaten data to lunch_data.csv """
+    """
 
     date = date.strftime('%Y-%m-%d')
 
     try:
-        new_lunch_data = None
         with open(filename, "r+") as fp:
             lunch_data = fp.readlines()
             modified = False
-            # Goes through all rows in lunch data.
             for idx, line in enumerate(lunch_data):
+                line = line.replace('\x00', '')
+                lunch_data[idx] = line
                 if date in line:
                     modified = True
-                    line = line.replace("\n", "")
                     new_line = line.split(",")
-                    # Increases the value of how many people have successfully scanned for the day.
                     if school == "NTI":
                         new_line[1] = str(int(new_line[1]) + 1)
                     else:
@@ -142,20 +148,14 @@ def save_students_eaten(date, school, filename):
                     new_line = ",".join(new_line)
                     new_line += "\n"
                     lunch_data[idx] = new_line
-                    break
-            
-            # If no row with todays date is found, create a new row.
+
             if not modified:
                 new_line = f"{date},0,0\n"
                 lunch_data.append(new_line)
-
-            new_lunch_data = lunch_data
-
-        with open(filename, "w") as fd:
-            fd.writelines(new_lunch_data)
-
+            fp.truncate(0)
+            fp.writelines(lunch_data)
     except Exception as err:
-        # Create lunch_data.csv file if it doesn't exist.
+        print(err)
         with open(filename, "w") as fd:
             lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
             if school == "NTI":
@@ -164,91 +164,79 @@ def save_students_eaten(date, school, filename):
                 lunch_data.append(f"{date},0,1")
             fd.writelines(lunch_data)
 
-def has_specialcase_for_today(times_match, now):
-    """
-    Returns a boolean if specialcase exists for todays lunch
-    """
-    res = lunch_time(times_match, now)
-    if res != ("00:00", "00:00"):
-        return True
+def handle_input(mfr, tags, times, now, used_tags, data_filename):
+    """ 
+    Based on the response of the scanned tag, different results will be returned.
 
-    return False
-
-def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_filename="specialcases.csv"):
+    When a tag is scanned, different results will appear, based on what the conditions of the tag is.
+    If the tag's id does not match one of the tag-ids in id.csv, the function will return False and the message "OKÄND NYCKELTAGG".
+    If the tag does not have a matching "lunch_time", the function will return False and the message "INGEN MATCHANDE LUNCHTID". This will happen when the id is in the system,
+    but does not have a class.
+    If the tag does have a matching "lunch_time" but the tag is scanned outside of its matching time, the function will return False and the message "DIN LUNCHTID ÄR {lunch_start}-{lunch_end}".
+    together with the time that the tag scan would result in a "GODKÄND SKANNING! SMAKLIG MÅLTID!" message.
+    If the tag has already been scanned , the screen will display the message "DU HAR REDAN SKANNAT".
+    """
 
     tag_match = find_matching_tag(mfr, tags)
-    if not len(tag_match) > 0:
+    if(not (len(tag_match) > 0)):
         return False, "OKÄND NYCKELTAGG"
 
-    # Gets specialcase match
-    specialcase_match = get_specialcase_times(mfr, specialcase_filename)
-    times_match = None
-
-    # Hashes the scanned tag
-    hashed = hashlib.sha256(str(mfr).encode('ASCII')).hexdigest()
-
-    # If tag has already been scanned.
-    if hashed in used_tags:
-        return False, "DU HAR REDAN SKANNAT"
-
-    # If the tag is in specialcases
-    if len(specialcase_match) > 0:
-        times_match = specialcase_match
-
-        # If the tag has a specialcase for todays lunch
-        # but is not scanned at correct time
-        if not valid_lunch_time(times_match, now) and has_specialcase_for_today(specialcase_match, now):
-            lunch_start, lunch_end = lunch_time(times_match, now)
-            return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
-
-        # If specialcase for today exists and is scanned at
-        # correct time
-        if has_specialcase_for_today(times_match, now):
-            used_tags.append(hashed)
-            save_students_eaten(now, tag_match[2], data_filename)
-            return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
-
-    # Redefines times_match if no specialcase for todays lunch
     times_match = find_matching_lunch_time(tag_match[0], times)
 
     # If the tag is in the system but not registered to a class
-    if not len(times_match) > 0:
+    if(not (len(times_match) > 0)):
         return False, "INGEN MATCHANDE LUNCHTID"
 
-    if not valid_lunch_time(times_match, now):
+    # Hashes the scanned tag
+    hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
+
+    if(not (valid_lunch_time(times_match, now))):
         lunch_start, lunch_end = lunch_time(times_match, now)
         return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
+
+    if hashed in used_tags:
+        return False, "DU HAR REDAN SKANNAT"
 
     # Adds the recently hashed tag into a list
     used_tags.append(hashed)
     save_students_eaten(now, tag_match[2], data_filename)
     return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
-
 def lunch_time(times_match, now):
+    """ 
+    The function calculates the current weekday and returns lunch_start and lunch_end from the list in "tider" csv file for the respective weekday.
+    
+    If there is no valid lunch_start or lunch_end time, for example if a tag is scanned during a weekend, the function will return "00:00","00:00".
+    """
     try:
         weekday = now.weekday()
         lunch_start = times_match[weekday + 1].split("-")[0]
         lunch_end = times_match[weekday + 1].split("-")[1]
         return lunch_start, lunch_end
-    except Exception:
-        return "00:00", "00:00"
-
+    except:
+        return "00:00","00:00"
 
 def valid_lunch_time(times_match, now):
+    """ 
+    Uses the total minutes and total hours and compares them to the total minutes of "lunch_start" and "lunch_end" to determine if it is a valid lunch time or not.
+    """
     lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
     lunch_end_in_min = get_time_in_min(lunch_end)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
     return lunch_start_in_min <= now_in_min <= lunch_end_in_min
 
-
 def key_press(key):
+    """ 
+    Creates a global variable for keypresses and appends them to "key_press".
+    """
     global key_presses
     key_presses.append(key)
 
-
 def handle_esc(window):
+    """ 
+    If escape if pressed, the window will be shut down after 1 second.
+    """
     global timer
     if timer:
         timer.cancel()
@@ -258,52 +246,58 @@ def handle_esc(window):
 
 
 def play_sound():
+    """ 
+    Allows sound to be played.
+    """
     global denied_sound
     os.system('mpg123 ' + denied_sound)
-
-
 # Sound can only play on Linux
 # This function only plays sound when on Linux
 def start_sound():
+    """ 
+    If the operating system is linux the variable "sound_t" will be used to play the sound.
+
+    If the operating systemis not linux, no sound will be played.
+    """
     if platform.system() == "Linux":
         global sound_t
         sound_t = multiprocessing.Process(target=play_sound)
         sound_t.start()
 
-
 # If os is Linux, sets the display to fullscreen
 def os_checker():
+    """ 
+    Makes the ui into fullscreen if the operating system is Linux.
+    """
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
-def get_options(args):
-    parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
-
-    parser.add_argument("-t", "--tags", nargs='?', default=file + "/id.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags.")
-    parser.add_argument("-s", "--schedule", nargs='?', default=file + "/tider.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch schedule.")
-    parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
-    
-    options = parser.parse_args(args)
-    return options
-
+    """ 
+    <><><><><><><><><><><><><> JaG bEhÖvEr HjÄlP mEd AtT kOmMeNtErA dEn HäR dElEn Av KoDeN <><><><><><><><><><><><><>
+    """
 if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-    options = get_options(sys.argv[1:])
+    if "-test" in sys.argv:
+        tags_root = get_file_data(file+"/id_tester.csv", "tags")
+        times_root = get_file_data(file+"/tider_tester.csv", "times")
+    else:
+        tags_root = get_file_data(file+"/id.csv", "tags")
+        times_root = get_file_data(file+"/tider.csv", "times")
 
-    tags_root = [s.split(",") for s in options.tags.read().splitlines()]
+    data_file = "lunch_data.csv"
 
-    times_root = [s.split(",") for s in options.schedule.read().splitlines()]
-
-    # Close file streams
-    options.tags.close()
-    options.schedule.close()
+    if "--data" in sys.argv:
+        try:
+            data_file = sys.argv[sys.argv.index("--data") + 1]
+        except:
+            print("YOU NEED TO SPECIFY A DATA FILE WITH --data flag")
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
 
     window = turtle.Screen()
-    window.setup(width=1.0, height=1.0)
+    window.setup(width = 1.0, height = 1.0)
     turtle.hideturtle()
     window.title("Lunchpad")
 
@@ -320,7 +314,7 @@ if __name__ == '__main__':
 
     timer = None
 
-    denied_sound = os.getcwd() + "/denied.mp3"
+    denied_sound = "/home/pi/Desktop/lunchpad/denied.mp3"
     sound_t = None
     key_presses = []
     used_tags = []
