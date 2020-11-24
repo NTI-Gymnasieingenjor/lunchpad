@@ -174,31 +174,33 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_fi
     if not len(tag_match) > 0:
         return False, "OKÄND NYCKELTAGG"
 
+    # Gets specialcase match
     specialcase_match = get_specialcase_times(mfr, specialcase_filename)
     times_match = None
+
+    # Hashes the scanned tag
+    hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
 
     # If the tag is in specialcases
     if len(specialcase_match) > 0:
         times_match = specialcase_match
 
-    # If the tag has a specialcase for todays lunch
-    # but is not at correct time
-    if not valid_lunch_time(times_match, now) and has_specialcase_for_today(specialcase_match, now):
-        lunch_start, lunch_end = lunch_time(times_match, now)
-        return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
+        # If the tag has a specialcase for todays lunch
+        # but is not scanned at correct time
+        if not valid_lunch_time(times_match, now) and has_specialcase_for_today(specialcase_match, now):
+            lunch_start, lunch_end = lunch_time(times_match, now)
+            return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
 
-    # Hashes the scanned tag
-    hashed = hashlib.sha256(str(tag_match[1]).encode('ASCII')).hexdigest()
-    # If tag has already been scanned.
-    if hashed in used_tags:
-        return False, "DU HAR REDAN SKANNAT"
+        # If tag has already been scanned.
+        if hashed in used_tags:
+            return False, "DU HAR REDAN SKANNAT"
 
-    # If specialcase for today exists and is scanned at
-    # correct time
-    if has_specialcase_for_today(times_match, now):
-        used_tags.append(hashed)
-        save_students_eaten(now, tag_match[2], data_filename)
-        return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+        # If specialcase for today exists and is scanned at
+        # correct time
+        if has_specialcase_for_today(times_match, now):
+            used_tags.append(hashed)
+            save_students_eaten(now, tag_match[2], data_filename)
+            return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
     # Redefines times_match if no specialcase for todays lunch
     times_match = find_matching_lunch_time(tag_match[0], times)
