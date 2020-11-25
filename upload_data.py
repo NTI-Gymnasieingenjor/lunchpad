@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 def sort_data(data):
-    headings = data.pop(data.index("DATUM,NTI,PROCIVITAS"))
+    headings = data.pop(data.index("DATUM,NTI,PROCIVITAS,NTI LÄRARE,PROCIVITAS LÄRARE"))
     sorted_data = sorted(data, key=lambda x: datetime.strptime(x.split(",")[0], "%Y-%m-%d"))
     sorted_data.insert(0, headings)
     return sorted_data
@@ -18,10 +18,12 @@ def upload_data(data):
     data = sort_data(data)
     try:
         for idx, row in enumerate(data):
-            date, nti, procivitas = row.split(",")
+            date, nti, procivitas, nti_teacher, procivitas_teacher = row.split(",")
             worksheet.update_cell(idx + 1, "1", date)
             worksheet.update_cell(idx + 1, "2", nti)
             worksheet.update_cell(idx + 1, "3", procivitas)
+            worksheet.update_cell(idx + 1, "4", nti_teacher)
+            worksheet.update_cell(idx + 1, "5", procivitas_teacher)
     except Exception as err:
         if type(err) == TransportError:
             print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")

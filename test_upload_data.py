@@ -26,6 +26,7 @@ def check_data():
 gc = gspread.service_account()
 sh = gc.open_by_key("11V4KfT00lrys2zHgLtRlF13q3SP-6n1CS_vbCyLmtqA")
 
+#If program crashes, the google spreadsheet created earlier is not deleted. Delete old spreadsheet manually.
 worksheet_title = "TEST"
 
 worksheet = sh.add_worksheet(title=worksheet_title, rows="10", cols="10")
@@ -33,7 +34,7 @@ worksheet = sh.add_worksheet(title=worksheet_title, rows="10", cols="10")
 test_filename = "test_data.csv"
 
 with open(test_filename, "w") as fd:
-    data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-12,20,20\n", "2020-11-13,50,60\n", "2020-11-15,100,60\n"]
+    data = ["DATUM,NTI,PROCIVITAS,NTI LÄRARE,PROCIVITAS LÄRARE\n", "2020-11-25,1,1,1,1\n"]
     fd.writelines(data)
 
 args = [sys.executable, "upload_data.py", "--data", test_filename, "--worksheet", worksheet_title]
