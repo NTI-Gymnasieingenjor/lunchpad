@@ -40,7 +40,7 @@ def test_specialcase(tag, date, expected):
     and correct weekday
     """
 
-     global failed
+    global failed
     res = handle_input(tag, tag_times, date, [], DATA_FILENAME, SPECIALCASE_FILENAME)
 
 
