@@ -9,6 +9,7 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
     """
     The function resets the lunch_data csv file and asserts the actual amount of students that have eaten with the expected amount.
     """
+
     # Resets the lunch_data.csv
     if os.path.isfile(filename):
         os.remove(filename)
@@ -42,6 +43,7 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
     Test by asserting that actual is not equal to expected. The test tests with green tags from different dates.
     This is to test that the function appends to a new line on a new date.
     """
+
     global failed
 
     if os.path.isfile(filename):

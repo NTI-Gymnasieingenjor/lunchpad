@@ -12,7 +12,7 @@ class TestLunchpad(unittest.TestCase):
         """
         Test for the handle_input function. Asserts the return bool and message from handle_input and the expected.
         """
-        
+
         # Scanned tag is on time, NTI tag
         actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
@@ -64,6 +64,7 @@ class TestLunchpad(unittest.TestCase):
         """
         Test for the valid_lunch_time function. Asserts the bool value from valid_lunch_time function and expected bool value.
         """
+
         # On time for lunch
         correct_time = valid_lunch_time(["TE4", "12:10-12:30", "12:10-12:30", "12:10-12:30", "12:30-12:50", "12:30-12:50"], datetime(2020, 11, 11, 12, 10, 10))
         # 1 minute before lunch time
