@@ -44,7 +44,7 @@ class TestLunchpad(unittest.TestCase):
         expected = False, "DIN LUNCHTID ÄR 12:20-12:40"
         self.assertEqual(expected, actual)
 
-        actual = handle_input("***REMOVED***", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("101051865", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "INGEN MATCHANDE LUNCHTID"
         self.assertEqual(expected, actual)
 
