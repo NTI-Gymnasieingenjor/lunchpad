@@ -24,7 +24,7 @@ def get_file_data(filepath, mode="tags"):
 
 def find_matching_tag(tag, tags):
     """
-    Looks through all the tags and returns the tag and its corresponding class, otherwise it returns an empty list
+    Looks through all the tags and returns the tag and its corresponding class, otherwise it returns an empty list.
     """
     match = list(filter(lambda x: tag in x, tags))
     if(len(match) > 0):
@@ -34,7 +34,7 @@ def find_matching_tag(tag, tags):
 
 def find_matching_lunch_time(grade, times):
     """
-    Uses the class of a corresponding tag to find the matching lunch times, then returns the corresponding lunch times.
+    Uses the class of the corresponding tag to find the matching lunch times, then returns the matched lunch times.
     """
     match = list(filter(lambda x: grade in x, times))
     if(len(match) > 0):
@@ -55,7 +55,7 @@ def get_time_in_min(timestamp):
 
 def write_text_turtle(window, turtle, style, granted, msg=""):
     """
-    Makes the screen green or red based on if granted is true or not.
+    Makes the display background green or red based on if granted is true or not.
     """
     turtle.write(msg, font=style, align='center')
     if(granted):
@@ -72,7 +72,7 @@ def blipp_your_tagg():
 
     def _timeout():
         """
-        Default screen for the ui. Returns to it 3 seconds after a scan.
+        Default display for the ui. Returns to it 3 seconds after a scan.
         """
         global timer
         turtle.clear()
@@ -85,12 +85,8 @@ def blipp_your_tagg():
 
 
 def handle_enter(window, style):
-    """
-    Kills the sound if a new tag is scanned and the sound is playing.
-
-    Stores all key presses in a list.
-
-    Writes the ui for the program with respective response from handle_input function.
+    """-
+    This function runs everytime a tag is scanned. It plays sound, stores keypresses and writes the background color and respective message.
     """
     global timer, sound_t, file
     if timer:
@@ -115,7 +111,6 @@ def save_students_eaten(date,school,filename):
     """
     Saves the students eaten data to lunch_data.csv
     """
-
     date = date.strftime('%Y-%m-%d')
 
     try:
@@ -153,7 +148,7 @@ def save_students_eaten(date,school,filename):
 
 def handle_input(mfr, tags, times, now, used_tags, data_filename):
     """
-    Based on different conditions, when a tag is scanned, the function will return a True or False and respective messages 
+    Based on different conditions, when a tag is scanned, the function will return a True or False and its respective message.
     """
 
     tag_match = find_matching_tag(mfr, tags)
@@ -195,7 +190,7 @@ def lunch_time(times_match, now):
 
 def valid_lunch_time(times_match, now):
     """
-    Checks if it is a valid lunch time when a tag is scanned, based on lunch_start and lunch_end converted into minutes using the get_time_in_min function.
+    Checks if it is a valid lunch time when a tag is scanned, based on lunch_start, lunch_end and current time converted into minutes using the get_time_in_min function.
     """
     lunch_start, lunch_end = lunch_time(times_match, now)
     lunch_start_in_min = get_time_in_min(lunch_start)
