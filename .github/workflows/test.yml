@@ -23,6 +23,9 @@ jobs:
     - name: Run blipp test cases
       run: |
         python3 test_blipp_cases.py
-    - name: Run save test
+    - name: run save test
       run: |
         python3 test_saves_data.py
+    - name: run specialcases test
+      run: |
+        python3 test_specialcase.py
