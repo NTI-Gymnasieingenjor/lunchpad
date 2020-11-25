@@ -5,7 +5,7 @@ import datetime
 from lunchpad import *
 
 
-def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
+def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, nti_teacher_eaten, procivitas_teacher_eaten, date):
     # Resets the lunch_data.csv
     if os.path.isfile(filename):
         os.remove(filename)
@@ -17,8 +17,8 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
     try:
         with open(filename, "r") as f:
             data = f.readlines()
-            data_date, nti, procivitas = data[1].split(",")
-            if nti.rstrip() == nti_eaten and procivitas.rstrip() == procivitas_eaten:
+            data_date, nti, procivitas,nti_teacher,procivitas_teacher = data[1].split(",")
+            if nti.rstrip() == nti_eaten and procivitas.rstrip() == procivitas_eaten and nti_teacher.rstrip() == nti_teacher_eaten and procivitas_teacher.rstrip() == procivitas_teacher_eaten:
                 if data_date == date.strftime('%Y-%m-%d'):
                     print("\u001b[32mTest successful\u001b[0m")
                 else:
@@ -34,7 +34,7 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
 
 
 
-def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected_data):
+def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, nti_teacher_eaten, procivitas_teacher_eaten, dates, expected_data):
     global failed
 
     if os.path.isfile(filename):
@@ -56,9 +56,12 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
 
 if __name__ == "__main__":
     failed = False
-    valid_tags = ["548381316", "900865598"]
+    teacher_nti_procivitas_tags = ["548381319", "900865599"]
+    valid_tags_nti = ["548381316", "900865598"]
     nti_tag = "548381316"
     procivitas_tag = "123456789"
+    nti_teacher_tag = "548381319"
+    procivitas_techer_tag = "900865599"
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
@@ -66,21 +69,21 @@ if __name__ == "__main__":
     timesfile = get_file_data(file+"/tider_tester.csv")
 
     print("[*] Testing with 1 green tag from NTI")
-    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.now())
+    test_students_eaten_saved([nti_tag], "1", "0", "0", "0", datetime.datetime.now())
 
     print("[*] Testing with 2 green tag from NTI")
-    test_students_eaten_saved(valid_tags, "2", "0", datetime.datetime.now())
+    test_students_eaten_saved(valid_tags_nti, "2", "0", "0", "0", datetime.datetime.now())
 
     print("[*] Testing with 1 green tag from NTI and 1 green tag from PROCIVITAS")
-    test_students_eaten_saved([nti_tag, procivitas_tag], "1", "1", datetime.datetime.now())
+    test_students_eaten_saved([nti_tag, procivitas_tag], "1", "1","0", "0", datetime.datetime.now())
 
     print("[*] Testing with 1 green tag from NTI on date 2020-12-24")
-    test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime(2020, 12, 24, 12, 10, 10))
+    test_students_eaten_saved([nti_tag], "1", "0","0", "0", datetime.datetime(2020, 12, 24, 12, 10, 10))
 
     print("[*] Testing with 1 green tag one date then 1 green tag another date")
     expected_data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-10,1,0\n", "2020-11-11,1,0\n"]
     dates = [datetime.datetime(2020, 11, 10, 12, 10, 10), datetime.datetime(2020, 11, 11, 12, 10, 10)]
-    test_students_eaten_append(nti_tag, "1", "0", dates, expected_data)
+    test_students_eaten_append(nti_tag, "1", "0","0", "0", dates, expected_data)
 
     if os.path.isfile(filename):
         os.remove(filename)
