@@ -16,14 +16,14 @@ def get_file_data(filepath):
    """
    Reads respective csv file and adds the content into a list.
    """
-    data = []
-    with open(filepath) as fp:
-        line = fp.readline()
-        while line:
-            line_data = line.rstrip().split(",")
-            data.append(line_data)
-            line = fp.readline()
-    return data
+   data = []
+   with open(filepath) as fp:
+       line = fp.readline()
+       while line:
+           line_data = line.rstrip().split(",")
+           data.append(line_data)
+           line = fp.readline()
+   return data
 
   
 def get_specialcase_times(tag, filename="specialcases.csv"):
