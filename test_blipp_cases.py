@@ -10,49 +10,49 @@ class TestLunchpad(unittest.TestCase):
 
     def test_correct_text(self):
         # Scanned tag is on time, NTI tag
-        actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("900865598", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
         # Scanned tag is on time, Procivitas tag
-        actual = handle_input("739341266", tags, times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
+        actual = handle_input("739341266", tag_times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
         # Scanned tag is first in list
-        actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), ["78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf"], "test_data.csv")
+        actual = handle_input("900865598", tag_times, datetime(2020, 11, 11, 12, 10, 10), ["78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is last in list
-        actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4"], "test_data.csv")
+        actual = handle_input("900865598", tag_times, datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is in the middle of the list
-        actual = handle_input("900865598", tags, times, datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "1514aa8277131f9dc6c69f615fae6e15cce2022237a5c98a3533f2007bb99aba"], "test_data.csv")
+        actual = handle_input("900865598", tag_times, datetime(2020, 11, 11, 12, 10, 10), ["2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf", "78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "1514aa8277131f9dc6c69f615fae6e15cce2022237a5c98a3533f2007bb99aba"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
         self.assertEqual(expected, actual)
 
         # Scanned tag is off time, NTI tag
-        actual = handle_input("754729301", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("754729301", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 11:00-11:20"
         self.assertEqual(expected, actual)
 
         # Scanned tag is off time, Procivitas tag
-        actual = handle_input("739341266", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("739341266", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 12:20-12:40"
         self.assertEqual(expected, actual)
 
-        actual = handle_input("101051865", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("101051865", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "INGEN MATCHANDE LUNCHTID"
         self.assertEqual(expected, actual)
 
-        actual = handle_input("123456788", tags, times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("123456788", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
         expected = False, "OKÄND NYCKELTAGG"
         self.assertEqual(expected, actual)
 
-        actual = handle_input("259648828", tags, times, datetime(2020, 11, 14, 12, 10, 10), [], "test_data.csv")
+        actual = handle_input("259648828", tag_times, datetime(2020, 11, 14, 12, 10, 10), [], "test_data.csv")
         expected = False, "DIN LUNCHTID ÄR 00:00-00:00"
         self.assertEqual(expected, actual)
 
@@ -77,17 +77,13 @@ class TestLunchpad(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    args = [executable, "lunchpad.py", "--tags", "id_tester.csv", "--schedule", "tider_tester.csv", "--data", "test_data.csv"]
+    args = [executable, "lunchpad.py", "--input", "tag_time_tests.csv", "--data", "test_data.csv"]
 
     file = path.dirname(path.realpath(__file__))
 
-    tags = get_file_data(file+"/id_tester.csv")
-    times = get_file_data(file+"/tider_tester.csv")
+    tag_times = get_file_data(file+"/tag_time_tests.csv")
+ 
 
-    tests = [
-        ["12348910", "OKÄND NYCKELTAGG"],
-        ["548381316", "GODKÄND SKANNING! SMAKLIG MÅLTID!"],
-        ["548381316", "DU HAR REDAN SKANNAT"]
-    ]
+
 
     unittest.main()

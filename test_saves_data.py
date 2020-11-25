@@ -12,7 +12,7 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, date):
 
     global failed
     for tag in tags_to_blipp:
-        handle_input(tag, tagsfile, timesfile, date, [], filename)
+        handle_input(tag, tag_times_file, date, [], filename)
 
     try:
         with open(filename, "r") as f:
@@ -41,7 +41,7 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, dates, expected
         os.remove(filename)
 
     for date in dates:
-        handle_input(tag, tagsfile, timesfile, date, [], filename)
+        handle_input(tag, tag_times_file, date, [], filename)
 
     actual_data = None
     with open(filename, "r") as f:
@@ -62,8 +62,8 @@ if __name__ == "__main__":
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
-    tagsfile = get_file_data(file+"/id_tester.csv")
-    timesfile = get_file_data(file+"/tider_tester.csv")
+    tag_times_file = get_file_data(file+"/tag_time_tests.csv")
+    
 
     print("[*] Testing with 1 green tag from NTI")
     test_students_eaten_saved([nti_tag], "1", "0", datetime.datetime.now())
