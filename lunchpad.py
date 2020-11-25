@@ -368,8 +368,7 @@ if __name__ == '__main__':
 
     timer = None
 
-
-    denied_sound = os.getcwd() + "/denied.mp3"
+    denied_sound = file + "/denied.mp3"
 
     sound_t = None
     key_presses = []
