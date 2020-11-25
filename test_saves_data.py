@@ -56,12 +56,12 @@ def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, nti_teacher_eat
 
 if __name__ == "__main__":
     failed = False
-    teacher_nti_procivitas_tags = ["548381319", "900865599"]
     valid_tags_nti = ["548381316", "900865598"]
+    nti_and_procivitas_tag = ["548381316", "123456789"]
     nti_tag = "548381316"
     procivitas_tag = "123456789"
     nti_teacher_tag = "548381319"
-    procivitas_techer_tag = "900865599"
+    procivitas_teacher_tag = "900865599"
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
@@ -84,6 +84,13 @@ if __name__ == "__main__":
     expected_data = ["DATUM,NTI,PROCIVITAS\n", "2020-11-10,1,0\n", "2020-11-11,1,0\n"]
     dates = [datetime.datetime(2020, 11, 10, 12, 10, 10), datetime.datetime(2020, 11, 11, 12, 10, 10)]
     test_students_eaten_append(nti_tag, "1", "0","0", "0", dates, expected_data)
+
+    #Here starts teachers tags test
+    print("[*] Testing with 1 green tag from NTI teacher and 1 green tag from PROCIVITAS teacher")
+    test_students_eaten_saved([nti_teacher_tag, procivitas_teacher_tag], "0", "0", "1", "1", datetime.datetime.now())
+
+    print("[*] Testing with 1 green tag from NTI student, 1 green tag from PROCIVITAS student, 1 green tag from NTI teacher and 1 green tag from PROCIVITAS teacher")
+    test_students_eaten_saved([nti_tag, procivitas_tag, nti_teacher_tag, procivitas_teacher_tag], "1", "1", "1", "1", datetime.datetime.now())
 
     if os.path.isfile(filename):
         os.remove(filename)
