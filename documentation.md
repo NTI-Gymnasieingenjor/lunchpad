@@ -353,6 +353,18 @@ The code for Lunchpad saves the data of how many people have successfully scanne
    | -w [WORKSHEET]<br>--worksheet [WORKSHEET] | Specifies name of the worksheet on Google Spreadsheets. <br>Default: `Lunchsystem`    |
 </details>
 
+# Testing/Writing tests
+
+## CI
+All tests need to be added to the CI file located in `.github/workflow/test.yml`.
+To add a new test, simply append a new test case with the correct indendation (Look at previous tests in the file) like so:
+```yml
+    - name: Run new test
+      run: |
+        python3 test_new.py
+```
+
+
 # In case of a Wifi shutdown
 
 <details>
