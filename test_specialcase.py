@@ -3,6 +3,7 @@
  Tests the specialcase feature
 """
 import os
+import sys
 import datetime
 from lunchpad import *
 
@@ -22,11 +23,15 @@ def test_tag_in_specialcase(tag, expected):
     """
     Tests for correct output if tag in specialcase
     """
+    global failed
     result = get_specialcase_times(tag, SPECIALCASE_FILENAME)
     if result == expected:
         print("\u001b[32mTEST COMPETE\u001b[0m")
     else:
+
         print("\u001b[31mTEST FAILED\u001b[0m")
+        failed = True
+
 
 
 def test_specialcase(tag, date, expected):
@@ -34,15 +39,22 @@ def test_specialcase(tag, date, expected):
     Tests for correct output if tag in specialcase
     and correct weekday
     """
+
+     global failed
     res = handle_input(tag, tag_times, date, [], DATA_FILENAME, SPECIALCASE_FILENAME)
+
+
     if res == expected:
         print("\u001b[32mTEST COMPETE\u001b[0m")
     else:
+
         print("\u001b[31mTEST FAILED\u001b[0m")
+        failed = True
 
 
 
 if __name__ == "__main__":
+    failed = False
     DATA_FILENAME = "test_data.csv"
     SPECIALCASE_FILENAME = "test_specialcases.csv"
     PATH = os.path.dirname(os.path.realpath(__file__))
@@ -85,5 +97,7 @@ if __name__ == "__main__":
     test_date = datetime.datetime(2020, 11, 24, 13, 10, 10)
     test_specialcase(TAGS_WITH_SPECIALCASE[1], test_date, expected_result)
 
+    if failed:
+        sys.exit(1)
     # Removes the specialcase test file
     os.remove(SPECIALCASE_FILENAME)
