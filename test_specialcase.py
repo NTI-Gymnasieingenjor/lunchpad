@@ -26,10 +26,12 @@ def test_tag_in_specialcase(tag, expected):
     global failed
     result = get_specialcase_times(tag, SPECIALCASE_FILENAME)
     if result == expected:
-        print("TEST COMPLETE")
+        print("\u001b[32mTEST COMPETE\u001b[0m")
     else:
-        print("TEST FAILED")
+
+        print("\u001b[31mTEST FAILED\u001b[0m")
         failed = True
+
 
 
 def test_specialcase(tag, date, expected):
@@ -37,12 +39,16 @@ def test_specialcase(tag, date, expected):
     Tests for correct output if tag in specialcase
     and correct weekday
     """
+
     global failed
-    res = handle_input(tag, tags, times, date, [], DATA_FILENAME, SPECIALCASE_FILENAME)
+    res = handle_input(tag, tag_times, date, [], DATA_FILENAME, SPECIALCASE_FILENAME)
+
+
     if res == expected:
-        print("TEST COMPLETE")
+        print("\u001b[32mTEST COMPETE\u001b[0m")
     else:
-        print("TEST FAILED")
+
+        print("\u001b[31mTEST FAILED\u001b[0m")
         failed = True
 
 
@@ -52,8 +58,7 @@ if __name__ == "__main__":
     DATA_FILENAME = "test_data.csv"
     SPECIALCASE_FILENAME = "test_specialcases.csv"
     PATH = os.path.dirname(os.path.realpath(__file__))
-    tags = get_file_data(PATH+"/id_tester.csv")
-    times = get_file_data(PATH+"/tider_tester.csv")
+    tag_times = get_file_data(PATH+"/tag_time_tests.csv")
 
     TAGS_WITH_SPECIALCASE = ["548381316", "617153648"]
     NO_SPECIALCASE_TAG = "611056439"

@@ -47,23 +47,27 @@ def get_specialcase_times(tag, filename="specialcases.csv"):
 
 # Looks through all the tags and returns the tag and the corresponding class,
 # otherwise it returns an empty list
-def find_matching_tag(tag, tags):
+
+def find_matching_tag(tag, tags_times):
     """
     Looks through all the tags and returns the tag and its corresponding class, otherwise it returns an empty list.
     """
-    match = list(filter(lambda x: tag in x, tags))
+    match = list(filter(lambda x: tag in x, tags_times))
+
     if(len(match) > 0):
         return match[0]
     else:
         return match
 
-      
-def find_matching_lunch_time(grade, times):
+
+
+# Uses the matched class to find and return the corresponding lunch time
+def find_matching_lunch_time(grade, tag_times):
     """
     Uses the class of the corresponding tag to find the matching lunch times, then returns the matched lunch times.
     """
+    match = list(filter(lambda x: grade + "_lunch" in x, tag_times))
 
-    match = list(filter(lambda x: grade in x, times))
     if(len(match) > 0):
         return match[0]
     else:
@@ -129,7 +133,7 @@ def handle_enter(window, style):
     global key_presses
     mfr = "".join(key_presses)
     key_presses = []
-    allowed, message = handle_input(mfr, tags_root, times_root, datetime.datetime.now(), used_tags, options.data)
+    allowed, message = handle_input(mfr, tags_times_root, datetime.datetime.now(), used_tags, options.data)
     write_text_turtle(window, turtle, style, allowed, message)
     print(message)
     if allowed is False:
@@ -193,12 +197,14 @@ def has_specialcase_for_today(times_match, now):
 
     return False
 
-def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_filename="specialcases.csv"):
+
+def handle_input(mfr, tag_times, now, used_tags, data_filename, specialcase_filename="specialcases.csv"):
     """
     Based on different conditions, when a tag is scanned, the function will return a True or False and its respective message.
     """
-  
-    tag_match = find_matching_tag(mfr, tags)
+
+    tag_match = find_matching_tag(mfr, tag_times)
+
     if not len(tag_match) > 0:
         return False, "OKÄND NYCKELTAGG"
 
@@ -231,7 +237,7 @@ def handle_input(mfr, tags, times, now, used_tags, data_filename, specialcase_fi
             return True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
 
     # Redefines times_match if no specialcase for todays lunch
-    times_match = find_matching_lunch_time(tag_match[0], times)
+    times_match = find_matching_lunch_time(tag_match[0], tag_times)
 
     # If the tag is in the system but not registered to a class
     if not len(times_match) > 0:
@@ -320,8 +326,7 @@ def os_checker():
 def get_options(args):
     parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
 
-    parser.add_argument("-t", "--tags", nargs='?', default=file + "/id.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags.")
-    parser.add_argument("-s", "--schedule", nargs='?', default=file + "/tider.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch schedule.")
+    parser.add_argument("-i", "--input", nargs='?', default=file + "/tag_time.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags and contaning the lunch data.")
     parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
     
     options = parser.parse_args(args)
@@ -334,13 +339,11 @@ if __name__ == '__main__':
 
     options = get_options(sys.argv[1:])
 
-    tags_root = [s.split(",") for s in options.tags.read().splitlines()]
+    tags_times_root = [s.split(",") for s in options.input.read().splitlines()]
 
-    times_root = [s.split(",") for s in options.schedule.read().splitlines()]
 
     # Close file streams
-    options.tags.close()
-    options.schedule.close()
+    options.input.close()
 
 
     skanna_tagg = "VÄNLIGEN SKANNA DIN TAGG TILL VÄNSTER"
