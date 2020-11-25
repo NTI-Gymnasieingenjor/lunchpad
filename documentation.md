@@ -241,7 +241,7 @@ For Lunchpad to function correctly, a CSV file needs to be added manually to the
 
 Times are formatted in 24 hour time with a colon between the hour and minute and a dash between the start and ending of the lunch time: *12:00-12:20*.
 
-Below is an example of how both file can be written.
+Below is an example of how the file can be written.
 
 *Tags and Lunch schedule respectivly:*
 
