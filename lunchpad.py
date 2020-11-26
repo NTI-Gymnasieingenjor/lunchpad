@@ -159,6 +159,10 @@ def save_students_eaten(date, school, filename):
                     # Increases the value of how many people have successfully scanned for the day.
                     if school == "NTI":
                         new_line[1] = str(int(new_line[1]) + 1)
+                    elif school == "NTI_TEACHER":
+                        new_line[3] = str(int(new_line[3]) + 1)
+                    elif school == "PROCIVITAS_TEACHER":
+                        new_line[4] = str(int(new_line[4]) + 1)
                     else:
                         new_line[2] = str(int(new_line[2]) + 1)
                     new_line = ",".join(new_line)
@@ -179,11 +183,15 @@ def save_students_eaten(date, school, filename):
     except Exception as err:
         # Create lunch_data.csv file if it doesn't exist.
         with open(filename, "w") as fd:
-            lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
+            lunch_data = ["DATUM,NTI,PROCIVITAS,NTI_TEACHER,PROCIVITAS_TEACHER\n"]
             if school == "NTI":
-                lunch_data.append(f"{date},1,0")
+                lunch_data.append(f"{date},1,0,0,0")
+            elif school == "NTI_TEACHER":
+                lunch_data.append(f"{date},0,0,1,0")
+            elif school == "PROCIVITAS_TEACHER":
+                lunch_data.append(f"{date},0,0,0,1")
             else:
-                lunch_data.append(f"{date},0,1")
+                lunch_data.append(f"{date},0,1,0,0")
             fd.writelines(lunch_data)
 
 
