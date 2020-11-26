@@ -23,6 +23,16 @@ class TestLunchpad(unittest.TestCase):
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
+        # Scanned tag is on time, NTI teacher tag
+        actual = handle_input("548381319", tag_times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
+        expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+        self.assertEqual(expected, actual)
+
+        # Scanned tag is on time, Procivitas teacher tag
+        actual = handle_input("900865599", tag_times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
+        expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
+        self.assertEqual(expected, actual)
+
         # Scanned tag is first in list
         actual = handle_input("900865598", tag_times, datetime(2020, 11, 11, 12, 10, 10), ["78b70d2dec5594fe350af13afd2ec839695442053013ec3e2d7386429b5764b4", "2711ec7bebeff204b1d6d39cc8dcbfbef44d93da919befb9834a839d98a5e1bf"], "test_data.csv")
         expected = False, "DU HAR REDAN SKANNAT"
@@ -90,6 +100,5 @@ if __name__ == '__main__':
     file = path.dirname(path.realpath(__file__))
 
     tag_times = get_file_data(file+"/tag_time_tests.csv")
- 
 
     unittest.main()
