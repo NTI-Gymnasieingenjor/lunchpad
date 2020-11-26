@@ -93,7 +93,7 @@ if __name__ == "__main__":
     test_specialcase(TAGS_WITH_SPECIALCASE[1], test_date, expected_result)
 
     print("[*] Testing with tag without specialcase for tuesday")
-    expected_result = False, "DIN LUNCHTID ÄR 12:30-12:50"
+    expected_result = False, "LUNCH IDAG: 12:30-12:50"
     test_date = datetime.datetime(2020, 11, 24, 13, 10, 10)
     test_specialcase(TAGS_WITH_SPECIALCASE[1], test_date, expected_result)
 
