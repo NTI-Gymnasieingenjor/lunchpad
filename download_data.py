@@ -23,6 +23,8 @@ if __name__ == "__main__":
         gc = gspread.service_account()
         print("[*] Downloading specialcase CSV file")
         download_sheets_data("1lEY7VggOL4xzkbppKcxsn9U5sn0nJTJzExsR12MkxpI", "specialcases.csv")
+        print("[*] Downloading tag_time CSV file")
+        download_sheets_data("1X2EemrwtP0E_peuT_e6I7qtFBkfEnIoXHBnYydpxQ8I", "tag_time.csv")
     except TransportError:
         print("\u001b[31mTimed out:\n   Retry. Try connecting to another network if not working.\u001b[0m")
     except Exception as err:
