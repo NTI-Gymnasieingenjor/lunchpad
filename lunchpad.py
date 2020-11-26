@@ -331,7 +331,7 @@ def restart():
     # Flushes buffered data so it doesn't stay in memory
     sys.stdout.flush()
 
-    # Starts new Python process and replaces the current one
+    # Replaces the current Python process with a new one
     os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
 
 def get_options(args):
