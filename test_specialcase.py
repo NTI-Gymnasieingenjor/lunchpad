@@ -43,8 +43,7 @@ def test_specialcase(tag, date, expected):
     global failed
     res = handle_input(tag, tag_times, date, [], DATA_FILENAME, SPECIALCASE_FILENAME)
 
-
-    if res == expected:
+    if expected[0] == res[0] and expected[1] in res[1]:
         print("\u001b[32mTEST COMPLETE\u001b[0m")
     else:
 
