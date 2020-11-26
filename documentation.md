@@ -157,7 +157,7 @@ sudo apt-get install python3-tk
    @xset s off
    @xset -dpms
    @xset s noblank
-   @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
+   @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py --restart
    point-rpi
    ```
    > NOTE: The filepath above "/home/pi/Desktop/lunchpad/lunchpad.py" might differ from where you add it on your own Raspberry Pi. Make sure they match.
