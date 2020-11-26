@@ -9,6 +9,7 @@ import multiprocessing
 import hashlib
 import platform
 import argparse
+import math
 import atexit
 
 # Reads respective csv file and adds the content into a list
@@ -111,7 +112,7 @@ def blipp_your_tagg():
         turtle.bgcolor("black")
         timer = None
 
-    timer = threading.Timer(3.0, _timeout)
+    timer = threading.Timer(4.0, _timeout)
     timer.start()
 
 
@@ -253,7 +254,12 @@ def handle_input(mfr, tag_times, now, used_tags, data_filename, specialcase_file
 
     if not valid_lunch_time(times_match, now):
         lunch_start, lunch_end = lunch_time(times_match, now)
-        return False, f"DIN LUNCHTID ÄR {lunch_start}-{lunch_end}"
+        time_to_lunch_hours, time_to_lunch_min = time_to_lunch(now, lunch_start)
+        if not time_to_lunch_hours == 0:
+            return False, f"DU HAR LUNCH OM {time_to_lunch_hours}H OCH {time_to_lunch_min}MIN\n\n         LUNCH IDAG: {lunch_start}-{lunch_end}"
+        else:
+            return False, f"DU HAR LUNCH OM {time_to_lunch_min}MIN\n\n LUNCH IDAG: {lunch_start}-{lunch_end}"
+
 
     # Adds the recently hashed tag into a list
     used_tags.append(hashed)
@@ -274,6 +280,7 @@ def lunch_time(times_match, now):
     except:
         return "00:00","00:00"
 
+
 def valid_lunch_time(times_match, now):
     """
     Checks if it is a valid lunch time when a tag is scanned, based on lunch_start, lunch_end and current time converted into minutes using the get_time_in_min function.
@@ -282,7 +289,24 @@ def valid_lunch_time(times_match, now):
     lunch_start_in_min = get_time_in_min(lunch_start)
     lunch_end_in_min = get_time_in_min(lunch_end)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
+
     return lunch_start_in_min <= now_in_min <= lunch_end_in_min
+
+
+def time_to_lunch(now, lunch_start):
+    lunch_start_in_min = get_time_in_min(lunch_start)
+    now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
+    if lunch_start_in_min < now_in_min:
+        now_in_min -= 24*60
+    time_to_lunch = (lunch_start_in_min - now_in_min) 
+    time_to_lunch = time_to_lunch / 60
+    time_to_lunch = math.modf(time_to_lunch)
+    time_to_lunch_hours = time_to_lunch[1]
+    time_to_lunch_min = time_to_lunch[0] * 60
+    time_to_lunch_hours = int(time_to_lunch_hours)
+    time_to_lunch_min = int(time_to_lunch_min)
+   
+    return time_to_lunch_hours, time_to_lunch_min
 
 
 def key_press(key):
@@ -291,6 +315,7 @@ def key_press(key):
     """
     global key_presses
     key_presses.append(key)
+
 
 def handle_esc(window):
     """

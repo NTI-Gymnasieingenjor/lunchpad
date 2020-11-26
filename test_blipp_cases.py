@@ -50,12 +50,12 @@ class TestLunchpad(unittest.TestCase):
 
         # Scanned tag is off time, NTI tag
         actual = handle_input("754729301", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
-        expected = False, "DIN LUNCHTID ÄR 11:00-11:20"
+        expected = False, "DU HAR LUNCH OM 22H OCH 49MIN\n\n         LUNCH IDAG: 11:00-11:20"
         self.assertEqual(expected, actual)
 
         # Scanned tag is off time, Procivitas tag
         actual = handle_input("739341266", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
-        expected = False, "DIN LUNCHTID ÄR 12:20-12:40"
+        expected = False, "DU HAR LUNCH OM 10MIN\n\n LUNCH IDAG: 12:20-12:40"
         self.assertEqual(expected, actual)
 
         actual = handle_input("101051865", tag_times, datetime(2020, 11, 11, 12, 10, 10), [], "test_data.csv")
@@ -67,7 +67,11 @@ class TestLunchpad(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         actual = handle_input("259648828", tag_times, datetime(2020, 11, 14, 12, 10, 10), [], "test_data.csv")
-        expected = False, "DIN LUNCHTID ÄR 00:00-00:00"
+        expected = False, "DU HAR LUNCH OM 11H OCH 50MIN\n\n         LUNCH IDAG: 00:00-00:00"
+        self.assertEqual(expected, actual)
+
+        actual = handle_input("259648828", tag_times, datetime(2020, 11, 13, 12, 50, 10), [], "test_data.csv")
+        expected = False, "DU HAR LUNCH OM 23H OCH 30MIN\n\n         LUNCH IDAG: 12:20-12:40"
         self.assertEqual(expected, actual)
 
     def test_correct_time(self):
