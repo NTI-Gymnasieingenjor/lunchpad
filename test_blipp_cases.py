@@ -24,12 +24,12 @@ class TestLunchpad(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         # Scanned tag is on time, NTI teacher tag
-        actual = handle_input("548381319", tags, times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
+        actual = handle_input("548381319", tag_times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
         # Scanned tag is on time, Procivitas teacher tag
-        actual = handle_input("900865599", tags, times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
+        actual = handle_input("900865599", tag_times, datetime(2020, 11, 11, 12, 20, 10), [], "test_data.csv")
         expected = True, "GODKÄND SKANNING! SMAKLIG MÅLTID!"
         self.assertEqual(expected, actual)
 
@@ -100,6 +100,5 @@ if __name__ == '__main__':
     file = path.dirname(path.realpath(__file__))
 
     tag_times = get_file_data(file+"/tag_time_tests.csv")
- 
 
     unittest.main()
