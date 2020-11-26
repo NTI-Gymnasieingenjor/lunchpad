@@ -9,7 +9,7 @@ import multiprocessing
 import hashlib
 import platform
 import argparse
-
+import atexit
 
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath):
@@ -323,11 +323,23 @@ def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
+def restart():
+    """
+    Restarts the current python process.
+    """
+
+    # Flushes buffered data so it doesn't stay in memory
+    sys.stdout.flush()
+
+    # Starts new Python process and replaces the current one
+    os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
+
 def get_options(args):
     parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
 
     parser.add_argument("-i", "--input", nargs='?', default=file + "/tag_time.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags and contaning the lunch data.")
     parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
+    parser.add_argument("-r", "--restart", action="store_true", help="Specifies whether or not the program should be restarted automatically when it shuts down.")
     
     options = parser.parse_args(args)
     return options
@@ -336,8 +348,10 @@ if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-
     options = get_options(sys.argv[1:])
+    
+    if options.restart:
+        atexit.register(restart)
 
     tags_times_root = [s.split(",") for s in options.input.read().splitlines()]
 
@@ -373,7 +387,7 @@ if __name__ == '__main__':
     sound_t = None
     key_presses = []
     used_tags = []
-
+    
     window.onkey(lambda: key_press("0"), "0")
     window.onkey(lambda: key_press("1"), "1")
     window.onkey(lambda: key_press("2"), "2")
