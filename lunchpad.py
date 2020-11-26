@@ -296,19 +296,16 @@ def valid_lunch_time(times_match, now):
 def time_to_lunch(now, lunch_start):
     lunch_start_in_min = get_time_in_min(lunch_start)
     now_in_min = get_time_in_min(f"{now.hour}:{now.minute}")
-
     if lunch_start_in_min < now_in_min:
         now_in_min -= 24*60
-        
     time_to_lunch = (lunch_start_in_min - now_in_min) 
     time_to_lunch = time_to_lunch / 60
     time_to_lunch = math.modf(time_to_lunch)
     time_to_lunch_hours = time_to_lunch[1]
     time_to_lunch_min = time_to_lunch[0] * 60
-    
     time_to_lunch_hours = int(time_to_lunch_hours)
     time_to_lunch_min = int(time_to_lunch_min)
-
+   
     return time_to_lunch_hours, time_to_lunch_min
 
 
