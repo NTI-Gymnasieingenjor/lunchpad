@@ -369,12 +369,13 @@ The code for Lunchpad saves the data of how many people have successfully scanne
 
    Scans id tags and checks if it's a person's lunchtime.
    
-   | Argument                                | Help                                                                              |
-   | :-------------------------------------- | :-------------------------------------------------------------------------------- |
-   | -h, --help                              | Show help message and exit.                                                       |
-   | -t [TAGS]     <br>--tags [TAGS]         | Specifies CSV file containing the id tags.          <br>Default: `id.csv`         |
-   | -s [SCHEDULE] <br>--schedule [SCHEDULE] | Specifies CSV file containing the lunch schedule.   <br>Default: `tider.csv`      |
-   | -d [DATA]     <br>--data [DATA]         | Specifies CSV file for storing the lunch data.      <br>Default: `lunch_data.csv` |
+   | Argument                                | Help                                                                                          |
+   | :-------------------------------------- | :-------------------------------------------------------------------------------------------- |
+   | -h, --help                              | Show help message and exit.                                                                   |
+   | -t [TAGS]     <br>--tags [TAGS]         | Specifies CSV file containing the id tags.          <br>Default: `id.csv`                     |
+   | -s [SCHEDULE] <br>--schedule [SCHEDULE] | Specifies CSV file containing the lunch schedule.   <br>Default: `tider.csv`                  |
+   | -d [DATA]     <br>--data [DATA]         | Specifies CSV file for storing the lunch data.      <br>Default: `lunch_data.csv`             |
+   | -r            <br>--restart             | Specifies whether or not the program should be restarted automatically when it shuts down.    |
 
 </details>
 
