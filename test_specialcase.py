@@ -26,7 +26,7 @@ def test_tag_in_specialcase(tag, expected):
     global failed
     result = get_specialcase_times(tag, SPECIALCASE_FILENAME)
     if result == expected:
-        print("\u001b[32mTEST COMPETE\u001b[0m")
+        print("\u001b[32mTEST COMPLETE\u001b[0m")
     else:
 
         print("\u001b[31mTEST FAILED\u001b[0m")
@@ -45,7 +45,7 @@ def test_specialcase(tag, date, expected):
 
 
     if res == expected:
-        print("\u001b[32mTEST COMPETE\u001b[0m")
+        print("\u001b[32mTEST COMPLETE\u001b[0m")
     else:
 
         print("\u001b[31mTEST FAILED\u001b[0m")
