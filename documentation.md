@@ -230,17 +230,20 @@ sudo apt-get install python3-tk
    
 </details>
 
-# Required CSV files
+# Required CSV file
 
-For Lunchpad to function correctly, two CSV files needs to added manually to the root folder of the program:
+For Lunchpad to function correctly, a CSV file needs to be added manually to the root folder of the program:
 
-- *id.csv*, containing a list of students and the MFR number on their keycards in this format: *class,mfr*.
+- *tag_time.csv*, containing a list of students and the MFR number on their keycards in this format: <br>
+*class,mfr*.
+- The file also includes the lunch schedule for all classes for each day of the week in this format:<br>
+*class,monday,tuesday,wednesday,thursday,friday*.<br>
 
-- *tider.csv*, containing a list of lunch times for each class on each day of the week in this format: *class,monday,tuesday,wednesday,thursday,friday*. Times are formatted in 24 hour time with a colon between the hour and minute and a dash between the start and ending of the lunch time: *12:00-12:20*.
+Times are formatted in 24 hour time with a colon between the hour and minute and a dash between the start and ending of the lunch time: *12:00-12:20*.
 
-Below is an example of how both files can be written.
+Below is an example of how the file can be written.
 
-*id.csv:*
+*Tags and Lunch schedule respectivly:*
 
 ```csv
 1A,123123123
@@ -249,12 +252,10 @@ Below is an example of how both files can be written.
 1B,465465465
 1C,789789789
 1C,798798798
-```
-*tider.csv*
-```csv
-1A,12:00-12:20,12:10-12:30,12:40-13:10,11:30-12:30,11:50-12:10
-1B,11:30-11:50,11:40-12:10,12:10-12:30,11:00-11:40,11:20-11:40
-1C,12:30-13:00,12:40-13:10,13:20-13:40,12:40-13:20,12:20-12:30
+
+1A_lunch,12:00-12:20,12:10-12:30,12:40-13:10,11:30-12:30,11:50-12:10
+1B_lunch,11:30-11:50,11:40-12:10,12:10-12:30,11:00-11:40,11:20-11:40
+1C_lunch,12:30-13:00,12:40-13:10,13:20-13:40,12:40-13:20,12:20-12:30
 ```
 
 # Configure Google Services

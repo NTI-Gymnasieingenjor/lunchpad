@@ -6,13 +6,17 @@ from lunchpad import *
 
 
 def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, nti_teacher_eaten, procivitas_teacher_eaten, date):
+    """
+    The function resets the lunch_data csv file and asserts the actual amount of students that have eaten with the expected amount.
+    """
+
     # Resets the lunch_data.csv
     if os.path.isfile(filename):
         os.remove(filename)
 
     global failed
     for tag in tags_to_blipp:
-        handle_input(tag, tagsfile, timesfile, date, [], filename)
+        handle_input(tag, tag_times_file, date, [], filename)
 
     try:
         with open(filename, "r") as f:
@@ -35,13 +39,18 @@ def test_students_eaten_saved(tags_to_blipp, nti_eaten, procivitas_eaten, nti_te
 
 
 def test_students_eaten_append(tag, nti_eaten, procivitas_eaten, nti_teacher_eaten, procivitas_teacher_eaten, dates, expected_data):
+    """
+    Test by asserting that actual is not equal to expected. The test tests with green tags from different dates.
+    This is to test that the function appends to a new line on a new date.
+    """
+
     global failed
 
     if os.path.isfile(filename):
         os.remove(filename)
 
     for date in dates:
-        handle_input(tag, tagsfile, timesfile, date, [], filename)
+        handle_input(tag, tag_times_file, date, [], filename)
 
     actual_data = None
     with open(filename, "r") as f:
@@ -65,8 +74,8 @@ if __name__ == "__main__":
     filename = "test_data.csv"
 
     file = os.path.dirname(os.path.realpath(__file__))
-    tagsfile = get_file_data(file+"/id_tester.csv")
-    timesfile = get_file_data(file+"/tider_tester.csv")
+    tag_times_file = get_file_data(file+"/tag_time_tests.csv")
+    
 
     print("[*] Testing with 1 green tag from NTI")
     test_students_eaten_saved([nti_tag], "1", "0", "0", "0", datetime.datetime.now())
