@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 def sort_data(data):
-    headings = data.pop(data.index("DATUM,NTI,PROCIVITAS,NTI LÄRARE,PROCIVITAS LÄRARE"))
+    headings = data.pop(data.index("DATUM,NTI,PROCIVITAS,NTI_TEACHER,PROCIVITAS_TEACHER"))
     sorted_data = sorted(data, key=lambda x: datetime.strptime(x.split(",")[0], "%Y-%m-%d"))
     sorted_data.insert(0, headings)
     return sorted_data

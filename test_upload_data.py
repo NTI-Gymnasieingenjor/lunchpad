@@ -34,7 +34,7 @@ worksheet = sh.add_worksheet(title=worksheet_title, rows="10", cols="10")
 test_filename = "test_data.csv"
 
 with open(test_filename, "w") as fd:
-    data = ["DATUM,NTI,PROCIVITAS,NTI LÄRARE,PROCIVITAS LÄRARE\n", "2020-11-25,1,1,1,1\n", "2020-11-13,50,60,20,30\n", "2020-11-15,100,60,10,15\n"]
+    data = ["DATUM,NTI,PROCIVITAS,NTI_TEACHER,PROCIVITAS_TEACHER\n", "2020-11-25,1,1,1,1\n", "2020-11-13,50,60,20,30\n", "2020-11-15,100,60,10,15\n"]
     fd.writelines(data)
 
 args = [sys.executable, "upload_data.py", "--data", test_filename, "--worksheet", worksheet_title]
