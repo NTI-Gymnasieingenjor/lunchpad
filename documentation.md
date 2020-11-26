@@ -157,7 +157,7 @@ sudo apt-get install python3-tk
    @xset s off
    @xset -dpms
    @xset s noblank
-   @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py
+   @sudo python3 /home/pi/Desktop/lunchpad/lunchpad.py --restart
    point-rpi
    ```
    > NOTE: The filepath above "/home/pi/Desktop/lunchpad/lunchpad.py" might differ from where you add it on your own Raspberry Pi. Make sure they match.
@@ -316,6 +316,47 @@ The code for Lunchpad saves the data of how many people have successfully scanne
 
 </details>
 
+<details>
+   <summary>Setup time formatting script for specialcases (if new spreadsheet)</summary>
+   
+   1. Open spreadsheet-file in Google docs.
+
+   2. Click on <b>Tools</b> on the toolbar.
+
+   3. Click on <b>Script editor</b> from the list of options.
+
+   4. Paste in the following code in the editor that opens up:
+      ```javascript
+        const sheetName = "Specialfall";
+
+        function checkFormat(range) {
+          let text = range.getValue();
+          if (text == "" || text.match("^(2[0-3]|[0-1][0-9]):[0-5][0-9]-(2[0-3]|[0-1][0-9]):[0-5][0-9]$")) {
+            range.setFontColor("black");
+            range.clearNote()
+          } else {
+            range.setFontColor("red");
+            range.setNote("Du måste skriva in i formatet: hh:mm-hh:mm Till exempel: 10:00-14:00")
+          }
+        }
+
+        function onEdit(e) {
+          var sheet = e.source.getSheetByName(sheetName);
+          var range = e.range;
+          if (range.getRow() != 1 && range.getColumn() >= 2 && range.getColumn() <= 6) {
+            checkFormat(range);
+          }
+        }
+      ```
+      Note: Change the value of `sheetName` to the name of the sheet (<span style="color:red">Not the name of the spreadsheet</span>).
+
+   5. Save the code.
+
+   6. Set the name of the project. For instance, `Date formatting` and click `OK`.
+
+</details>
+
+
 # Usage
 
 <details>
@@ -328,12 +369,13 @@ The code for Lunchpad saves the data of how many people have successfully scanne
 
    Scans id tags and checks if it's a person's lunchtime.
    
-   | Argument                                | Help                                                                              |
-   | :-------------------------------------- | :-------------------------------------------------------------------------------- |
-   | -h, --help                              | Show help message and exit.                                                       |
-   | -t [TAGS]     <br>--tags [TAGS]         | Specifies CSV file containing the id tags.          <br>Default: `id.csv`         |
-   | -s [SCHEDULE] <br>--schedule [SCHEDULE] | Specifies CSV file containing the lunch schedule.   <br>Default: `tider.csv`      |
-   | -d [DATA]     <br>--data [DATA]         | Specifies CSV file for storing the lunch data.      <br>Default: `lunch_data.csv` |
+   | Argument                                | Help                                                                                          |
+   | :-------------------------------------- | :-------------------------------------------------------------------------------------------- |
+   | -h, --help                              | Show help message and exit.                                                                   |
+   | -t [TAGS]     <br>--tags [TAGS]         | Specifies CSV file containing the id tags.          <br>Default: `id.csv`                     |
+   | -s [SCHEDULE] <br>--schedule [SCHEDULE] | Specifies CSV file containing the lunch schedule.   <br>Default: `tider.csv`                  |
+   | -d [DATA]     <br>--data [DATA]         | Specifies CSV file for storing the lunch data.      <br>Default: `lunch_data.csv`             |
+   | -r            <br>--restart             | Specifies whether or not the program should be restarted automatically when it shuts down.    |
 
 </details>
 

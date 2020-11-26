@@ -10,7 +10,7 @@ import hashlib
 import platform
 import argparse
 import math
-
+import atexit
 
 # Reads respective csv file and adds the content into a list
 def get_file_data(filepath):
@@ -160,6 +160,10 @@ def save_students_eaten(date, school, filename):
                     # Increases the value of how many people have successfully scanned for the day.
                     if school == "NTI":
                         new_line[1] = str(int(new_line[1]) + 1)
+                    elif school == "NTI_TEACHER":
+                        new_line[3] = str(int(new_line[3]) + 1)
+                    elif school == "PROCIVITAS_TEACHER":
+                        new_line[4] = str(int(new_line[4]) + 1)
                     else:
                         new_line[2] = str(int(new_line[2]) + 1)
                     new_line = ",".join(new_line)
@@ -180,11 +184,15 @@ def save_students_eaten(date, school, filename):
     except Exception as err:
         # Create lunch_data.csv file if it doesn't exist.
         with open(filename, "w") as fd:
-            lunch_data = ["DATUM,NTI,PROCIVITAS\n"]
+            lunch_data = ["DATUM,NTI,PROCIVITAS,NTI_TEACHER,PROCIVITAS_TEACHER\n"]
             if school == "NTI":
-                lunch_data.append(f"{date},1,0")
+                lunch_data.append(f"{date},1,0,0,0")
+            elif school == "NTI_TEACHER":
+                lunch_data.append(f"{date},0,0,1,0")
+            elif school == "PROCIVITAS_TEACHER":
+                lunch_data.append(f"{date},0,0,0,1")
             else:
-                lunch_data.append(f"{date},0,1")
+                lunch_data.append(f"{date},0,1,0,0")
             fd.writelines(lunch_data)
 
 
@@ -351,11 +359,23 @@ def os_checker():
     if platform.system() == "Linux":
         root.attributes("-fullscreen", True)
 
+def restart():
+    """
+    Restarts the current python process.
+    """
+
+    # Flushes buffered data so it doesn't stay in memory
+    sys.stdout.flush()
+
+    # Replaces the current Python process with a new one
+    os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
+
 def get_options(args):
     parser = argparse.ArgumentParser(description="Scans id tags and checks if it's a person's lunchtime.")
 
     parser.add_argument("-i", "--input", nargs='?', default=file + "/tag_time.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the id tags and contaning the lunch data.")
     parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", help="Specifies CSV file for the lunch data.")
+    parser.add_argument("-r", "--restart", action="store_true", help="Specifies whether or not the program should be restarted automatically when it shuts down.")
     
     options = parser.parse_args(args)
     return options
@@ -364,8 +384,10 @@ if __name__ == '__main__':
     # Path to the working directory
     file = os.path.dirname(os.path.realpath(__file__))
 
-
     options = get_options(sys.argv[1:])
+    
+    if options.restart:
+        atexit.register(restart)
 
     tags_times_root = [s.split(",") for s in options.input.read().splitlines()]
 
@@ -401,7 +423,7 @@ if __name__ == '__main__':
     sound_t = None
     key_presses = []
     used_tags = []
-
+    
     window.onkey(lambda: key_press("0"), "0")
     window.onkey(lambda: key_press("1"), "1")
     window.onkey(lambda: key_press("2"), "2")
