@@ -35,7 +35,7 @@ def get_options(args):
     parser = argparse.ArgumentParser(description="Uploads the number of people that have scanned their tags.")
 
     parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch data.")
-    parser.add_argument("-w", "--worksheet", nargs='?', default="Blad3", help="Specifies name of the worksheet on Google Spreadsheets.")
+    parser.add_argument("-w", "--worksheet", nargs='?', default="Lunchsystem", help="Specifies name of the worksheet on Google Spreadsheets.")
     
     options = parser.parse_args(args)
     return options
