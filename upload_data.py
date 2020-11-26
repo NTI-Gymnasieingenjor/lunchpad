@@ -35,7 +35,7 @@ def get_options(args):
     parser = argparse.ArgumentParser(description="Uploads the number of people that have scanned their tags.")
 
     parser.add_argument("-d", "--data", nargs='?', default=file + "/lunch_data.csv", type=argparse.FileType("r"), help="Specifies CSV file containing the lunch data.")
-    parser.add_argument("-w", "--worksheet", nargs='?', default="Blad5", help="Specifies name of the worksheet on Google Spreadsheets.")
+    parser.add_argument("-w", "--worksheet", nargs='?', default="Blad3", help="Specifies name of the worksheet on Google Spreadsheets.")
     
     options = parser.parse_args(args)
     return options
@@ -63,9 +63,14 @@ if __name__ == '__main__':
         # Removes all week numbers and weekdays from imported sheet data. 
         for idx, row in enumerate(sheet_data):
             if idx != 0:
-                new_string = row.split(",")[0]
+                if(" " in row):
+                    new_string = row.split(" ")[0]
+                else:
+                    new_string = row.split(",")[0]
                 new_string += "," + row.split(",")[1]
                 new_string += "," + row.split(",")[2]
+                new_string += "," + row.split(",")[3]
+                new_string += "," + row.split(",")[4]
                 formatted_sheet_data.append(new_string)
             else:
                 formatted_sheet_data.append(row)
