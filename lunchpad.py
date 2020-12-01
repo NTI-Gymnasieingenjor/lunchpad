@@ -89,15 +89,17 @@ def write_text_turtle(window, turtle, style, granted, msg=""):
     Makes the display background green or red based on if granted is true or not.
     """
     turtle.write(msg, font=style, align='center')
+    time_to_show = 1.5
     if(granted):
         window.bgcolor("green")
     else:
         window.bgcolor("red")
-    blipp_your_tagg()
+        time_to_show = 4.0
+    blipp_your_tagg(time_to_show)
 
 
 # Default display
-def blipp_your_tagg():
+def blipp_your_tagg(time_to_show):
     global timer
     global style
 
@@ -112,7 +114,7 @@ def blipp_your_tagg():
         turtle.bgcolor("black")
         timer = None
 
-    timer = threading.Timer(4.0, _timeout)
+    timer = threading.Timer(time_to_show, _timeout)
     timer.start()
 
 
